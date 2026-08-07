@@ -1,0 +1,32 @@
+import React from 'react'
+
+export default function page() {
+  return (
+    <div className="flex justify-center items-center h-full min-h-screen">
+        <div className='flex flex-col justify-center bg-white gap-8 p-8 border border-neutral-300 shadow min-w-96 rounded-xl'>
+            <div className='flex flex-col gap-2 text-center pt-8 '>
+                <h1 className='text-red-600 font-semibold  text-4xl'>Store Panel</h1>
+                <h2 className='text-sm text-neutral-600 max-w-70 m-auto'>Please sign in to your account. </h2>
+            </div>
+            <div className='flex flex-col gap-4 pb-8'>
+                <form className='flex flex-col gap-4 '>
+                    <input type="email" placeholder='Email' className='border border-neutral-300 rounded p-2' />
+                    <input type="password" placeholder='Password' className='border border-neutral-300 rounded p-2' />
+                 
+                    <div className='flex justify-between items-center'>
+                        <label className='flex items-center gap-2'>
+                            <input type="checkbox" />
+                            <span className='text-sm text-neutral-600'>Remember me</span>
+                        </label>
+                        <a href="#" className='text-sm text-red-600'>Forgot Password?</a>
+                    </div>
+                    <button type="submit" className='bg-red-500 hover:bg-red-700 cursor-pointer text-white  p-2 rounded'>Login</button>
+                 <h2 className='text-sm text-neutral-600'>Don't have an account? <a href="/signup" className='text-red-600'>Sign up</a></h2>
+                </form>
+                <p className='text-sm text-neutral-600 text-center'>or</p>
+                <button className='bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-neutral-600  p-2 rounded border border-neutral-300'>Continue as a Guest</button>
+            </div>
+        </div>
+    </div>
+  )
+}
