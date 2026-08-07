@@ -24,7 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={` h-full `}
     >
-      <body className="min-h-full flex flex-col suppressHydrationWarning">
+      <body className="min-h-full flex flex-col " suppressHydrationWarning>
         <ClientShell>
           {children}
         </ClientShell>

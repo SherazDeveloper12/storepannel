@@ -1,25 +1,43 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Toaster, toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/dist/client/components/navigation';
-import { otpSend } from '../store/slices/authSlice';
+import { otpSend, otpVerify } from '../store/slices/authSlice';
 
 
 export default function page() {
-    const {user, loading, message, error} = useSelector((state: any) => state.auth);
+    const {user, loading, message, error, isAuthenticated} = useSelector((state: any) => state.auth);
+    
     const dispatch = useDispatch();
+    const otphasbeenSent = useRef(false);
     const [formData, setFormData] = React.useState({
         otp: '',
         email: user?.email
     });
+     
     useEffect(() => {
-        dispatch(otpSend(user?.email));
+        if (!otphasbeenSent.current) {
+            dispatch(otpSend(user?.email));
+            otphasbeenSent.current = true;
+        }
     }, []);
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+        }
+        if (message) {
+            toast.success(message);
+        }
+        if (isAuthenticated) {
+            router.push('/');
+        }
+    }, [error, message, isAuthenticated]);
     const router = useRouter();
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // Handle form submission logic here
+        dispatch(otpVerify(formData));
     }
   return (
        <div className="flex justify-center items-center h-full min-h-screen">

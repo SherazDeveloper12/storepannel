@@ -13,9 +13,7 @@ interface FormData {
 export default function page() {
     const router = useRouter();
     const {user, loading, error} = useSelector((state: any) => state.auth);
-   if (user) {
-    router.push('/');
-   }
+  
     useEffect(() => {
         
         if (error) {

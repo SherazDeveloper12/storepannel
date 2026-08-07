@@ -1,9 +1,12 @@
+"use client"
+import { useRouter } from "next/dist/client/components/navigation";
+
 import Image from "next/image";
 
 export default function Home() {
+  const router = useRouter();
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <h1>hello page</h1>
-    </div>
+    
+    router.push('/dashboard')
   );
 }
