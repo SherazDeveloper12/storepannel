@@ -29,9 +29,7 @@ export default function page() {
         if (message) {
             toast.success(message);
         }
-        if (isAuthenticated) {
-            router.push('/');
-        }
+       
     }, [error, message, isAuthenticated]);
     const router = useRouter();
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

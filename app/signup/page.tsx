@@ -11,7 +11,6 @@ interface FormData {
     password: string;
 }
 export default function page() {
-    const router = useRouter();
     const {user, loading, error} = useSelector((state: any) => state.auth);
   
     useEffect(() => {
@@ -21,7 +20,7 @@ export default function page() {
         }
         if (user) {
             toast.success("User registered successfully!");
-            router.push('/');
+           s
         }
     }, [error, user]);
     const dispatch = useDispatch();

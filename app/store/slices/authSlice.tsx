@@ -7,7 +7,9 @@ export const registerUser = createAsyncThunk(
   async (userData: FormData) => {
     try {
       console.log("data is being sent to backend", userData)
-      const response = await axios.post(`${BASE_URL}/auth/register`, userData);
+      const response = await axios.post(`${BASE_URL}/auth/register`, userData, {
+        withCredentials: true, // Include cookies in the request
+      });
       console.log("response from backend", response.data)
       return response.data;
     } catch (error) {
@@ -23,7 +25,9 @@ export const otpSend = createAsyncThunk(
   async (email: string) => {
     try {
       console.log("requesting otp for", email)
-      const response = await axios.post(`${BASE_URL}/auth/sendOtp`, { email });
+      const response = await axios.post(`${BASE_URL}/auth/sendOtp`, { email }, {
+        withCredentials: true, // Include cookies in the request
+      });
       console.log("response from backend", response.data)
       return response.data;
     } catch (error) {
@@ -39,8 +43,13 @@ export const otpVerify = createAsyncThunk(
   async (data: { email: string, otp: number }) => {
     try {
       console.log("verifying otp for", data)
-      const response = await axios.post(`${BASE_URL}/auth/verifyOtp`, data);
-      console.log("response from backend", response.data)
+      const response = await axios.post(`${BASE_URL}/auth/verifyOtp`, data,
+        {
+        
+          withCredentials: true, // Include cookies in the request
+        }
+      );
+      console.log("response from backend", response)
       return response.data;
     } catch (error) {
       if (error.response) {
