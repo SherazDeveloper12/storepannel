@@ -1,5 +1,7 @@
+import { logout } from '@/app/store/slices/authSlice';
 import {  usePathname, useRouter,  } from 'next/navigation';
 import React from 'react'
+import { useDispatch } from 'react-redux';
 
 export default function SideBar() {
     const items = [
@@ -18,9 +20,13 @@ export default function SideBar() {
     ];
     const router = useRouter();
     const pathname = usePathname();
-    
+    const dispatch = useDispatch();
+    const handleLogout = () => {
+        dispatch(logout());
+        router.push('/admin/login');
+    }
   return (
-    <div className='w-64 min-h-full bg-neutral-800 p-4 flex flex-col justify-between '>
+    <div className='fixed left-0 top-0 h-full w-64 min-h-screen  bg-neutral-800 p-4 flex flex-col justify-between gap-6  pt-18'>
       
       <ul className='flex flex-col gap-2 ' >
         {items.map((item) => (
@@ -33,7 +39,8 @@ export default function SideBar() {
           </li>
         ))}
       </ul>
-      <button className='py-2 hover:bg-red-500 font-semibold cursor-pointer bg-neutral-600 text-white' onClick={() => router.push('/admin/logout')}>
+      <button className='py-2 hover:bg-red-500 font-semibold cursor-pointer bg-neutral-600 text-white' 
+      onClick={() => handleLogout()}>
         Logout
       </button>
     </div>

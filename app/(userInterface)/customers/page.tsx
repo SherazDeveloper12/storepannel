@@ -1,7 +1,10 @@
+import PageStarter from '@/app/components/PageStarter/PageStarter'
 import React from 'react'
 
 export default function page() {
   return (
-    <div>page</div>
+    <div>
+      <PageStarter />
+    </div>
   )
 }

@@ -12,7 +12,7 @@ interface FormData {
 }
 export default function page() {
     const {user, loading, error} = useSelector((state: any) => state.auth);
-  
+  const router = useRouter();
     useEffect(() => {
         
         if (error) {
@@ -20,7 +20,11 @@ export default function page() {
         }
         if (user) {
             toast.success("User registered successfully!");
-           s
+           router.push('/verifyotp');
+        }
+        return () => {
+            // Cleanup if needed
+            toast.dismiss();
         }
     }, [error, user]);
     const dispatch = useDispatch();
@@ -34,6 +38,7 @@ export default function page() {
         e.preventDefault();
         dispatch(registerUser(formData));
         // Handle form submission logic here
+       
     }
   return (
     <div className="flex justify-center items-center h-full min-h-screen">

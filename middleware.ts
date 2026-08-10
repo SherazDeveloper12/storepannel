@@ -2,13 +2,12 @@ import { NextResponse, NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 const PUBLIC_ROUTES = ["/login", "/signup",];
-const OTP_ROUTE = ["/verifyotp"];
+const OTP_ROUTE = "/verifyotp";
 export const middleware = async (req: NextRequest) => {
-    console.log("middleware is running")
     const { pathname } = req.nextUrl;
     const token = req.cookies.get('token')?.value;
 
-    let payload: { isAuthenticated: boolean | null } = null;
+    let payload: { isAuthenticated: boolean } | null  = null;
 
     if (token) {
         try {
