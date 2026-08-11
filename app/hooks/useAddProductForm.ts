@@ -22,6 +22,8 @@ export default function useProductForm() {
     const [quantity, setquantity] = useState(1);
     const [description, setdescription] = useState('');
     const [images, setimages] = useState([]);
+    const [rating, setrating] = useState(0);
+    const [discount, setdiscount] = useState(0);
     const [editMode, setEditMode] = useState(false);
     const dispatch = useDispatch();
     
@@ -42,6 +44,8 @@ export default function useProductForm() {
             setprice(existingProduct.price);
             setquantity(existingProduct.quantity);
             setdescription(existingProduct.description);
+            setrating(existingProduct.rating);
+            setdiscount(existingProduct.discount);
             setimages(existingProduct.img);
             setEditMode(true);
               }
@@ -78,6 +82,8 @@ export default function useProductForm() {
         setfreeShipping(true);
         setnewArrivals(false);
         settitle('');
+        setrating(0);
+        setdiscount(0);
         setheading('');
         setprice(0);
         setquantity(1);
@@ -94,6 +100,8 @@ export default function useProductForm() {
         setcondition('New');
         setfreeShipping(true);
         setnewArrivals(false);
+        setrating(0);
+        setdiscount(0);
         settitle('');
         setheading('');
         setprice(0);
@@ -139,6 +147,10 @@ export default function useProductForm() {
         status,
         products,
          handledelete,
-         handleedit
+         handleedit,
+         rating,
+         setrating,
+         discount,
+         setdiscount
     }
 };

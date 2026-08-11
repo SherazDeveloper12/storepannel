@@ -23,7 +23,7 @@ export default function SideBar() {
     const dispatch = useDispatch();
     const handleLogout = () => {
         dispatch(logout());
-        router.push('/admin/login');
+      router.push('/login');
     }
   return (
     <div className='fixed left-0 top-0 h-full w-64 min-h-screen  bg-neutral-800 p-4 flex flex-col justify-between gap-6  pt-18'>

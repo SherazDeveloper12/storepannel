@@ -9,8 +9,12 @@ export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
     async () => {
         try {
+            const storeID = localStorage.getItem('storeID');
+            if (!storeID) {
+                throw new Error('storeID not found in localStorage');
+            }
             console.log('Fetching products from API...');
-            const response = await axios.get(`${BASE_URL}/products/`);
+            const response = await axios.get(`${BASE_URL}/products?storeID=${storeID}`);
             console.log('Products fetched successfully form api:', response.data);
             return response.data;
 
@@ -30,7 +34,8 @@ export const updateProduct = createAsyncThunk(
             const response = await axios.put(`${BASE_URL}/products/update/${updatedProduct._id}`, updatedProduct, {
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                withCredentials: true // Include credentials for authentication
             });
             console.log('Product updated successfully:', response.data);
             return response.data;
@@ -44,7 +49,7 @@ export const deleteProduct = createAsyncThunk(
     async (productId) => {
         try {
             console.log('Deleting product with ID:', productId);
-            const response = await axios.delete(`${BASE_URL}/products/delete/${productId}`);
+            const response = await axios.delete(`${BASE_URL}/products/delete/${productId}`,{ withCredentials: true } );
             console.log('Response from API for deleteProduct:', response);
             return productId;
         } catch (error) {
@@ -57,11 +62,9 @@ export const createProduct = createAsyncThunk(
     async (newProduct) => {
         try {
             console.log('Creating product:', newProduct);
-            const response = await axios.post(`${BASE_URL}/products/create`, newProduct, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            const response = await axios.post(`${BASE_URL}/products/create`, newProduct, 
+            { withCredentials: true } // Include credentials for authentication
+            );
            
             console.log('Product created successfully:', response.data);
             return response.data;

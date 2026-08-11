@@ -20,6 +20,7 @@ export const middleware = async (req: NextRequest) => {
         }
     }
     console.log("after token verification, payload is", payload)
+
     const isLoggedIn = !!payload
     const isVerified = payload?.isAuthenticated === true;
 

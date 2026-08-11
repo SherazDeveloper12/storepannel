@@ -40,7 +40,7 @@ export const otpVerify = createAsyncThunk(
     try {
       const response = await axios.post(`${BASE_URL}/auth/verifyOtp`, data,
         {
-        
+
           withCredentials: true, // Include cookies in the request
         }
       );
@@ -113,9 +113,28 @@ export const authSlice = createSlice({
     isAuthenticated: false,
     loading: false,
     error: null,
-   
+
   },
-  reducers: {},
+  reducers: {
+    fetchDataLocally: (state) => {
+      const email = localStorage.getItem("email");
+      const _id = localStorage.getItem("_id");
+      const storeID = localStorage.getItem("storeID");
+      const userName = localStorage.getItem("userName");
+      const storeName = localStorage.getItem("storeName");
+       if (email && _id && storeID && userName && storeName) {
+       const fetcheduser = {
+                email: email,
+                 _id: _id,
+                 storeID: storeID,
+                  userName: userName,
+                 storeName: storeName,
+         };
+      state.user = fetcheduser;
+      state.isAuthenticated = true;
+    }
+  }
+  },
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
@@ -123,6 +142,10 @@ export const authSlice = createSlice({
     })
     builder.addCase(registerUser.fulfilled, (state, action) => {
       localStorage.setItem("email", action.payload.user.email);
+      localStorage.setItem("_id", action.payload.user._id);
+      localStorage.setItem("storeID", action.payload.user.storeID);
+      localStorage.setItem("userName", action.payload.user.userName);
+      localStorage.setItem("storeName", action.payload.user.storeName);
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.message = action.payload.message;
@@ -154,6 +177,11 @@ export const authSlice = createSlice({
       state.message = null;
     })
     builder.addCase(otpVerify.fulfilled, (state, action) => {
+      localStorage.setItem("email", action.payload.user.email);
+      localStorage.setItem("_id", action.payload.user._id);
+      localStorage.setItem("storeID", action.payload.user.storeID);
+      localStorage.setItem("userName", action.payload.user.userName);
+      localStorage.setItem("storeName", action.payload.user.storeName);
       state.message = action.payload.message;
       state.isAuthenticated = action.payload.isAuthenticated;
       state.user = action.payload.user;
@@ -174,6 +202,10 @@ export const authSlice = createSlice({
     )
     builder.addCase(getme.fulfilled, (state, action) => {
       localStorage.setItem("email", action.payload.user.email);
+      localStorage.setItem("_id", action.payload.user._id);
+      localStorage.setItem("storeID", action.payload.user.storeID);
+      localStorage.setItem("userName", action.payload.user.userName);
+      localStorage.setItem("storeName", action.payload.user.storeName);
       state.user = action.payload.user;
       state.isAuthenticated = action.payload.isAuthenticated;
       state.token = action.payload.token;
@@ -191,8 +223,12 @@ export const authSlice = createSlice({
     )
     builder.addCase(login.fulfilled, (state, action) => {
       localStorage.setItem("email", action.payload.user.email);
+      localStorage.setItem("_id", action.payload.user._id);
+      localStorage.setItem("storeID", action.payload.user.storeID);
+      localStorage.setItem("userName", action.payload.user.userName);
+      localStorage.setItem("storeName", action.payload.user.storeName);
       state.user = action.payload.user;
-      
+
       state.message = action.payload.message;
       state.isAuthenticated = action.payload.user.isAuthenticated;
       state.loading = false;
@@ -202,7 +238,29 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = action.error.message || "Failed to login";
     })
+    builder.addCase(logout.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    }
+    )
+    builder.addCase(logout.fulfilled, (state, action) => {
+      localStorage.removeItem("email");
+      localStorage.removeItem("_id");
+      localStorage.removeItem("storeID");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("storeName");
+      state.user = null;
+      state.token = null;
+      state.message = action.payload.message;
+      state.isAuthenticated = false;
+      state.loading = false;
+      state.error = null;
+    })
+    builder.addCase(logout.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Failed to logout";
+    })
   }
 })
-export const { } = authSlice.actions
+export const { fetchDataLocally } = authSlice.actions
 export default authSlice.reducer
