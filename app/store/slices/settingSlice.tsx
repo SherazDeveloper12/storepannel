@@ -6,16 +6,14 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const fetchSettings = createAsyncThunk(
     'setting/fetchSettings',
-    async (thunkAPI) => {
+    async () => {
         try {
             const response = await axios.get(`${BASE_URL}/settings/`, {
                 withCredentials: true,
             });
-            console.log('Settings fetched successfully from API:', response.data);
             return response.data;
 
         } catch (error) {
-            console.error('Error fetching settings:', error);
 
             return error.data.message;
         }
@@ -27,10 +25,8 @@ export const addCategory = createAsyncThunk('setting/addCategory',
             const response = await axios.post(`${BASE_URL}/settings/addCategory`, { category }, {
                 withCredentials: true,
             });
-            console.log('Category added successfully from API:', response.data);
             return response.data;
         } catch (error) {
-            console.error('Error adding category:', error);
             return error.data.message;
         }
     }
@@ -41,10 +37,8 @@ export const addBrand = createAsyncThunk('setting/addBrand',
             const response = await axios.post(`${BASE_URL}/settings/addBrand`, { brand }, {
                 withCredentials: true,
             });
-            console.log('Brand added successfully from API:', response.data);
             return response.data;
         } catch (error) {
-            console.error('Error adding brand:', error);
             return error.data.message;
         }
     }
@@ -62,6 +56,28 @@ export const SettingSlice = createSlice({
         addCategorylocally: (state, action) => {
             localStorage.setItem('categories', JSON.stringify([...state.categories, action.payload]));
             state.categories.push(action.payload);
+        },
+        deleteCategorylocally: (state, action) => {
+            const updatedCategories = state.categories.filter(category => category !== action.payload);
+            localStorage.setItem('categories', JSON.stringify(updatedCategories));
+            state.categories = updatedCategories;
+        },
+        updateCategorylocally: (state, action) => {
+            const { oldCategory, newCategory } = action.payload;
+            const updatedCategories = state.categories.map(category => category === oldCategory ? newCategory : category);
+            localStorage.setItem('categories', JSON.stringify(updatedCategories));
+            state.categories = updatedCategories;
+        },
+        updateBrandlocally: (state, action) => {
+            const { oldBrand, newBrand } = action.payload;
+            const updatedBrands = state.brands.map(brand => brand === oldBrand ? newBrand : brand);
+            localStorage.setItem('brands', JSON.stringify(updatedBrands));
+            state.brands = updatedBrands;
+        },
+        deleteBrandlocally: (state, action) => {
+            const updatedBrands = state.brands.filter(brand => brand !== action.payload);
+            localStorage.setItem('brands', JSON.stringify(updatedBrands));
+            state.brands = updatedBrands;
         },
         addBrandlocally: (state, action) => {
             localStorage.setItem('brands', JSON.stringify([...state.brands, action.payload]));
@@ -115,5 +131,5 @@ export const SettingSlice = createSlice({
     }
 })
 
-export const { addCategorylocally, addBrandlocally } = SettingSlice.actions;
+export const { addCategorylocally, addBrandlocally, deleteCategorylocally, updateCategorylocally, updateBrandlocally, deleteBrandlocally } = SettingSlice.actions;
 export default SettingSlice.reducer;

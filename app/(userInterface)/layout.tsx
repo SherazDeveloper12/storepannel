@@ -6,16 +6,20 @@ import SideBar from '../components/SideBar/SideBar';
 import { fetchDataLocally, getme } from '../store/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, fetchProductsLocally } from '../store/slices/productsSlice';
-import { fetchSettings } from '../store/slices/settingSlice';
-
+import { fetchCategories, fetchCategoriesLocally } from '../store/slices/categorySlice';
+import { fetchBrands, fetchBrandsLocally } from '../store/slices/brandSlice';
 export default function layout({children}: {children: ReactNode}) {
   const dispatch = useDispatch()
   useEffect(() => {
+    
     dispatch(fetchDataLocally())
-    dispatch(getme())
     dispatch(fetchProductsLocally())
+    dispatch(fetchCategoriesLocally())
+    dispatch(fetchBrandsLocally())
+    dispatch(getme())
     dispatch(fetchProducts())
-    dispatch(fetchSettings())
+    dispatch(fetchCategories())
+    dispatch(fetchBrands())
   }, [])
   const router = useRouter();
  const user = useSelector((state: any) => state.auth.user);

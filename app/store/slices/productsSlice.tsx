@@ -13,13 +13,10 @@ export const fetchProducts = createAsyncThunk(
             if (!storeID) {
                 throw new Error('storeID not found in localStorage');
             }
-            console.log('Fetching products from API...');
             const response = await axios.get(`${BASE_URL}/products?storeID=${storeID}`);
-            console.log('Products fetched successfully form api:', response.data);
             return response.data;
 
         } catch (error) {
-            console.error('Error fetching products:', error);
 
             return error.data.message;
         }
@@ -29,7 +26,6 @@ export const updateProduct = createAsyncThunk(
     "products/updateProduct",
     async (updatedProduct) => {
         try {
-            console.log('Updating product:', updatedProduct._id);
 
             const response = await axios.put(`${BASE_URL}/products/update/${updatedProduct._id}`, updatedProduct, {
                 headers: {
@@ -37,10 +33,8 @@ export const updateProduct = createAsyncThunk(
                 },
                 withCredentials: true // Include credentials for authentication
             });
-            console.log('Product updated successfully:', response.data);
             return response.data;
         } catch (error) {
-            console.error('Error updating product:', error);
             return error.data.message;
         }
     });
@@ -48,12 +42,9 @@ export const deleteProduct = createAsyncThunk(
     "products/deleteProduct",
     async (productId) => {
         try {
-            console.log('Deleting product with ID:', productId);
             const response = await axios.delete(`${BASE_URL}/products/delete/${productId}`,{ withCredentials: true } );
-            console.log('Response from API for deleteProduct:', response);
             return productId;
         } catch (error) {
-            console.error('Error deleting product:', error);
             return error.data.message;
         }
     });
@@ -61,15 +52,12 @@ export const createProduct = createAsyncThunk(
     "products/createProduct",
     async (newProduct) => {
         try {
-            console.log('Creating product:', newProduct);
             const response = await axios.post(`${BASE_URL}/products/create`, newProduct, 
             { withCredentials: true } // Include credentials for authentication
             );
            
-            console.log('Product created successfully:', response.data);
             return response.data;
         } catch (error) {
-            console.error('Error creating product:', error);
             return error.data.message;
         }
     }
@@ -110,7 +98,6 @@ export const ProductSlice = createSlice({
                 }
             }
             if (action.payload.type === 'Brands') {
-                console.log('Brand filter payload:', action.payload);
                 const existingBrandFilterIndex = state.Filters.findIndex(filter => filter.type === 'Brands');
                 if (existingBrandFilterIndex !== -1) {
                     if (action.payload.checked === false) {
@@ -147,7 +134,6 @@ export const ProductSlice = createSlice({
                 }
             }
             if (action.payload.type === 'Rating') {
-                console.log('Rating filter payload:', action.payload);
                 const existingBrandFilterIndex = state.Filters.findIndex(filter => filter.type === 'Rating');
                 if (existingBrandFilterIndex !== -1) {
                     if (action.payload.checked === false) {
@@ -196,12 +182,10 @@ export const ProductSlice = createSlice({
             state.Products.unshift(action.payload);
         });
         builder.addCase(deleteProduct.fulfilled, (state, action) => {
-            console.log('Product deleted with ID:', action.payload);
             state.Products = state.Products.filter(product => product._id !== action.payload);
 
         });
         builder.addCase(deleteProduct.rejected, (state, action) => {
-            console.error('Error deleting product:', action.error.message);
             state.error = action.error.message;
         });
 

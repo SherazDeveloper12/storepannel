@@ -74,7 +74,7 @@ export default function useProductForm() {
         setEditMode(true);
        }
    const handleAddProductClick = (product) => {
-        console.log('Adding product:', product);
+       
         dispatch(createProduct(product));
         setbrand('Apple');
         setcategory('electronics');
@@ -91,7 +91,7 @@ export default function useProductForm() {
         setimages([]);
     }
     const handleUpdateProductClick = (product) => {
-        console.log('Updating product:', product);
+        
         const updatedProduct = { ...product, _id: existingProduct._id };
         // Dispatch update action here
         dispatch(updateProduct(updatedProduct));
