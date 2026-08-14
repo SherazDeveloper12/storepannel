@@ -249,6 +249,10 @@ export const authSlice = createSlice({
       localStorage.removeItem("storeID");
       localStorage.removeItem("userName");
       localStorage.removeItem("storeName");
+      localStorage.removeItem("categories"); 
+      localStorage.removeItem("brands");
+      localStorage.removeItem("products");
+      localStorage.removeItem("token");
       state.user = null;
       state.token = null;
       state.message = action.payload.message;

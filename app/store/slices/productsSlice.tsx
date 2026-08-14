@@ -52,10 +52,11 @@ export const createProduct = createAsyncThunk(
     "products/createProduct",
     async (newProduct) => {
         try {
+            console.log("newProduct in createProduct api call", newProduct)
             const response = await axios.post(`${BASE_URL}/products/create`, newProduct, 
             { withCredentials: true } // Include credentials for authentication
             );
-           
+           console.log("response.data in createProduct api call", response.data)
             return response.data;
         } catch (error) {
             return error.data.message;

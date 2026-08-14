@@ -11,8 +11,8 @@ export default function useProductForm() {
     const [AddProduct, setAddProduct] = useState(false);
     const  [editingProductId, setEditingProductId] = useState(null);
     const router = useRouter();
-    const [category, setcategory] = useState('electronics');
-    const [brand, setbrand] = useState('Apple');
+    const [category, setcategory] = useState('');
+    const [brand, setbrand] = useState('');
     const [condition, setcondition] = useState('New');
     const [freeShipping, setfreeShipping] = useState(true);
     const [newArrivals, setnewArrivals] = useState(false);
@@ -22,7 +22,7 @@ export default function useProductForm() {
     const [quantity, setquantity] = useState(1);
     const [description, setdescription] = useState('');
     const [images, setimages] = useState([]);
-    const [rating, setrating] = useState(0);
+    const [rating, setrating] = useState(1);
     const [discount, setdiscount] = useState(0);
     const [editMode, setEditMode] = useState(false);
     const dispatch = useDispatch();
@@ -63,6 +63,8 @@ export default function useProductForm() {
         category: category,
         brand: brand,
         condition: condition,
+        rating: rating,
+        discount: discount
     };
     const handledelete = (id) => {
         dispatch(deleteProduct(id))
@@ -76,8 +78,8 @@ export default function useProductForm() {
    const handleAddProductClick = (product) => {
        
         dispatch(createProduct(product));
-        setbrand('Apple');
-        setcategory('electronics');
+        setbrand('');
+        setcategory('');
         setcondition('New');
         setfreeShipping(true);
         setnewArrivals(false);
@@ -95,8 +97,8 @@ export default function useProductForm() {
         const updatedProduct = { ...product, _id: existingProduct._id };
         // Dispatch update action here
         dispatch(updateProduct(updatedProduct));
-        setbrand('Apple');
-        setcategory('electronics');
+        setbrand('');
+        setcategory('');
         setcondition('New');
         setfreeShipping(true);
         setnewArrivals(false);

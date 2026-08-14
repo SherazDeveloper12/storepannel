@@ -116,8 +116,22 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
     setEditingMode(false);
     setUpdatingMode(false);
   }
+  const user = useSelector((state: any) => state.auth.user);
   return (
     <div className='flex flex-col gap-3'>
+    <div className='flex flex-col gap-2 w-90'>
+      <h2 className='text-2xl'>Your Store Information </h2>
+      <div className='flex gap-2'>
+      <p>Your Store Name</p>
+      <p>:</p>
+      <p>{user?.storeName}</p>
+      </div>
+      <div className='flex gap-2'>
+      <p>Your Store ID</p>
+      <p>:</p>
+      <p>{user?.storeID}</p>
+      </div>
+    </div>
       {editingmode ? (
         <div className='flex flex-col  gap-2'>
           <h1 className='text-xl font-semibold  '>Adding {categoriesdata ? 'Category' : 'Brand'}</h1>

@@ -11,8 +11,9 @@ import { useSelector } from 'react-redux';
 export default function page() {
 
 
-  const {categories, brands} = useSelector((state: any) => state.setting);
-  console.log('Categories from Redux store:', categories);
+  const {categories} = useSelector((state: any) => state.categories);
+  const {brands} = useSelector((state: any) => state.brands);
+ 
   const {
     AddProduct,
     setAddProduct,
@@ -72,7 +73,7 @@ export default function page() {
       {AddProduct &&
         <div className='p-2 flex flex-col gap-2 w-full'>
           <h2 className='text-xl font-semibold text-white'>Add Products</h2>
-          <div className='bg-neutral-800 border border-neutral-600 rounded-lg p-4 flex flex-col md:flex-row gap-4 w-full'>
+          <form className='bg-neutral-800 border border-neutral-600 rounded-lg p-4 flex flex-col md:flex-row gap-4 w-full'>
             <div className='flex-1'>
               <ImageUploader value={images[images.length - 1]} setValue={(value) => setimages(prevImages => [...prevImages, value])} />
               <div>
@@ -88,7 +89,7 @@ export default function page() {
             </div>
             <div className='flex-1'>
               <label htmlFor="ProductTitle" className='font-semibold'>Enter Product Title:</label>
-              <input type="text" id="ProductTitle" placeholder='i.e Iphone 8 Plus' name="ProductTitle" className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => settitle(e.target.value)} value={title} />
+              <input type="text" id="ProductTitle" placeholder='i.e Iphone 8 Plus' name="ProductTitle" required className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => settitle(e.target.value)} value={title} />
               <label htmlFor="ProductHeading" className='font-semibold'>Enter Product Heading:</label>
               <input type="text" id="ProductHeading" placeholder='i.e Iphone 8 Plus 64GB Factory Unlocked' name="ProductHeading" className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setheading(e.target.value)} value={heading} />
               <div className='flex gap-2 '>
@@ -132,7 +133,7 @@ export default function page() {
               <button className='bg-red-500 text-white rounded px-4 py-2 mt-4 hover:bg-red-600' onClick={editMode ? () => { handleUpdateProductClick(product) } : () => handleAddProductClick(product)}>{editMode ? "Update Product" : "Add Product"}</button>
               <button className='bg-gray-500 text-white rounded px-4 py-2 mt-4 ml-2 hover:bg-gray-600' onClick={() => { setAddProduct(false) }}>Cancel</button>
             </div>
-          </div>
+          </form>
         </div>
       }
       <div className='p-4 flex flex-col gap-2 w-full'>

@@ -55,7 +55,7 @@ export default function ImageUploader({value, setValue}) {
                 </>
                 }
             </label>
-            <input type="file" accept="image/*" name='imageuploader' id="imageuploader" className='hidden bg-red-600' onChange={(e) => handlechange(e)} />
+            <input  type="file" accept="image/*" name='imageuploader' id="imageuploader" className='hidden bg-red-600' onChange={(e) => handlechange(e)} />
         </div>
     )
 }
