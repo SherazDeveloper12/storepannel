@@ -6,16 +6,16 @@ import { useDispatch } from 'react-redux';
 export default function SideBar() {
     const items = [
         { label: 'Dashboard', path: '/dashboard' },
-        { label: 'Analytics', path: '/analytics' },
+        // { label: 'Analytics', path: '/analytics' },
         { label: 'Products', path: '/products' },
         { label: 'Orders', path: '/orders' },
-        { label: 'Promotions', path: '/promotions' },
-        { label: 'Sales', path: '/sales' },
-        {label: 'Coupons', path: '/coupons'},
-        { label: 'Reviews', path: '/reviews' },
+        // { label: 'Promotions', path: '/promotions' },
+        // { label: 'Sales', path: '/sales' },
+        // {label: 'Coupons', path: '/coupons'},
+        // { label: 'Reviews', path: '/reviews' },
         // { label: 'Inventory', path: '/admin/inventory' },
         // { label: 'Messages', path: '/admin/messages' },
-        { label: 'Customers', path: '/customers' },
+        // { label: 'Customers', path: '/customers' },
         { label: 'Settings', path: '/settings' },
     ];
     const router = useRouter();

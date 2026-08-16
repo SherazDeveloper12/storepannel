@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, fetchProductsLocally } from '../store/slices/productsSlice';
 import { fetchCategories, fetchCategoriesLocally } from '../store/slices/categorySlice';
 import { fetchBrands, fetchBrandsLocally } from '../store/slices/brandSlice';
+import { FetchAllOrders } from '../store/slices/orderSlice';
 export default function layout({children}: {children: ReactNode}) {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -20,6 +21,7 @@ export default function layout({children}: {children: ReactNode}) {
     dispatch(fetchProducts())
     dispatch(fetchCategories())
     dispatch(fetchBrands())
+    dispatch(FetchAllOrders())
   }, [])
   const router = useRouter();
  const user = useSelector((state: any) => state.auth.user);

@@ -2,15 +2,30 @@
 import ImageUploader from '@/app/components/ImageUploader/ImageUploader';
 import PageStarter from '@/app/components/PageStarter/PageStarter'
 import React, { useEffect } from 'react'
-import { addCategory, deleteCategory, updateCategory,  updateCategoryLocally } from '@/app/store/slices/categorySlice'
-import { useDispatch, useSelector } from 'react-redux'; 
-import { addBrand, deleteBrand, updateBrand,  updateBrandLocally} from '@/app/store/slices/brandSlice'
+import { addCategory, deleteCategory, updateCategory, updateCategoryLocally } from '@/app/store/slices/categorySlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { addBrand, deleteBrand, updateBrand, updateBrandLocally } from '@/app/store/slices/brandSlice'
 export default function page() {
   const { categories } = useSelector((state: any) => state.categories);
   const { brands } = useSelector((state: any) => state.brands);
+    const user = useSelector((state: any) => state.auth.user);
+
   return (
     <div className='flex flex-col gap-4 '>
       <PageStarter />
+      <div className='flex flex-col gap-2 w-90 '>
+        <h2 className='text-2xl'>Your Store Information </h2>
+        <div className='flex gap-2'>
+          <p>Your Store Name</p>
+          <p>:</p>
+          <p>{user?.storeName}</p>
+        </div>
+        <div className='flex gap-2'>
+          <p>Your Store ID</p>
+          <p>:</p>
+          <p>{user?.storeID}</p>
+        </div>
+      </div>
       <CategoriesBrandsManager categoriesdata={categories} />
       <CategoriesBrandsManager brandsdata={brands} />
     </div>
@@ -20,13 +35,13 @@ export default function page() {
 function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdata?: string[], brandsdata?: string[] }) {
 
   const [editingmode, setEditingMode] = React.useState(false);
- 
+
   const [categoryformdata, setCategoryFormdata] = React.useState({
     name: '',
     description: '',
     image: '',
   });
-  
+
   const [brandformdata, setBrandFormdata] = React.useState({
     name: '',
     description: '',
@@ -37,16 +52,16 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
   // --=========================================================================
   // --=========================================================================
   // --=========================================================================
- 
-  
-  
+
+
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (editingItem) {
-    
+
       const itemToEdit = categoriesdata?.find((item: any) => item._id === editingItem);
       if (itemToEdit) {
-       
+
         setCategoryFormdata({
           name: itemToEdit.name,
           description: itemToEdit.description,
@@ -78,7 +93,7 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
 
   }
   const handleAddBrand = () => {
-   dispatch(addBrand(brandformdata));
+    dispatch(addBrand(brandformdata));
     setBrandFormdata({
       name: '',
       description: '',
@@ -98,13 +113,13 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
     setUpdatingMode(false);
   }
   const handleDeleteCategory = (categoryId: string) => {
-    
+
     dispatch(deleteCategory(categoryId));
   }
   const handleDeleteBrand = (brandId: string) => {
     dispatch(deleteBrand(brandId));
-   }
-  const handleUpdateBrand = (brandId: string) => { 
+  }
+  const handleUpdateBrand = (brandId: string) => {
     dispatch(updateBrandLocally({ brandId, brandData: brandformdata }));
     dispatch(updateBrand({ brandId, brandData: brandformdata }));
     setBrandFormdata({
@@ -116,22 +131,9 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
     setEditingMode(false);
     setUpdatingMode(false);
   }
-  const user = useSelector((state: any) => state.auth.user);
   return (
     <div className='flex flex-col gap-3'>
-    <div className='flex flex-col gap-2 w-90'>
-      <h2 className='text-2xl'>Your Store Information </h2>
-      <div className='flex gap-2'>
-      <p>Your Store Name</p>
-      <p>:</p>
-      <p>{user?.storeName}</p>
-      </div>
-      <div className='flex gap-2'>
-      <p>Your Store ID</p>
-      <p>:</p>
-      <p>{user?.storeID}</p>
-      </div>
-    </div>
+      
       {editingmode ? (
         <div className='flex flex-col  gap-2'>
           <h1 className='text-xl font-semibold  '>Adding {categoriesdata ? 'Category' : 'Brand'}</h1>
