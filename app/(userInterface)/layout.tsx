@@ -9,10 +9,11 @@ import { fetchProducts, fetchProductsLocally } from '../store/slices/productsSli
 import { fetchCategories, fetchCategoriesLocally } from '../store/slices/categorySlice';
 import { fetchBrands, fetchBrandsLocally } from '../store/slices/brandSlice';
 import { FetchAllOrders } from '../store/slices/orderSlice';
-export default function layout({children}: {children: ReactNode}) {
+import { Bell, House, Sun } from 'lucide-react';
+export default function layout({ children }: { children: ReactNode }) {
   const dispatch = useDispatch()
   useEffect(() => {
-    
+
     dispatch(fetchDataLocally())
     dispatch(fetchProductsLocally())
     dispatch(fetchCategoriesLocally())
@@ -24,30 +25,51 @@ export default function layout({children}: {children: ReactNode}) {
     dispatch(FetchAllOrders())
   }, [])
   const router = useRouter();
- const user = useSelector((state: any) => state.auth.user);
- 
+  const user = useSelector((state: any) => state.auth.user);
+
 
   return (
-    <div className='flex flex-col w-full min-h-screen h-full bg-neutral-900 text-white relative'>
-      <div className='sticky top-0 p-4 overflow-hidden z-10 text-2xl font-bold text-white bg-neutral-800 border-b border-neutral-700 flex justify-start items-center gap-2'>
-        <div
-            onClick={() => router.push('/')}>
-            <h1 className="text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
-                <p className='text-white font-extralight  dark:text-gray-300 font-serif'>{`Welcome ${user?.userName}, to`} </p>
-                <p className=" text-red-500 font-serif">Store Pannel</p>
-                <p>{` of ${user?.storeName}`}</p>
+    <div className='flex  w-full min-h-screen h-full bg-neutral-950 text-white relative'>
+      <div><SideBar /></div>
+      <div className='flex-1 flex flex-col w-full h-full relative '>
+        <div className='sticky left-0 top-0 px-4 h-16 overflow-hidden z-10 text-2xl font-bold text-white bg-neutral-950 border-b border-neutral-700 flex justify-start items-center gap-2'>
+          <div
+            className='flex justify-between items-center gap-2  w-full'
+          >
+            <h1
+              onClick={() => router.push('/')}
+              className="text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
+
+              <p>{`  ${user?.storeName}`}</p>
             </h1>
+            <div className='flex justify-center items-center gap-3'>
+              <div className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
+                <House />
+              </div>
+              <div className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
+                <Sun />
+              </div>
+              <div className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
+                <Bell />
+              </div>
+              
+              
+              <div className='rounded-full   bg-red-950/70 size-8 flex justify-center items-center'>
+                <p className='text-red-500 text-sm font-bold'>
+                  S
+                </p>
+
+              </div>
+            </div>
+          </div>
         </div>
-       </div>
-      <div className='flex-1 flex flex-row w-full h-full relative '>
-        <div className=' h-full ' ><SideBar /></div>
-        <div className=' w-full p-4 flex'>
-          <div className='w-64'></div>
-          <div className="flex-1 bg-neutral-900">
-        {children}
-        </div>
+
+        <div className='flex-1 w-full h-full p-4 overflow-y-auto'>
+          {children}
         </div>
       </div>
+
+
     </div>
   )
 }

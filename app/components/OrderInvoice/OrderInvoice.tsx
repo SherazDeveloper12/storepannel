@@ -54,7 +54,7 @@ Expected Delivery At: ${new Date(new Date(order.createdAt).getTime() + 3 * 24 * 
           {/* <button
             className='bg-green-400 p-1 px-3 rounded-full text-white font-bold text-xl hover:bg-green-600 transition-colors duration-300 cursor-pointer mr-4'
           >
-            Mark as Out for Delivery
+            Mark as Shipped
           </button> */}
           {/* <button
             className='bg-amber-400 p-1 px-3 rounded-full text-white font-bold text-xl hover:bg-yellow-600 transition-colors duration-300 cursor-pointer mr-4'

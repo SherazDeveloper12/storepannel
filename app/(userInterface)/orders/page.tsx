@@ -40,10 +40,10 @@ export default function page() {
         dispatch(setSelectedOrder(order));
     }
     const handleUpdateStatus = (order) => {
-      dispatch(updateOrderStatus({ orderId: order._id, newStatus: statusToUpdate }));
-       
-          setUpdatingStatus(false);
-          setStatusToUpdate("");
+        dispatch(updateOrderStatus({ orderId: order._id, newStatus: statusToUpdate }));
+
+        setUpdatingStatus(false);
+        setStatusToUpdate("");
 
     }
     return (
@@ -92,7 +92,7 @@ export default function page() {
                                     >
                                         <option value="Pending" >Pending</option>
                                         <option value="Processing">Processing</option>
-                                        <option value="Out for Delivery" >Out for Delivery</option>
+                                        <option value="Shipped" >Shipped</option>
                                         <option value="Delivered" >Delivered</option>
                                         <option value="Cancelled" >Cancelled</option>
                                     </select>
@@ -117,7 +117,7 @@ export default function page() {
                     selectedOrder ?
                         <SeclectedOrder order={selectedOrder} />
                         :
-                        <div className='mt-4 bg-neutral-900 shadow rounded-lg  md:p-4  overflow-x-scroll'>
+                        <div className='mt-4 bg-neutral-900 shadow     overflow-x-scroll md:overflow-auto'>
                             <table className='w-full table-auto border  border-neutral-700'>
                                 <thead>
                                     <tr className='bg-neutral-800 rounded-t-lg overflow-hidden'>
@@ -127,7 +127,7 @@ export default function page() {
                                         <th className='hidden md:table-cell px-4 py-2 text-left text-sm font-medium text-white'>City</th>
 
                                         <th className='hidden md:table-cell px-4 py-2 text-left text-sm font-medium text-white'>Items</th>
-                                       
+
                                         <th className='px-1 md:px-4  py-2 text-center text-sm font-medium text-white'>Status</th>
                                         <th className='hidden md:table-cell px-4 py-2 text-left text-sm font-medium text-white'>Date</th>
                                         <th className='hidden md:table-cell px-4 py-2 text-left text-sm font-bold text-white'>Ammount</th>
@@ -135,43 +135,43 @@ export default function page() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {currentOrders.map((order, index) => (
+                                    {reversedOrders.map((order, index) => (
                                         <tr
                                             onClick={() => dispatch(setSelectedOrder(order))}
                                             key={index} className='border cursor-pointer border-neutral-700 bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300'>
 
 
                                             <td className='px-1 md:px-4 py-2text-sm text-white'>
-                                            <div className='flex items-center gap-2'>
-                                <div className='rounded-full   bg-red-950/70 size-8 flex justify-center items-center'>
-                                    <p className='text-red-500 text-sm font-bold'>
-                                        {order.shippingAddress.fullName[0]}
-                                    </p>
+                                                <div className='flex items-center gap-2'>
+                                                    <div className='rounded-full   bg-red-950/70 size-8 flex justify-center items-center'>
+                                                        <p className='text-red-500 text-sm font-bold'>
+                                                            {order.shippingAddress.fullName[0]}
+                                                        </p>
 
-                                </div>
-                                <div>
-                                    <p className='text-sm'>{order.shippingAddress.fullName}</p>
-                                    <p className='text-xs text-neutral-400'>{order.email}</p>
-                                </div>
+                                                    </div>
+                                                    <div>
+                                                        <p className='text-sm'>{order.shippingAddress.fullName}</p>
+                                                        <p className='text-xs text-neutral-400'>{order.email}</p>
+                                                    </div>
 
-                            </div>
-                                </td>
+                                                </div>
+                                            </td>
                                             <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{order.shippingAddress.city}</td>
 
                                             <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{order.items.length}</td>
 
                                             <td className={`px-1 md:px-4 py-2  text-sm text-white `}>
                                                 <div
-                                                className='flex justify-center items-center'
-                                               
-                                                ><p className={`p-1 px-3 rounded text-sm tracking-tighter text-black ${order.status === 'Pending' ? 'bg-yellow-500' : order.status === 'Out for Delivery' ? 'bg-blue-500' : order.status === 'Delivered' ? 'bg-green-500' : 'bg-red-500'}`}>{order.status}</p></div>
-                                                </td>
+                                                    className='flex justify-center items-center'
+
+                                                ><p className={`p-1 px-3 rounded text-sm tracking-tighter text-black ${order.status === 'Pending' ? 'bg-yellow-500' : order.status === 'Shipped' ? 'bg-blue-500' : order.status === 'Delivered' ? 'bg-green-500' : 'bg-red-500'}`}>{order.status}</p></div>
+                                            </td>
                                             <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{new Date(order.createdAt).toLocaleDateString()}</td>
                                             <td className='hidden md:table-cell px-4 py-2 font-bold text-sm text-white'>{order.payableAmount} PKR</td>
                                             <td className='px-1 md:px-4  py-2  text-sm text-white  '>
                                                 <div className='flex flex-col md:flex-row   items-center'>
                                                     <Eye onClick={() => handleViewClick(order)} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
-                                                 
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -179,7 +179,7 @@ export default function page() {
 
                                     {/* More orders can be added here */}
                                 </tbody>
-                                <tfoot >
+                                {/* <tfoot >
                                     <tr className='bg-neutral-800 rounded-b-lg w-full '>
                                         <td colSpan={10}>
                                             <div className='flex justify-center items-center w-full '>
@@ -196,7 +196,7 @@ export default function page() {
                                             </div>
                                         </td>
                                     </tr>
-                                </tfoot>
+                                </tfoot> */}
                             </table>
                         </div>
                 }
@@ -229,7 +229,7 @@ function SeclectedOrder({ order }) {
                         </div>
                         <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                             <p className='text-neutral-400'>Order Status</p>
-                            <p className={`text-black p-1 px-3 rounded ${order.status === 'Pending' ? 'bg-yellow-500' : order.status === 'Out for Delivery' ? 'bg-blue-500' : order.status === 'Delivered' ? 'bg-green-500' : 'bg-red-500'}`}>{order.status}</p>
+                            <p className={`text-black p-1 px-3 rounded ${order.status === 'Pending' ? 'bg-yellow-500' : order.status === 'Shipped' ? 'bg-blue-500' : order.status === 'Delivered' ? 'bg-green-500' : 'bg-red-500'}`}>{order.status}</p>
                         </div>
                         <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                             <p className='text-neutral-400'>Date</p>
