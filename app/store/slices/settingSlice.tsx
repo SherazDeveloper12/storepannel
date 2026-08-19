@@ -50,9 +50,13 @@ export const SettingSlice = createSlice({
         brands: [],
         loading: false,
         message: '',
+        sidebarOpen: true,
         error: null,
     },
     reducers: {
+        toggleSidebar: (state) => {
+            state.sidebarOpen = !state.sidebarOpen;
+        },
         addCategorylocally: (state, action) => {
             localStorage.setItem('categories', JSON.stringify([...state.categories, action.payload]));
             state.categories.push(action.payload);
@@ -131,5 +135,5 @@ export const SettingSlice = createSlice({
     }
 })
 
-export const { addCategorylocally, addBrandlocally, deleteCategorylocally, updateCategorylocally, updateBrandlocally, deleteBrandlocally } = SettingSlice.actions;
+export const { toggleSidebar, addCategorylocally, addBrandlocally, deleteCategorylocally, updateCategorylocally, updateBrandlocally, deleteBrandlocally } = SettingSlice.actions;
 export default SettingSlice.reducer;
