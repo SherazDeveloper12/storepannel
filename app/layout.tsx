@@ -22,9 +22,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={` h-full `}
+      className={` relative`}
     >
-      <body className="min-h-full flex flex-col " suppressHydrationWarning>
+      <body className="   " suppressHydrationWarning>
         <ClientShell>
           {children}
         </ClientShell>

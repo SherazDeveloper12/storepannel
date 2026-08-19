@@ -3,6 +3,7 @@ import OrderInvoice from '@/app/components/OrderInvoice/OrderInvoice';
 import PageStarter from '@/app/components/PageStarter/PageStarter'
 import { clearSelectedOrder, setSelectedOrder, updateOrderStatus } from '@/app/store/slices/orderSlice';
 import { CircleArrowLeft, Eye, Package, PackagePlus, ShoppingBag, User } from 'lucide-react';
+import { motion } from 'motion/react';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -47,7 +48,11 @@ export default function page() {
 
     }
     return (
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+        >
 
             <div className='flex flex-col p-4 w-full h-full text-white'>
 
@@ -202,7 +207,7 @@ export default function page() {
                 }
 
             </div>
-        </div>
+        </motion.div>
     )
 }
 

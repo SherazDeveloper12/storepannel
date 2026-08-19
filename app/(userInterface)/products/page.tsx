@@ -8,6 +8,7 @@ import RadioInput from '@/app/components/Radio/RadioInput';
 import useProductForm from '@/app/hooks/useAddProductForm';
 import { X } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import { motion } from 'motion/react';
 export default function page() {
 
 
@@ -57,16 +58,24 @@ export default function page() {
 
 
   return (
-    <div className=' flex flex-col w-full'>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+    className=' flex flex-col w-full'>
       {!AddProduct && (
         <div className='flex justify-between items-center'>
           <PageStarter />
           <div>
-            <button
+            <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
               onClick={() => { setAddProduct(true) }}
-              className='bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
-            >ADD Product
-            </button>
+              className='bg-red-700 cursor-pointer text-white relative font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
+            >
+              
+              Add Product
+            </motion.button>
           </div>
         </div>
       )}
@@ -206,6 +215,6 @@ export default function page() {
 
 
 
-    </div>
+    </motion.div>
   )
 }

@@ -6,7 +6,7 @@ import React from 'react'
 export default function ClientShell({children}: {children: React.ReactNode}) {
   return (
     <Provider store={store}>
-      <div className='min-h-full flex flex-col bg-neutral-100'>
+      <div className=' bg-neutral-100  relative w-full '>
       {children}
       </div>
     </Provider>

@@ -10,6 +10,7 @@ import { fetchCategories, fetchCategoriesLocally } from '../store/slices/categor
 import { fetchBrands, fetchBrandsLocally } from '../store/slices/brandSlice';
 import { FetchAllOrders } from '../store/slices/orderSlice';
 import { Bell, House, Sun } from 'lucide-react';
+import { motion } from 'motion/react';
 export default function layout({ children }: { children: ReactNode }) {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -29,9 +30,13 @@ export default function layout({ children }: { children: ReactNode }) {
 
 
   return (
-    <div className='flex  w-full min-h-screen h-full bg-neutral-950 text-white relative'>
-      <div><SideBar /></div>
-      <div className='flex-1 flex flex-col w-full h-full relative '>
+    <div
+      className='flex  w-full min-h-screen h-full bg-neutral-950 text-white relative  '>
+        <div className='sticky left-0 top-0 h-screen w-64    flex flex-col justify-between gap-6 border-r border-neutral-700'>
+      <SideBar />
+        </div>
+
+      <div className='flex-1 flex flex-col w-full h-full relative   '>
         <div className='sticky left-0 top-0 px-4 h-16 overflow-hidden z-10 text-2xl font-bold text-white bg-neutral-950 border-b border-neutral-700 flex justify-start items-center gap-2'>
           <div
             className='flex justify-between items-center gap-2  w-full'
@@ -52,8 +57,8 @@ export default function layout({ children }: { children: ReactNode }) {
               <div className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
                 <Bell />
               </div>
-              
-              
+
+
               <div className='rounded-full   bg-red-950/70 size-8 flex justify-center items-center'>
                 <p className='text-red-500 text-sm font-bold'>
                   S
@@ -64,11 +69,11 @@ export default function layout({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <div className='flex-1 w-full h-full p-4 overflow-y-auto'>
+        <motion.div
+          className='flex-1 w-full h-full p-4 '>
           {children}
-        </div>
+        </motion.div>
       </div>
-
 
     </div>
   )

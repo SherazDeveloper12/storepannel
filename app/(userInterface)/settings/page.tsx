@@ -5,13 +5,18 @@ import React, { useEffect } from 'react'
 import { addCategory, deleteCategory, updateCategory, updateCategoryLocally } from '@/app/store/slices/categorySlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { addBrand, deleteBrand, updateBrand, updateBrandLocally } from '@/app/store/slices/brandSlice'
+import { motion } from 'motion/react';
 export default function page() {
   const { categories } = useSelector((state: any) => state.categories);
   const { brands } = useSelector((state: any) => state.brands);
     const user = useSelector((state: any) => state.auth.user);
 
   return (
-    <div className='flex flex-col gap-4 '>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+    className='flex flex-col gap-4 '>
       <PageStarter />
       <div className='flex flex-col gap-2 w-90 '>
         <h2 className='text-2xl'>Your Store Information </h2>
@@ -28,7 +33,7 @@ export default function page() {
       </div>
       <CategoriesBrandsManager categoriesdata={categories} />
       <CategoriesBrandsManager brandsdata={brands} />
-    </div>
+    </motion.div>
   )
 }
 
