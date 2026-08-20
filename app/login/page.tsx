@@ -40,10 +40,10 @@ export default function page() {
                 <form onSubmit={handleLogin} className='flex flex-col gap-4 '>
                     <input 
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    type="email" placeholder='Email' className='border border-neutral-300 rounded p-2' />
+                    type="email" placeholder='Email' className='text-black border border-neutral-300 rounded p-2 ' />
                     <input
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    type="password" placeholder='Password' className='border border-neutral-300 rounded p-2' />
+                    type="password" placeholder='Password' className=' text-black border border-neutral-300 rounded p-2' />
                  
                     <div className='flex justify-between items-center'>
                         <label className='flex items-center gap-2'>
