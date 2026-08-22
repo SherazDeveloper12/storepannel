@@ -3,7 +3,7 @@ import { jwtVerify } from "jose";
 
 const PUBLIC_ROUTES = ["/login", "/signup",];
 const OTP_ROUTE = "/verifyotp";
-export const middleware = async (req: NextRequest) => {
+export const proxy = async (req: NextRequest) => {
     const { pathname } = req.nextUrl;
     const token = req.cookies.get('token')?.value;
 
