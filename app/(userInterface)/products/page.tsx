@@ -6,15 +6,15 @@ import React from 'react'
 import Selection from '@/app/components/Selection/Selection';
 import RadioInput from '@/app/components/Radio/RadioInput';
 import useProductForm from '@/app/hooks/useAddProductForm';
-import { X } from 'lucide-react';
+import { Pen, Trash2, X } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { motion } from 'motion/react';
 export default function page() {
 
 
-  const {categories} = useSelector((state: any) => state.categories);
-  const {brands} = useSelector((state: any) => state.brands);
- 
+  const { categories } = useSelector((state: any) => state.categories);
+  const { brands } = useSelector((state: any) => state.brands);
+
   const {
     AddProduct,
     setAddProduct,
@@ -58,22 +58,22 @@ export default function page() {
 
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-    className=' flex flex-col w-full'>
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className=' flex flex-col w-full gap-2'>
       {!AddProduct && (
         <div className='flex justify-between items-center'>
           <PageStarter />
           <div>
             <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => { setAddProduct(true) }}
               className='bg-red-700 cursor-pointer text-white relative font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
             >
-              
+
               Add Product
             </motion.button>
           </div>
@@ -145,7 +145,7 @@ export default function page() {
           </form>
         </div>
       }
-      <div className='p-4 flex flex-col gap-2 w-full'>
+      <div className=' flex flex-col gap-2 w-full'>
         <div className='flex justify-between items-center'>
           <h2 className='text-xl font-semibold text-neutral-400'></h2>
           <div className='text-neutral-400 '>
@@ -162,19 +162,20 @@ export default function page() {
                   <th className=' p-2'>Images </th>
                   <th className=' p-2'>Title</th>
                   <th className='hidden md:table-cell  p-2'>Stock</th>
-                  <th className='hidden md:table-cell p-2'>Price</th>
+
                   <th className='hidden md:table-cell  p-2'>Category</th>
                   <th className='hidden md:table-cell  p-2'>Brand</th>
+                  <th className='hidden md:table-cell p-2'>Price</th>
                   <th className='p-2'>Actions</th>
                 </tr>
               </thead>
               <tbody className='bg-neutral-900'>
                 {products.map((product) => (
-                  <tr key={product._id} className='border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300'>
-                    <td className=' p-2 '>
+                  <tr key={product._id} className='border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300 '>
+                    <td className='  '>
                       <div className='flex justify-start items-center flex-wrap  md:gap-2 overflow-x-auto'>
                         {product.img.map((image, index) => (
-                          <div key={index} className='size-10 md:size-16 p-2 border border-neutral-600 rounded-md'>
+                          <div key={index} className='size-10 md:size-16 p-2  rounded-md'>
                             <img
                               key={index}
                               src={image}
@@ -188,17 +189,20 @@ export default function page() {
                     </td>
                     <td className=' p-2'>{product.title}</td>
                     <td className='hidden md:table-cell  p-2'>{product.quantity}</td>
-                    <td className='hidden md:table-cell p-2'>${product.price}</td>
+
                     <td className='hidden md:table-cell  p-2'>{product.category}</td>
-                    <td className='hidden md:table-cell  p-2'>{product.brand}</td>
-                    <td className=' p-2'>
-                      <button
-                        className='bg-blue-500 text-white px-2 py-1 rounded mr-2 cursor-pointer'
-                        onClick={() => handleedit(product._id)}
-                      >Edit</button>
-                      <button
-                        onClick={() => handledelete(product._id)}
-                        className='bg-red-500 text-white px-2 py-1 rounded cursor-pointer'>Delete</button>
+                    <td className={`hidden md:table-cell ${product.brand ? 'text-white' : 'text-neutral-400'}  p-2`}>{product.brand ? product.brand : 'N/A'}</td>
+                    <td className='hidden md:table-cell p-2 font-semibold'>${product.price}</td>
+                    <td className='px-1 md:px-4 flex gap-1  items-center   py-6  text-sm text-white  '>
+                      <div className='flex flex-col md:flex-row   items-center'>
+                        <Pen onClick={() => handleedit(product._id)} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+
+                      </div>
+
+                      <div className='flex flex-col md:flex-row   items-center'>
+                        <Trash2 onClick={() => handledelete(product._id)} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+
+                      </div>
                     </td>
                   </tr>
                 ))}

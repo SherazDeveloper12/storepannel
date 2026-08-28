@@ -61,6 +61,8 @@ function DashboardHeader() {
     ' bg-radial from-blue-400 from-40% to-purple-700',
     ' bg-radial from-yellow-400 from-40% to-orange-700',
     ' bg-radial from-pink-400 from-40% to-red-700',
+    ' bg-radial from-purple-400 from-40% to-pink-700',
+    ' bg-radial from-cyan-400 from-40% to-blue-700',
 
   ]
   return (
@@ -85,7 +87,7 @@ function DashboardHeader() {
                 <TrendingUp color="#05DF72" />
               </div>
             </div>
-            <div className={` p-2 ${item.title === 'Total Revenue' ? 'bg-green-400' : item.title === 'Total Orders' ? 'bg-sky-400' : item.title === 'Pending Orders' ? 'bg-yellow-400' : item.title === 'Website Visitors' ? 'bg-amber-400' : 'bg-gray-400'} rounded-2xl`}>
+            <div className={` p-2 ${item.title === 'Total Revenue' ? 'bg-green-400' : item.title === 'Total Orders' ? 'bg-sky-400' : item.title === 'Pending Orders' ? 'bg-yellow-400' : item.title === 'Total Products' ? 'bg-purple-400' : 'bg-gray-400'} rounded-2xl`}>
               {item.icon}
             </div>
 
@@ -134,7 +136,7 @@ function DashboardHeader() {
 
                   <td className='px-1 md:px-4 py-5 text-sm text-white'>
                     <div className='flex items-center gap-2'>
-                      <div className={`rounded-full  ${bggradientcolors[Math.floor(Math.random() * bggradientcolors.length)]}  size-8 flex justify-center items-center`}>
+                      <div className={`rounded-full  ${bggradientcolors[index]}  size-8 flex justify-center items-center`}>
                         <p className='text-white text-sm font-bold'>
                           {order.shippingAddress.fullName[0]}
                         </p>

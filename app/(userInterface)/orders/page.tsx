@@ -49,12 +49,12 @@ export default function page() {
     }
     return (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
         >
 
-            <div className='flex flex-col p-4 w-full h-full text-white'>
+            <div className='flex flex-col  w-full h-full text-white'>
 
 
 

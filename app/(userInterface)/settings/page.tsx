@@ -6,6 +6,7 @@ import { addCategory, deleteCategory, updateCategory, updateCategoryLocally } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { addBrand, deleteBrand, updateBrand, updateBrandLocally } from '@/app/store/slices/brandSlice'
 import { motion } from 'motion/react';
+import { Pen, Trash2 } from 'lucide-react';
 export default function page() {
   const { categories } = useSelector((state: any) => state.categories);
   const { brands } = useSelector((state: any) => state.brands);
@@ -19,16 +20,16 @@ export default function page() {
     className='flex flex-col gap-4 '>
       <PageStarter />
       <div className='flex flex-col gap-2 w-90 '>
-        <h2 className='text-2xl'>Your Store Information </h2>
-        <div className='flex gap-2'>
-          <p>Your Store Name</p>
-          <p>:</p>
-          <p>{user?.storeName}</p>
+        <h2 className='text-lg font-semibold text-white'>Your Store Information </h2>
+        <div className='flex gap-2 '>
+          <p className='text-sm text-neutral-400 min-w-60'>Your Store Name : </p>
+         
+          <p className='text-sm text-white'>{user?.storeName}</p>
         </div>
+        
         <div className='flex gap-2'>
-          <p>Your Store ID</p>
-          <p>:</p>
-          <p>{user?.storeID}</p>
+          <p className='text-sm text-neutral-400 min-w-60'>Your Store ID : </p>
+          <p className='text-sm text-white'>{user?.storeID}</p>
         </div>
       </div>
       <CategoriesBrandsManager categoriesdata={categories} />
@@ -193,11 +194,24 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
         </div>
       ) : (<div className='flex justify-between items-center'>
         <h2 className='text-2xl'>Manage {categoriesdata ? 'Categories' : 'Brands'}</h2>
-        <button className='bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
+        
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                       onClick={() => {
+            setEditingMode(true);
+          }}
+                      className='bg-red-700 cursor-pointer text-white relative font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
+                    >
+        
+                     Add {categoriesdata ? 'Category' : 'Brand'}
+                    </motion.button>
+                  
+        {/* <button className='bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
           onClick={() => {
             setEditingMode(true);
           }}
-        >Add {categoriesdata ? 'Category' : 'Brand'}</button>
+        >Add {categoriesdata ? 'Category' : 'Brand'}</button> */}
       </div>)}
 
 
@@ -224,18 +238,21 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
 
                   {item.name}
                 </td>
-                <td className=' p-2'>
-                  <button
-                    className='bg-blue-500 text-white px-2 py-1 rounded mr-2 cursor-pointer'
-                    onClick={() => {
+                
+                <td className='px-1 md:px-4 flex gap-1  items-center   py-2  text-sm text-white  '>
+                      <div className='flex flex-col md:flex-row   items-center'>
+                        <Pen onClick={() => {
                       setEditingItem(item._id);
                       setUpdatingMode(true);
-                    }}
-                  >Edit</button>
-                  <button
-                    onClick={() => { categoriesdata ? handleDeleteCategory(item._id) : handleDeleteBrand(item._id) }}
-                    className='bg-red-500 text-white px-2 py-1 rounded cursor-pointer'>Delete</button>
-                </td>
+                    }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+
+                      </div>
+
+                      <div className='flex flex-col md:flex-row   items-center'>
+                        <Trash2 onClick={() => { categoriesdata ? handleDeleteCategory(item._id) : handleDeleteBrand(item._id) }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+
+                      </div>
+                    </td>
               </tr>
             ))}
           </>}

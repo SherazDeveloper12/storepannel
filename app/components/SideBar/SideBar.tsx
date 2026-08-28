@@ -73,7 +73,7 @@ export default function SideBar() {
         ><ArrowRight size={20} className='cursor-pointer text-gray-400 hover:text-white transition-colors duration-300' onClick={() => dispatch(toggleSidebar())} />
         </motion.div>}
 
-      <ul className='flex-1 flex flex-col gap-2 p-4 ' >
+      <ul className='flex-1 flex flex-col gap-4 p-4 ' >
         {items.map((item) => (
           <li
             onClick={() => router.push(item.path)}
