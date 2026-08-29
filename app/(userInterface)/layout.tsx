@@ -11,6 +11,7 @@ import { fetchBrands, fetchBrandsLocally } from '../store/slices/brandSlice';
 import { FetchAllOrders } from '../store/slices/orderSlice';
 import { Bell, House, Sun } from 'lucide-react';
 import { motion } from 'motion/react';
+import { fetchCoupons, fetchCouponsLocally } from '../store/slices/couponSlice';
 export default function layout({ children }: { children: ReactNode }) {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -19,11 +20,13 @@ export default function layout({ children }: { children: ReactNode }) {
     dispatch(fetchProductsLocally())
     dispatch(fetchCategoriesLocally())
     dispatch(fetchBrandsLocally())
+    dispatch(fetchCouponsLocally())
     dispatch(getme())
     dispatch(fetchProducts())
     dispatch(fetchCategories())
     dispatch(fetchBrands())
     dispatch(FetchAllOrders())
+    dispatch(fetchCoupons())
   }, [])
   const router = useRouter();
   const user = useSelector((state: any) => state.auth.user);
@@ -72,7 +75,7 @@ export default function layout({ children }: { children: ReactNode }) {
         </div>
 
         <motion.div
-          className='flex-1 w-full h-full p-4 '>
+          className='flex-1 w-full h-full p-8 pb-16 '>
           {children}
         </motion.div>
       </div>

@@ -5,7 +5,7 @@ import SettingReducer from './slices/settingSlice'
 import categoryReducer from './slices/categorySlice'
 import brandReducer from './slices/brandSlice'
 import orderReducer  from './slices/orderSlice'
-
+import couponReducer from './slices/couponSlice'
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -14,6 +14,7 @@ export const store = configureStore({
     categories: categoryReducer,
     brands: brandReducer,
     orders: orderReducer,
+    coupon: couponReducer,
   },
 })
 
