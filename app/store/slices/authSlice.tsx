@@ -104,6 +104,25 @@ export const logout = createAsyncThunk(
     }
   }
 )
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (data: { updates: any }) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/auth/update`, data, {
+        withCredentials: true, // Include cookies in the request
+      });
+      console.log("updateProfile response:", response.data); // Log the response data
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        console.error("updateProfile error response:", error.response.data); // Log the error response data
+        throw error.response.data;
+      }
+      throw error;
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -264,6 +283,29 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = action.error.message || "Failed to logout";
     })
+    builder.addCase(updateProfile.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    }
+    )
+    builder.addCase(updateProfile.fulfilled, (state, action) => {
+      localStorage.setItem("email", action.payload.user.email);
+      localStorage.setItem("_id", action.payload.user._id);
+      localStorage.setItem("storeID", action.payload.user.storeID);
+      localStorage.setItem("userName", action.payload.user.userName);
+      localStorage.setItem("storeName", action.payload.user.storeName);
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+      state.isAuthenticated = action.payload.isAuthenticated;
+      state.loading = false;
+      state.error = null;
+    }
+    )
+    builder.addCase(updateProfile.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Failed to update profile";
+    })
+      
   }
 })
 export const { fetchDataLocally } = authSlice.actions

@@ -12,6 +12,7 @@ export default function page() {
     const email = user?.email || localStorage.getItem("email");
     const dispatch = useDispatch();
     const otphasbeenSent = useRef(false);
+    
     const [formData, setFormData] = React.useState({
         otp: '',
         email: email
@@ -21,6 +22,7 @@ export default function page() {
         if (!otphasbeenSent.current) {
             dispatch(otpSend(email));
             otphasbeenSent.current = true;
+           
         }
     }, [user]);
 
@@ -53,10 +55,10 @@ export default function page() {
             <div className='flex flex-col justify-center bg-white gap-8 p-8 border border-neutral-300 shadow min-w-96 rounded-xl'>
                 <div className='flex flex-col gap-2 text-center pt-4 '>
                     <h1 className='text-red-600 font-semibold  text-4xl'>Store Pannel</h1>
-                    <h2 className='text-sm text-neutral-600 max-w-70 m-auto'>Please verify your OTP send at your email. </h2>
+                    <p className='text-sm text-neutral-600 max-w-70 m-auto'>Please verify your OTP send at your email. </p>
                 </div>
                 <div className='flex flex-col gap-4 pb-4'>
-                    <form onSubmit={handleSubmit} className='flex flex-col gap-4 '>
+                    <form onSubmit={handleSubmit} className='text-black flex flex-col gap-4 '>
                         <input type="text" onChange={(e) => setFormData({ ...formData, otp: e.target.value })} placeholder='OTP' className='border border-neutral-300 rounded p-2' />
 
 
