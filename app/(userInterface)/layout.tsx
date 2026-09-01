@@ -11,9 +11,13 @@ import { fetchBrands, fetchBrandsLocally } from '../store/slices/brandSlice';
 import { FetchAllOrders } from '../store/slices/orderSlice';
 import { Bell, House, Sun } from 'lucide-react';
 import { motion } from 'motion/react';
+import { fetchNotifications, fetchNotificationsLocally } from '../store/slices/settingSlice';
 import { fetchCoupons, fetchCouponsLocally } from '../store/slices/couponSlice';
+import { FetchAllcustomers, fetchAllcustomersLocally } from '../store/slices/customerSlice';
+import Link from 'next/link';
 export default function layout({ children }: { children: ReactNode }) {
   const dispatch = useDispatch()
+ 
   useEffect(() => {
 
     dispatch(fetchDataLocally())
@@ -21,15 +25,21 @@ export default function layout({ children }: { children: ReactNode }) {
     dispatch(fetchCategoriesLocally())
     dispatch(fetchBrandsLocally())
     dispatch(fetchCouponsLocally())
+    dispatch(FetchAllcustomers())
+    dispatch(fetchNotifications())
     dispatch(getme())
     dispatch(fetchProducts())
     dispatch(fetchCategories())
     dispatch(fetchBrands())
     dispatch(FetchAllOrders())
     dispatch(fetchCoupons())
+    dispatch(fetchAllcustomersLocally())
+    dispatch(fetchNotificationsLocally())
   }, [])
   const router = useRouter();
   const user = useSelector((state: any) => state.auth.user);
+  const notification = useSelector((state: any) => state.setting.notifications);
+  const unreadNotifications = notification.filter((notification: any) => notification.isRead === false);
   const sidebarOpen = useSelector((state: any) => state.setting.sidebarOpen);
   return (
     <div
@@ -48,19 +58,29 @@ export default function layout({ children }: { children: ReactNode }) {
           >
             <h1
               onClick={() => router.push('/')}
-              className="text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
+              className="ml-3 text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
 
-              <p>{`  ${user?.storeName}`}</p>
+              <p className="text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
+                {`  ${user?.storeName}`}
+              </p>
             </h1>
             <div className='flex justify-center items-center gap-3'>
-              <div className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
+           
+              <div 
+              onClick={() => router.push(`${user?.storeURL? user?.storeURL : '/'}`)}
+              
+              className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
                 <House />
               </div>
+             
               <div className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
                 <Sun />
               </div>
-              <div className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
+              <div
+              onClick={() => router.push('/notifications')}
+              className='relative rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
                 <Bell />
+                {unreadNotifications.length > 0 && <span className='absolute -top-1 right-0 text-xs bg-red-500 text-white px-1  rounded-full'>{unreadNotifications.length}</span>}
               </div>
 
 

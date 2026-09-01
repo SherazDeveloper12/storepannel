@@ -1,7 +1,7 @@
 'use client'
 import { logout } from '@/app/store/slices/authSlice';
 import { toggleSidebar } from '@/app/store/slices/settingSlice';
-import { ArrowLeft, ArrowRight, LayoutDashboard, LogOut, Package, Settings, ShoppingCart, Store, TicketPercent } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Bell, LayoutDashboard, LogOut, Mail, Package, Settings, ShoppingCart, Store, TicketPercent, Users } from 'lucide-react';
 import { AnimatePresence, motion, } from 'motion/react';
 import { usePathname, useRouter, } from 'next/navigation';
 import React from 'react'
@@ -12,21 +12,20 @@ export default function SideBar() {
   console.log('user', user)
   const items = [
     { label: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
-    // { label: 'Analytics', path: '/analytics' },
     { label: 'Products', path: '/products', icon: <Package size={20} /> },
+     { label: 'Notifications', path: '/notifications', icon: <Bell size={20} /> },
     { label: 'Orders', path: '/orders', icon: <ShoppingCart size={20} /> },
-    // { label: 'Promotions', path: '/promotions' },
-    // { label: 'Sales', path: '/sales' },
     {label: 'Coupons', path: '/coupons', icon: <TicketPercent size={20} />},
-    // { label: 'Reviews', path: '/reviews' },
-    // { label: 'Inventory', path: '/admin/inventory' },
-    // { label: 'Messages', path: '/admin/messages' },
-    // { label: 'Customers', path: '/customers' },
+    { label: 'Send Emails', path: '/send-emails', icon: <Mail size={20} /> },
+    { label: 'Customers', path: '/customers', icon: <Users size={20} /> },
     { label: 'Settings', path: '/settings', icon: <Settings size={20} /> },
   ];
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
+  const notification = useSelector((state: any) => state.setting.notifications);
+  const unreadNotifications = notification.filter((notification: any)=> notification.isRead === false);
+  console.log('notification in side bar', notification)
   const handleLogout = () => {
     dispatch(logout());
     router.push('/login');
@@ -73,15 +72,16 @@ export default function SideBar() {
         ><ArrowRight size={20} className='cursor-pointer text-gray-400 hover:text-white transition-colors duration-300' onClick={() => dispatch(toggleSidebar())} />
         </motion.div>}
 
-      <ul className='flex-1 flex flex-col gap-4 p-4 ' >
+      <ul className='flex-1 flex flex-col gap-4 px-4 ' >
         {items.map((item) => (
           <li
             onClick={() => router.push(item.path)}
             key={item.path}
-            className={`px-2 py-2 flex justify-start text-neutral-400 hover:text-white items-center gap-2 rounded font-semibold hover:bg-neutral-800 transition-colors duration-300 cursor-pointer ${pathname === item.path ? 'bg-neutral-900 text-red-500  ' : ''}`}
+            className={`relative px-2 py-2 flex justify-start text-neutral-400 hover:text-white items-center gap-2 rounded font-light hover:bg-neutral-800 transition-colors duration-300 cursor-pointer ${pathname === item.path ? 'bg-neutral-900 text-red-500  ' : ''}`}
           >
-            <span >{item.icon}</span>
+            <span className='mr-2' >{item.icon}</span>
             {sidebarOpen && item.label}
+            {item.label === 'Notifications'  && unreadNotifications.length > 0 ? <span className={`absolute ${sidebarOpen ? 'right-1' : 'right-0'}  text-xs bg-red-500 text-neutral-300 px-1  rounded-full`}>{unreadNotifications.length}</span> : null}
           </li>
         ))}
       </ul>
