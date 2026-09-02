@@ -6,6 +6,7 @@ import categoryReducer from './slices/categorySlice'
 import brandReducer from './slices/brandSlice'
 import orderReducer  from './slices/orderSlice'
 import couponReducer from './slices/couponSlice'
+import customerReducer from './slices/customerSlice'
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -15,6 +16,7 @@ export const store = configureStore({
     brands: brandReducer,
     orders: orderReducer,
     coupon: couponReducer,
+    customer: customerReducer,
   },
 })
 

@@ -6,36 +6,146 @@ import { addCategory, deleteCategory, updateCategory, updateCategoryLocally } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { addBrand, deleteBrand, updateBrand, updateBrandLocally } from '@/app/store/slices/brandSlice'
 import { motion } from 'motion/react';
-import { Pen, Trash2 } from 'lucide-react';
+import { Pen, Save, Trash2 } from 'lucide-react';
+import { updateProfile } from '@/app/store/slices/authSlice';
 export default function page() {
+  const user = useSelector((state: any) => state.auth.user);
+  const [data, setDate] = React.useState({
+    storeName: '',
+    storeURL: '',
+    storeDescription: '',
+    storeDeliveryCharges: '',
+    storePaymentMethods: [],
+  });
+  useEffect(() => {
+    if (user) {
+      setDate({
+        storeName: user.storeName || '',
+        storeURL: user.storeURL ? user.storeURL : '',
+        storeDescription: user.storeDescription ? user.storeDescription : '',
+        storeDeliveryCharges: user.storeDeliveryCharges ? user.storeDeliveryCharges : '',
+        storePaymentMethods: user.storePaymentMethods ? user.storePaymentMethods : [],
+      });
+    }
+  }, [user])
   const { categories } = useSelector((state: any) => state.categories);
   const { brands } = useSelector((state: any) => state.brands);
-    const user = useSelector((state: any) => state.auth.user);
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+  const dispatch = useDispatch();
+  const handleSaveClick = (field: string) => {
+    if (field === 'storeName') {
+      dispatch(updateProfile({ storeName: data.storeName }));
+
+    } else if (field === 'storeURL') {
+      dispatch(updateProfile({ storeURL: data.storeURL }));
+    }
+    SeteditingStoreInfoItem('');
+  };
+
+
+const [editingStoreInfoItem, SeteditingStoreInfoItem] = React.useState('');
+return (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 }}
     className='flex flex-col gap-4 '>
-      <PageStarter />
-      <div className='flex flex-col gap-2 w-90 '>
-        <h2 className='text-lg font-semibold text-white'>Your Store Information </h2>
-        <div className='flex gap-2 '>
-          <p className='text-sm text-neutral-400 min-w-60'>Your Store Name : </p>
-         
-          <p className='text-sm text-white'>{user?.storeName}</p>
-        </div>
-        
-        <div className='flex gap-2'>
-          <p className='text-sm text-neutral-400 min-w-60'>Your Store ID : </p>
-          <p className='text-sm text-white'>{user?.storeID}</p>
-        </div>
+    <PageStarter />
+    <div className='flex flex-col gap-2 w-100 '>
+      <h2 className='text-lg font-semibold text-white'>Your Store Information </h2>
+      <div className='flex gap-2 items-center '>
+        <p className='text-sm text-neutral-400 min-w-60'>Your Store Name : </p>
+
+        {editingStoreInfoItem === 'storeName' ?
+          <>
+            <input type="text" value={data.storeName} onChange={(e) => { setDate({ ...data, storeName: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none  text-sm text-white' />
+            <span>
+
+              <Save
+                onClick={() => { handleSaveClick('storeName') }}
+                size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+            </span>
+          </>
+          :
+          <>
+            <p className='text-sm text-white'>{user?.storeName ? user?.storeName : 'Not set'}</p>
+            <span>
+              <Pen
+                onClick={() => SeteditingStoreInfoItem('storeName')}
+                size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+            </span>
+          </>
+        }
+
       </div>
-      <CategoriesBrandsManager categoriesdata={categories} />
-      <CategoriesBrandsManager brandsdata={brands} />
-    </motion.div>
-  )
+
+      <div className='flex gap-2'>
+        <p className='text-sm text-neutral-400 min-w-60'>Your Store ID : </p>
+        <p className='text-sm text-white'>{user?.storeID}</p>
+      </div>
+
+      <div className='flex gap-2 items-center'>
+        <p className='text-sm text-neutral-400 min-w-60'>Your Store URL : </p>
+        {editingStoreInfoItem === 'storeURL' ?
+          <>
+            <input type="text" value={data.storeURL} onChange={(e) => { setDate({ ...data, storeURL: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none  text-sm text-white' />
+            <span>
+
+              <Save
+                onClick={() => { handleSaveClick('storeURL') }}
+                size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+            </span>
+          </>
+          :
+          <>
+            <p className='text-sm text-white'>{user?.storeURL ? user?.storeURL : 'Not set'}</p>
+            <span>
+              <Pen
+                onClick={() => SeteditingStoreInfoItem('storeURL')}
+                size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+            </span>
+          </>
+        }
+
+      </div>
+      <div className='flex gap-2 items-center'>
+        <p className='text-sm text-neutral-400 min-w-60'>Your Store Delivery Charges : </p>
+        {editingStoreInfoItem === 'storeDeliveryCharges' ?
+          <>
+            <input type="text" value={data.storeDeliveryCharges} onChange={(e) => { setDate({ ...data, storeDeliveryCharges: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none  text-sm text-white' />
+            <span>
+
+              <Save
+                onClick={() => { }}
+                size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+            </span>
+          </>
+          :
+          <>
+            <p className='text-sm text-white'>{user?.storeDeliveryCharges ? user?.storeDeliveryCharges : 'Not set'}</p>
+            <span>
+              <Pen
+                onClick={() => SeteditingStoreInfoItem('storeDeliveryCharges')}
+                size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+            </span>
+          </>
+        }
+
+      </div>
+      <div className='flex gap-2 items-center'>
+        <p className='text-sm text-neutral-400 min-w-60'>Your Store Payment Methods : </p>
+        <p className='text-sm text-white'>{user?.storePaymentMethods?.join(', ') || 'Not set'}</p>
+        <span>
+          <Pen
+            onClick={() => SeteditingStoreInfoItem('PaymentMethods')}
+            size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+        </span>
+      </div>
+    </div>
+    <CategoriesBrandsManager categoriesdata={categories} />
+    <CategoriesBrandsManager brandsdata={brands} />
+  </motion.div>
+)
 }
 
 function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdata?: string[], brandsdata?: string[] }) {
@@ -139,11 +249,11 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
   }
   return (
     <div className='flex flex-col gap-3'>
-      
+
       {editingmode ? (
         <div className='flex flex-col  gap-2'>
-          <h1 className='text-xl font-semibold  '>Adding {categoriesdata ? 'Category' : 'Brand'}</h1>
 
+          <h2 className='text-lg font-semibold text-white'>Adding {categoriesdata ? 'Category' : 'Brand'}</h2>
           <form className='flex gap-2 bg-neutral-800 p-4 rounded w-full'>
             <div>
               <ImageUploader value={categoriesdata ? categoryformdata.image : brandformdata.image} setValue={(e) => categoriesdata ? setCategoryFormdata({ ...categoryformdata, image: e }) : setBrandFormdata({ ...brandformdata, image: e })} />
@@ -193,20 +303,20 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
 
         </div>
       ) : (<div className='flex justify-between items-center'>
-        <h2 className='text-2xl'>Manage {categoriesdata ? 'Categories' : 'Brands'}</h2>
-        
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                       onClick={() => {
+
+        <h2 className='text-lg font-semibold text-white'>Manage {categoriesdata ? 'Categories' : 'Brands'}</h2>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {
             setEditingMode(true);
           }}
-                      className='bg-red-700 cursor-pointer text-white relative font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
-                    >
-        
-                     Add {categoriesdata ? 'Category' : 'Brand'}
-                    </motion.button>
-                  
+          className='bg-red-700 cursor-pointer text-white relative font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
+        >
+
+          Add {categoriesdata ? 'Category' : 'Brand'}
+        </motion.button>
+
         {/* <button className='bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
           onClick={() => {
             setEditingMode(true);
@@ -238,21 +348,21 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
 
                   {item.name}
                 </td>
-                
+
                 <td className='px-1 md:px-4 flex gap-1  items-center   py-2  text-sm text-white  '>
-                      <div className='flex flex-col md:flex-row   items-center'>
-                        <Pen onClick={() => {
+                  <div className='flex flex-col md:flex-row   items-center'>
+                    <Pen onClick={() => {
                       setEditingItem(item._id);
                       setUpdatingMode(true);
                     }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
 
-                      </div>
+                  </div>
 
-                      <div className='flex flex-col md:flex-row   items-center'>
-                        <Trash2 onClick={() => { categoriesdata ? handleDeleteCategory(item._id) : handleDeleteBrand(item._id) }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+                  <div className='flex flex-col md:flex-row   items-center'>
+                    <Trash2 onClick={() => { categoriesdata ? handleDeleteCategory(item._id) : handleDeleteBrand(item._id) }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
 
-                      </div>
-                    </td>
+                  </div>
+                </td>
               </tr>
             ))}
           </>}
