@@ -74,7 +74,7 @@ function DashboardHeader() {
       <div className='flex flex-row gap-6 w-full h-1/4  justify-around items-center'>
         {data.map((item, index) => (
           <div
-            className='flex flex-1  items-center gap-6 bg-neutral-900 border  border-neutral-600 p-4  rounded-lg hover:shadow-lg transition-all duration-300 ease-in-out '
+            className='flex flex-1  items-center gap-6 bg-neutral-900 border  border-neutral-800  p-4   hover:shadow-lg transition-all duration-300 ease-in-out '
             key={index}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}

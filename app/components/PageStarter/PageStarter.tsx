@@ -6,10 +6,10 @@ export default function PageStarter() {
     const pathname = usePathname();
     const data = [
         { path: '/dashboard', Title: 'Dashboard', Description: 'Welcome back,  Here\'s what\'s happening with your business today.' },
-        { path: '/analytics', Title: 'Analytics', Description: 'Track your business performance and key metrics.' },
+        { path: '/notifications', Title: 'Notifications', Description: 'Stay updated with the latest news and updates.' },
         { path: '/products', Title: 'Products', Description: 'Browse and manage your product catalog.' },
         { path: '/orders', Title: 'Orders', Description: 'Manage and track all customer orders.' },
-        { path: '/promotions', Title: 'Promotions', Description: 'Promote your products and services through email campaigns.' },
+        { path: '/send-emails', Title: 'Send Emails', Description: 'Promote your products and services through sending email to customers.' },
         { path: '/sales', Title: 'Sales', Description: 'Manage and view your sales data.' },
         { path: '/coupons', Title: 'Coupons', Description: 'Create and manage your coupons.' },
         { path: '/reviews', Title: 'Reviews', Description: 'See what customers are saying about your products.' },

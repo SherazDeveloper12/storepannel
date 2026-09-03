@@ -3,7 +3,37 @@ import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axios from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
+export const fetchNotifications = createAsyncThunk(
+    'notifications/fetchNotifications',
+    async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/notifications/`, {
+                withCredentials: true,
+            });
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                throw error.response.data;
+            }
+            throw error;
+        }
+    }
+);
+export const MarkNotificationsAsRead = createAsyncThunk(
+    "notifications/markAsRead",
+    async (Notifcations) => {
+        try {
+            const response = await axios.put(`${BASE_URL}/notifications/mark-notifications-as-read`, { notifications: Notifcations }, {
+                withCredentials: true,});
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                throw error.response.data;
+            }
+            throw error;
+        }
+    }
+);
 export const fetchSettings = createAsyncThunk(
     'setting/fetchSettings',
     async () => {
@@ -47,6 +77,7 @@ export const SettingSlice = createSlice({
     name: "setting",
     initialState: {
         categories: [],
+        notifications: [],
         brands: [],
         loading: false,
         message: '',
@@ -54,6 +85,19 @@ export const SettingSlice = createSlice({
         error: null,
     },
     reducers: {
+        fetchNotificationsLocally: (state) => {
+            const notifications = localStorage.getItem('notifications');
+            if (notifications) {
+                state.notifications = JSON.parse(notifications);
+            }
+        },
+          markAsRead: (state, action) => {
+            const notificationId = action.payload;
+            const notificationupdated = state.notifications.map(notification => notification._id === notificationId ? {...notification, isRead: true} : notification);
+           console.log("Notification marked as read:", notificationupdated);
+            localStorage.setItem("notifications", JSON.stringify(notificationupdated));
+           state.notifications = notificationupdated;
+        },
         toggleSidebar: (state) => {
             state.sidebarOpen = !state.sidebarOpen;
         },
@@ -132,8 +176,22 @@ export const SettingSlice = createSlice({
             state.error = action.error.message;
         }
         )
+        builder.addCase(fetchNotifications.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(fetchNotifications.fulfilled, (state, action) => {
+            state.loading = false;
+            localStorage.setItem('notifications', JSON.stringify(action.payload.notifications));
+            state.notifications = action.payload.notifications;
+
+        });
+        builder.addCase(fetchNotifications.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
     }
 })
 
-export const { toggleSidebar, addCategorylocally, addBrandlocally, deleteCategorylocally, updateCategorylocally, updateBrandlocally, deleteBrandlocally } = SettingSlice.actions;
+export const { markAsRead, fetchNotificationsLocally, toggleSidebar, addCategorylocally, addBrandlocally, deleteCategorylocally, updateCategorylocally, updateBrandlocally, deleteBrandlocally } = SettingSlice.actions;
 export default SettingSlice.reducer;
