@@ -76,11 +76,17 @@ export default function page() {
 
     } else if (field === 'storeURL') {
       dispatch(updateProfile({ storeURL: data.storeURL }));
+    } else if (field === 'storeDeliveryCharges') {
+      dispatch(updateProfile({ storeDeliveryCharges: data.storeDeliveryCharges }));
     }
     SeteditingStoreInfoItem('');
   };
 
-
+const handleDeleteClick = (index: number) => {
+  const updatedPaymentMethods = [...user.storePaymentMethods];
+  updatedPaymentMethods.splice(index, 1);
+  dispatch(updateProfile({ storePaymentMethods: updatedPaymentMethods }));
+}
   const [editingStoreInfoItem, SeteditingStoreInfoItem] = React.useState('');
   const handleCancelClick = (e) => {
     e.preventDefault();
@@ -102,7 +108,7 @@ export default function page() {
       transition={{ duration: 0.3 }}
       className='flex flex-col gap-4 w-full  '>
       <PageStarter />
-      <div className='flex flex-col items-start gap-2 w-full '>
+      <div className='flex flex-col items-start w-full '>
         <div className='flex flex-col gap-2 w-120 '>
           <h2 className='text-lg font-semibold text-white'>Your Store Information </h2>
           <div className='flex gap-2 items-center '>
@@ -164,11 +170,11 @@ export default function page() {
             <p className='text-sm text-neutral-400 min-w-60'>Your Store Delivery Charges : </p>
             {editingStoreInfoItem === 'storeDeliveryCharges' ?
               <>
-                <input type="text" value={data.storeDeliveryCharges} onChange={(e) => { setDate({ ...data, storeDeliveryCharges: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none  text-sm text-white' />
+                <input type="number" value={data.storeDeliveryCharges} onChange={(e) => { setDate({ ...data, storeDeliveryCharges: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none  text-sm text-white' />
                 <span>
 
                   <Save
-                    onClick={() => { }}
+                    onClick={() => {handleSaveClick('storeDeliveryCharges') }}
                     size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
                 </span>
               </>
@@ -185,8 +191,8 @@ export default function page() {
 
           </div>
         </div>
-        <div className='flex flex-col gap-2 w-full'>
-          <div className='flex gap-2 items-center justify-between'>
+        <div className='flex flex-col gap-2  w-full'>
+          <div className='flex items-center justify-between'>
             <p className='text-sm text-neutral-400 min-w-60'>Your Store Payment Methods : </p>
             {addStorePaymentMethod || updateStorePaymentMethod !== null ? null :
               <motion.button
@@ -229,14 +235,14 @@ export default function page() {
                       </select>
                       {PaymentMethodFormData.type === 'bank_transfer' && (<>
                         <label htmlFor="itemDescription" className='font-semibold'>Enter Bank Name:</label>
-                        <input value={PaymentMethodFormData.bankName} type="text" id="itemDescription" placeholder={`Enter bank name`} onChange={(e) => setPaymentMethodFormData({ ...PaymentMethodFormData, bankName: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
+                        <input required value={PaymentMethodFormData.bankName} type="text" id="itemDescription" placeholder={`Enter bank name`} onChange={(e) => setPaymentMethodFormData({ ...PaymentMethodFormData, bankName: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
 
                       </>)}
                       {PaymentMethodFormData.type !== "cod" && (<>
                         <label htmlFor="itemDescription" className='font-semibold'>Enter Account Name:</label>
-                        <input value={PaymentMethodFormData.accountName} type="text" id="itemDescription" placeholder={`Enter account name`} onChange={(e) => setPaymentMethodFormData({ ...PaymentMethodFormData, accountName: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
+                        <input required value={PaymentMethodFormData.accountName} type="text" id="itemDescription" placeholder={`Enter account name`} onChange={(e) => setPaymentMethodFormData({ ...PaymentMethodFormData, accountName: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
                         <label htmlFor="itemDescription" className='font-semibold'>Enter Account Number:</label>
-                        <input value={PaymentMethodFormData.accountNumber} type="text" id="itemDescription" placeholder={`Enter account number`} onChange={(e) => setPaymentMethodFormData({ ...PaymentMethodFormData, accountNumber: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
+                        <input required value={PaymentMethodFormData.accountNumber} type="text" id="itemDescription" placeholder={`Enter account number`} onChange={(e) => setPaymentMethodFormData({ ...PaymentMethodFormData, accountNumber: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
                       </>
                       )}
                       <label htmlFor="status" className='font-semibold'>Status:</label>
@@ -279,12 +285,15 @@ export default function page() {
                         <td className='p-2'>{method.type || 'NAN'}</td>
                         <td className='p-2'>{method.accountName || ''}</td>
                         <td className='p-2'>{method.accountNumber ? method.accountNumber : ''}</td>
-                        <td className='p-2'><span className={method.enabled ? 'text-neutral-800 font-semibold rounded bg-green-500 p-1' : 'text-neutral-800 font-semibold rounded bg-orange-500 p-1'} >{method.enabled ? 'Enabled' : 'Disabled'}</span></td>
+                        <td className='p-2 text-sm'><span className={method.enabled ? 'text-neutral-800 font-semibold rounded bg-green-500 p-1' : 'text-neutral-800 font-semibold rounded bg-orange-500 p-1'} >{method.enabled ? 'Enabled' : 'Disabled'}</span></td>
                         <td className='p-2'>
-                          <span>
+                          <span className='flex gap-2 items-center'>
                             <Pen
                               onClick={() => setUpdateStorePaymentMethod(idx)}
                               size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+                          <Trash2
+                            onClick={() => handleDeleteClick(idx)}
+                            size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
                           </span>
                         </td>
                       </tr>

@@ -36,7 +36,7 @@ export default function page() {
 
                             <th className='px-1 md:px-4  py-2 text-center text-sm font-medium text-white'>Email</th>
                             <th className='hidden md:table-cell px-4 py-2 text-left text-sm font-medium text-white'>Phone Number</th>
-                            <th className='hidden md:table-cell px-4 py-2 text-left text-sm font-bold text-white'>Customer Since</th>
+                            <th className='hidden md:table-cell px-4 py-2 text-left text-sm font-bold text-white'> Since</th>
                             <th className='px-1 md:px-4  py-2 text-left text-sm font-medium text-white'>Actions</th>
                         </tr>
                     </thead>
