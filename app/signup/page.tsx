@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react'
-import { Toaster, toast } from 'sonner';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../store/slices/authSlice';
 import { useRouter } from 'next/dist/client/components/navigation';
@@ -11,22 +11,17 @@ interface FormData {
     password: string;
 }
 export default function page() {
-    const {user, loading, error} = useSelector((state: any) => state.auth);
+    const {user, loading, } = useSelector((state: any) => state.auth);
   const router = useRouter();
     useEffect(() => {
         
-        if (error) {
-            toast.error(error);
-        }
+       
         if (user) {
-            toast.success("User registered successfully!");
+           
            router.push('/verifyotp');
         }
-        return () => {
-            // Cleanup if needed
-            toast.dismiss();
-        }
-    }, [error, user]);
+       
+    }, [user]);
     const dispatch = useDispatch();
     const [formData, setFormData] = React.useState<FormData>({
         userName: '',
@@ -42,7 +37,7 @@ export default function page() {
     }
   return (
     <div className="flex justify-center items-center h-full min-h-screen">
-        <Toaster richColors />
+        
         <div className='flex flex-col justify-center bg-white gap-8 p-8 py-6 border border-neutral-300 shadow min-w-96 rounded-xl'>
        
 

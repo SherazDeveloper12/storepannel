@@ -51,7 +51,7 @@ export default function page() {
     }
     return (
         <div className="flex justify-center items-center h-full min-h-screen">
-            <Toaster richColors />
+            
             <div className='flex flex-col justify-center bg-white gap-8 p-8 border border-neutral-300 shadow min-w-96 rounded-xl'>
                 <div className='flex flex-col gap-2 text-center pt-4 '>
                     <h1 className='text-red-600 font-semibold  text-4xl'>Store Pannel</h1>

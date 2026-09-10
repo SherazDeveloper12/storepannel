@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
+import { toast } from "sonner";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const registerUser = createAsyncThunk(
@@ -236,6 +237,7 @@ export const authSlice = createSlice({
       state.error = action.error.message || "Failed to get user profile";
     })
     builder.addCase(login.pending, (state) => {
+      toast.loading("Logging in...");
       state.loading = true;
       state.error = null;
     }
@@ -250,12 +252,16 @@ export const authSlice = createSlice({
 
       state.message = action.payload.message;
       state.isAuthenticated = action.payload.user.isAuthenticated;
+      toast.dismiss();
+      toast.success("Logged in successfully!");
       state.loading = false;
       state.error = null;
     })
     builder.addCase(login.rejected, (state, action) => {
+      toast.dismiss();
       state.loading = false;
       state.error = action.error.message || "Failed to login";
+      toast.error(state.error || "Failed to login");
     })
     builder.addCase(logout.pending, (state) => {
       state.loading = true;

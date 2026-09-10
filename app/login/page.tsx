@@ -8,21 +8,16 @@ import { toast, Toaster } from 'sonner';
 export default function page() {
     const dispatch = useDispatch();
     const router = useRouter();
-    const { isAuthenticated, message, error, loading } = useSelector((state: any) => state.auth);
+    const { isAuthenticated,  loading } = useSelector((state: any) => state.auth);
     const [formData, setFormData] = React.useState({ email: '', password: '' });
     useEffect(() => {
-        if (error) {
-            toast.error(error);
-        }
-
+     
         if (isAuthenticated) {
-            toast.success(message);
+         
             router.push('/dashboard');
         }
-        return () => {
-            toast.dismiss();
-        }
-    }, [isAuthenticated, message, error]);
+       
+    }, [isAuthenticated, ]);
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(login(formData));
@@ -30,7 +25,7 @@ export default function page() {
     
   return (
     <div className="flex justify-center items-center h-full min-h-screen">
-        <Toaster position="top-right" richColors />
+        
         <div className='flex flex-col justify-center bg-white gap-8 p-8 border border-neutral-300 shadow min-w-96 rounded-xl'>
             <div className='flex flex-col gap-2 text-center pt-8 '>
                 <h1 className='text-red-600 font-semibold  text-4xl'>Store Panel</h1>
