@@ -57,16 +57,16 @@ export const orderSlice = createSlice({
     name: "order",
     initialState: {
         orders: [],
-        selectedOrder: null,
+        selectedOrderId: null,
         status: "idle",
         error: null,
     },
     reducers: {
-        setSelectedOrder: (state, action) => {
-            state.selectedOrder = action.payload;
+        setSelectedOrderId: (state, action) => {
+            state.selectedOrderId = action.payload;
         },
-        clearSelectedOrder: (state) => {
-            state.selectedOrder = null;
+        clearSelectedOrderId: (state) => {
+            state.selectedOrderId = null;
         },
         addOrder: (state, action) => {
             console.log("Adding new order to state:", action.payload);
@@ -152,6 +152,6 @@ export const {
     updateOrderLocally,
     addOrder,
     fetchAllOrdersLocally,
-    setSelectedOrder, clearSelectedOrder } = orderSlice.actions;
+    setSelectedOrderId, clearSelectedOrderId } = orderSlice.actions;
 
 export default orderSlice.reducer;

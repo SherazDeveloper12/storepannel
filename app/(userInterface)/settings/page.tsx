@@ -51,7 +51,7 @@ export default function page() {
     e.preventDefault();
     if (updateStorePaymentMethod !== null) {
       // Update existing payment method
-     const updatedPaymentMethods = [...user.storePaymentMethods];
+      const updatedPaymentMethods = [...user.storePaymentMethods];
       updatedPaymentMethods[updateStorePaymentMethod] = PaymentMethodFormData;
       dispatch(updateProfile({ storePaymentMethods: updatedPaymentMethods }));
     }
@@ -82,11 +82,11 @@ export default function page() {
     SeteditingStoreInfoItem('');
   };
 
-const handleDeleteClick = (index: number) => {
-  const updatedPaymentMethods = [...user.storePaymentMethods];
-  updatedPaymentMethods.splice(index, 1);
-  dispatch(updateProfile({ storePaymentMethods: updatedPaymentMethods }));
-}
+  const handleDeleteClick = (index: number) => {
+    const updatedPaymentMethods = [...user.storePaymentMethods];
+    updatedPaymentMethods.splice(index, 1);
+    dispatch(updateProfile({ storePaymentMethods: updatedPaymentMethods }));
+  }
   const [editingStoreInfoItem, SeteditingStoreInfoItem] = React.useState('');
   const handleCancelClick = (e) => {
     e.preventDefault();
@@ -156,7 +156,13 @@ const handleDeleteClick = (index: number) => {
               </>
               :
               <>
-                <p className='text-sm text-white min-w-0 wrap-anywhere'>{user?.storeURL ? user?.storeURL : 'Not set'}</p>
+                <a
+                  href={`https://${user?.storeURL}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {user?.storeURL}
+                </a>
                 <span>
                   <Pen
                     onClick={() => SeteditingStoreInfoItem('storeURL')}
@@ -174,7 +180,7 @@ const handleDeleteClick = (index: number) => {
                 <span>
 
                   <Save
-                    onClick={() => {handleSaveClick('storeDeliveryCharges') }}
+                    onClick={() => { handleSaveClick('storeDeliveryCharges') }}
                     size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
                 </span>
               </>
@@ -228,10 +234,15 @@ const handleDeleteClick = (index: number) => {
                         {user?.storePaymentMethods.find((method: any) => method.type === "cod") ? null : (
                           <option value="cod">Cash on Delivery</option>
                         )}
-                        { }
-                        <option value="easypaisa">Easypaisa</option>
-                        <option value="jazzcash">JazzCash</option>
-                        <option value="bank_transfer">Bank Transfer</option>
+                        {user?.storePaymentMethods.find((method: any) => method.type === "easypaisa") ? null : (
+                          <option value="easypaisa">Easypaisa</option>
+                        )}
+                        {user?.storePaymentMethods.find((method: any) => method.type === "jazzcash") ? null : (
+                          <option value="jazzcash">JazzCash</option>
+                        )}
+                        {user?.storePaymentMethods.find((method: any) => method.type === "bank_transfer") ? null : (
+                          <option value="bank_transfer">Bank Transfer</option>
+                        )}
                       </select>
                       {PaymentMethodFormData.type === 'bank_transfer' && (<>
                         <label htmlFor="itemDescription" className='font-semibold'>Enter Bank Name:</label>
@@ -269,38 +280,38 @@ const handleDeleteClick = (index: number) => {
 
               </div> :
               <div className='w-full overflow-x-auto'>
-              <table className='w-full min-w-max md:min-w-0 text-left border-collapse rounded overflow-hidden bg-red-500'>
-                <thead className='bg-neutral-800 w-full'>
-                  <tr className=' border border-neutral-600 p-2'>
-                    <td className='p-2'>Payment Method</td>
-                    <td className='p-2'>Account Name</td>
-                    <td className='p-2'>Account Number</td>
-                    <td className='p-2'>Status</td>
-                    <td className='p-2'>Actions</td>
-                  </tr>
-                </thead>
-                <tbody className='bg-neutral-900'>
-                  {user?.storePaymentMethods ?
-                    user.storePaymentMethods.map((method: string, idx) =>
-                      <tr key={idx} className='border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300'>
-                        <td className='p-2'>{method.type || 'NAN'}</td>
-                        <td className='p-2'>{method.accountName || ''}</td>
-                        <td className='p-2'>{method.accountNumber ? method.accountNumber : ''}</td>
-                        <td className='p-2 text-sm'><span className={method.enabled ? 'text-neutral-800 font-semibold rounded bg-green-500 p-1' : 'text-neutral-800 font-semibold rounded bg-orange-500 p-1'} >{method.enabled ? 'Enabled' : 'Disabled'}</span></td>
-                        <td className='p-2'>
-                          <span className='flex gap-2 items-center'>
-                            <Pen
-                              onClick={() => setUpdateStorePaymentMethod(idx)}
-                              size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
-                          <Trash2
-                            onClick={() => handleDeleteClick(idx)}
-                            size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
-                          </span>
-                        </td>
-                      </tr>
-                    ) : null}
-                </tbody>
-              </table>
+                <table className='w-full min-w-max md:min-w-0 text-left border-collapse rounded overflow-hidden bg-red-500'>
+                  <thead className='bg-neutral-800 w-full'>
+                    <tr className=' border border-neutral-600 p-2'>
+                      <td className='p-2'>Payment Method</td>
+                      <td className='p-2'>Account Name</td>
+                      <td className='p-2'>Account Number</td>
+                      <td className='p-2'>Status</td>
+                      <td className='p-2'>Actions</td>
+                    </tr>
+                  </thead>
+                  <tbody className='bg-neutral-900'>
+                    {user?.storePaymentMethods ?
+                      user.storePaymentMethods.map((method: string, idx) =>
+                        <tr key={idx} className='border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300'>
+                          <td className='p-2'>{method.type || 'NAN'}</td>
+                          <td className='p-2'>{method.accountName || ''}</td>
+                          <td className='p-2'>{method.accountNumber ? method.accountNumber : ''}</td>
+                          <td className='p-2 text-sm'><span className={method.enabled ? 'text-neutral-800 font-semibold rounded bg-green-500 p-1' : 'text-neutral-800 font-semibold rounded bg-orange-500 p-1'} >{method.enabled ? 'Enabled' : 'Disabled'}</span></td>
+                          <td className='p-2'>
+                            <span className='flex gap-2 items-center'>
+                              <Pen
+                                onClick={() => setUpdateStorePaymentMethod(idx)}
+                                size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+                              <Trash2
+                                onClick={() => handleDeleteClick(idx)}
+                                size={16} className=' text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+                            </span>
+                          </td>
+                        </tr>
+                      ) : null}
+                  </tbody>
+                </table>
               </div>
           }
 
@@ -486,51 +497,51 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
 
 
       <div className='w-full overflow-x-auto'>
-      <table className='w-full min-w-max md:min-w-0 text-left border-collapse rounded overflow-hidden'>
-        <thead className='bg-neutral-800 w-full'>
-          <tr className='bg-neutral-800 border border-neutral-600'>
-            <th className=' p-2'>{categoriesdata ? 'Categories' : 'Brands'} </th>
-            <th className=' p-2'>Actions </th>
+        <table className='w-full min-w-max md:min-w-0 text-left border-collapse rounded overflow-hidden'>
+          <thead className='bg-neutral-800 w-full'>
+            <tr className='bg-neutral-800 border border-neutral-600'>
+              <th className=' p-2'>{categoriesdata ? 'Categories' : 'Brands'} </th>
+              <th className=' p-2'>Actions </th>
 
-          </tr>
-        </thead>
-        <tbody className='bg-neutral-900'>
-          {(categoriesdata ? categoriesdata?.length : brandsdata?.length) === 0 ? <>
-            <tr>
-              <td className='p-2 border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300' colSpan={2}>
-                No {categoriesdata ? 'categories' : 'brands'} found.
-              </td>
             </tr>
-          </> : <>
-            {(categoriesdata ? categoriesdata : brandsdata)?.map((item) => (
-              <tr key={item._id} className='border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300'>
-
-                <td className=' p-2'>
-
-                  {item.name}
-                </td>
-
-                <td className='px-1 md:px-4 flex gap-1  items-center   py-2  text-sm text-white  '>
-                  <div className='flex flex-col md:flex-row   items-center'>
-                    <Pen onClick={() => {
-                      setEditingItem(item._id);
-                      setUpdatingMode(true);
-                    }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
-
-                  </div>
-
-                  <div className='flex flex-col md:flex-row   items-center'>
-                    <Trash2 onClick={() => { categoriesdata ? handleDeleteCategory(item._id) : handleDeleteBrand(item._id) }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
-
-                  </div>
+          </thead>
+          <tbody className='bg-neutral-900'>
+            {(categoriesdata ? categoriesdata?.length : brandsdata?.length) === 0 ? <>
+              <tr>
+                <td className='p-2 border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300' colSpan={2}>
+                  No {categoriesdata ? 'categories' : 'brands'} found.
                 </td>
               </tr>
-            ))}
-          </>}
+            </> : <>
+              {(categoriesdata ? categoriesdata : brandsdata)?.map((item) => (
+                <tr key={item._id} className='border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300'>
 
-        </tbody>
+                  <td className=' p-2'>
 
-      </table>
+                    {item.name}
+                  </td>
+
+                  <td className='px-1 md:px-4 flex gap-1  items-center   py-2  text-sm text-white  '>
+                    <div className='flex flex-col md:flex-row   items-center'>
+                      <Pen onClick={() => {
+                        setEditingItem(item._id);
+                        setUpdatingMode(true);
+                      }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+
+                    </div>
+
+                    <div className='flex flex-col md:flex-row   items-center'>
+                      <Trash2 onClick={() => { categoriesdata ? handleDeleteCategory(item._id) : handleDeleteBrand(item._id) }} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />
+
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </>}
+
+          </tbody>
+
+        </table>
       </div>
     </div>
   )

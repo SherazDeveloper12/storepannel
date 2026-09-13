@@ -112,11 +112,11 @@ export const CouponSlice = createSlice({
         builder.addCase(createCoupon.fulfilled, (state, action) => {
             toast.dismiss(); // Dismiss any existing toasts
             toast.success("Coupon created successfully");
-            console.log("action.payload in createCoupon.fulfilled", action.payload)
+           
             state.status = "succeeded";
             state.message = action.payload.message;
-            localStorage.setItem('Coupons', JSON.stringify([action.payload, ...state.Coupons]));
-            state.Coupons.unshift(action.payload);
+            localStorage.setItem('Coupons', JSON.stringify([action.payload.coupon, ...state.Coupons]));
+            state.Coupons.unshift(action.payload.coupon);
         });
         builder.addCase(createCoupon.rejected, (state, action) => {
             toast.dismiss(); // Dismiss any existing toasts
@@ -153,9 +153,10 @@ export const CouponSlice = createSlice({
             toast.dismiss(); // Dismiss any existing toasts
             toast.success("Coupon updated successfully");
             state.status = "succeeded";
-            const index = state.Coupons.findIndex(coupon => coupon._id === action.payload._id);
+            console.log("action.payload in updateCoupon.fulfilled", action.payload)
+            const index = state.Coupons.findIndex(coupon => coupon._id === action.payload.updatedcoupon._id);
             if (index !== -1) {
-                state.Coupons[index] = action.payload;
+                state.Coupons[index] = action.payload.updatedcoupon;
                 localStorage.setItem('Coupons', JSON.stringify(state.Coupons));
             }
         });

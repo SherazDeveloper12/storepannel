@@ -220,9 +220,10 @@ console.log("fetching products locally")
         builder.addCase(updateProduct.fulfilled, (state, action) => {
             toast.dismiss()
             toast.success("Product updated successfully");
-            const index = state.Products.findIndex(product => product._id === action.payload._id);
+            
+            const index = state.Products.findIndex(product => product._id === action.payload.updatedProduct._id);
             if (index !== -1) {
-                state.Products[index] = action.payload;
+                state.Products[index] = action.payload.updatedProduct;
                 localStorage.setItem('products', JSON.stringify(state.Products));
             }
         });

@@ -75,14 +75,19 @@ export default function layout({ children }: { children: ReactNode }) {
               </p>
             </h1>
             <div className='flex justify-center items-center gap-1 sm:gap-3 shrink-0'>
-
+ <a
+                  href={`https://${user?.storeURL}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                 
+               
               <div
-                onClick={() => router.push(`${user?.storeURL ? user?.storeURL : '/'}`)}
-
+   
                 className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
                 <House />
               </div>
-
+ </a>
               <div className='rounded-xl text-gray-400  cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300 size-8 flex justify-center items-center'>
                 <Sun />
               </div>

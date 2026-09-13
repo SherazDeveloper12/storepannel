@@ -35,7 +35,8 @@ export default function page() {
   });
   const handleFormSubmit = (e) => {
     e.preventDefault(true);
-    SelectedCouponId ? dispatch(updateCoupon({ ...couponFormData, _id: SelectedCouponId })) : dispatch(createCoupon(couponFormData));
+    SelectedCouponId ? dispatch(updateCoupon({ ...couponFormData, _id: SelectedCouponId })) 
+    : dispatch(createCoupon(couponFormData));
     
     setCouponFormData({
       couponName: '',

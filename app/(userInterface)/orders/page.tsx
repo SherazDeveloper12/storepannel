@@ -1,7 +1,7 @@
 'use client'
 import OrderInvoice from '@/app/components/OrderInvoice/OrderInvoice';
 import PageStarter from '@/app/components/PageStarter/PageStarter'
-import { clearSelectedOrder, setSelectedOrder, updateOrderStatus } from '@/app/store/slices/orderSlice';
+import { clearSelectedOrderId, setSelectedOrderId, updateOrderStatus } from '@/app/store/slices/orderSlice';
 import { CircleArrowLeft, CircleDollarSign, Eye,  Package, PackagePlus, ShoppingBag, User } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/dist/client/link';
@@ -10,9 +10,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function page() {
     useEffect(() => {
-        dispatch(clearSelectedOrder());
+        dispatch(clearSelectedOrderId());
     }, []);
-    const { orders, selectedOrder } = useSelector((state: any) => state.orders);
+    const { orders, selectedOrderId } = useSelector((state: any) => state.orders);
+    const selectedOrder = orders.find((order)=> order._id === selectedOrderId);
     const dispatch = useDispatch();
     const reversedOrders = orders.toReversed();
     // pagination
@@ -20,9 +21,7 @@ export default function page() {
     const ordersPerPage = 10;
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = reversedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-    // pagination controls
-    const totalPages = Math.ceil(orders.length / ordersPerPage);
+  
 
     const [ordercancelationpopup, setOrderCancelationPopup] = useState(false);
     const [orderToCancel, setOrderToCancel] = useState("");
@@ -39,7 +38,7 @@ export default function page() {
         setOrderCancelationPopup(false);
     }
     const handleViewClick = (order) => {
-        dispatch(setSelectedOrder(order));
+        dispatch(setSelectedOrderId(order));
     }
     const handleUpdateStatus = (order) => {
         
@@ -81,7 +80,7 @@ export default function page() {
                 <div className='flex flex-wrap justify-between items-start gap-3 w-full min-w-0'>
                     {selectedOrder ? <>
                         <div className='flex flex-col gap-2 min-w-0'>
-                            <div onClick={() => dispatch(clearSelectedOrder())} className='flex gap-2 items-center cursor-pointer text-neutral-400'>
+                            <div onClick={() => dispatch(clearSelectedOrderId())} className='flex gap-2 items-center cursor-pointer text-neutral-400'>
                                 <CircleArrowLeft color='#FB2C34' className='shrink-0' />
                                 <p className='text-red-500'>Back to Orders</p>
                             </div>
@@ -145,7 +144,7 @@ export default function page() {
                                 <tbody>
                                     {reversedOrders.map((order, index) => (
                                         <tr
-                                            onClick={() => dispatch(setSelectedOrder(order))}
+                                            onClick={() => dispatch(setSelectedOrderId(order._id))}
                                             key={index} className='border cursor-pointer border-neutral-700 bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300'>
 
 
