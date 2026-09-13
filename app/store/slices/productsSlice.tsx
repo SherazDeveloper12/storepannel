@@ -73,13 +73,14 @@ export const ProductSlice = createSlice({
     },
     reducers: {
         fetchProductsLocally: (state) => {
-            state.status = "loading";
+            
             const localProducts = localStorage.getItem('products');
             
             if (localProducts) {
+console.log("fetching products locally")
                 state.Products = JSON.parse(localProducts);               
             }
-            state.status = "succeeded";
+            
         },
         setFilters: (state, action) => {
             if (action.payload.type === 'Condition') {

@@ -153,7 +153,7 @@ export default function page() {
           </div>
         </div>
 
-        {status === 'loading' ? <div>Loading...</div> : <div>
+        <div>
 
           {products && products.length > 0 ? (
             <table className='w-full text-left border-collapse rounded overflow-hidden'>
@@ -212,7 +212,7 @@ export default function page() {
             <p>No products available.</p>
           )}
         </div>
-        }
+        
 
 
       </div>

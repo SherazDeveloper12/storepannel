@@ -2,8 +2,9 @@
 import OrderInvoice from '@/app/components/OrderInvoice/OrderInvoice';
 import PageStarter from '@/app/components/PageStarter/PageStarter'
 import { clearSelectedOrder, setSelectedOrder, updateOrderStatus } from '@/app/store/slices/orderSlice';
-import { CircleArrowLeft, Eye, Package, PackagePlus, ShoppingBag, User } from 'lucide-react';
+import { CircleArrowLeft, CircleDollarSign, Eye,  Package, PackagePlus, ShoppingBag, User } from 'lucide-react';
 import { motion } from 'motion/react';
+import Link from 'next/dist/client/link';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -41,6 +42,7 @@ export default function page() {
         dispatch(setSelectedOrder(order));
     }
     const handleUpdateStatus = (order) => {
+        
         dispatch(updateOrderStatus({ orderId: order._id, newStatus: statusToUpdate }));
 
         setUpdatingStatus(false);
@@ -96,6 +98,7 @@ export default function page() {
 
                                     >
                                         <option value="Pending" >Pending</option>
+                                        <option value="Rejected" >Rejected</option>
                                         <option value="Processing">Processing</option>
                                         <option value="Shipped" >Shipped</option>
                                         <option value="Delivered" >Delivered</option>
@@ -215,97 +218,134 @@ export default function page() {
 function SeclectedOrder({ order }) {
     console.log("Selected Order:", order);
     return (
-        <div className='flex flex-col gap-8 py-4 w-full h-full '>
 
-            <div className='flex items-start gap-2 justify-evenly flex-wrap'>
-                <div className='flex flex-col gap-4 bg-neutral-800 p-4 rounded-lg shadow-lg min-w-76 border border-neutral-700'>
-                    <div className='flex flex-col gap-2'>
-                        <div className='flex items-center gap-2'>
-                            <Package size={16} className='text-neutral-400' />
-                            <h2 className='font-bold'>Order Details</h2>
 
-                        </div>
-                        <p className='text-sm text-neutral-400'>Core Order Information</p>
+        <div className='flex items-start py-4 w-full h-full gap-6 justify-start flex-wrap '>
+            <div className='flex flex-col gap-4 bg-neutral-800 p-4 rounded-lg shadow-lg min-w-76 border border-neutral-700'>
+                <div className='flex flex-col gap-2'>
+                    <div className='flex items-center gap-2'>
+                        <Package size={16} className='text-neutral-400' />
+                        <h2 className='font-bold'>Order Details</h2>
+
                     </div>
-                    <div className='flex flex-col gap-2'>
-                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                            <p className='text-neutral-400'>Order ID</p>
-                            <p>{order._id.slice(-6)}</p>
-                        </div>
-                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                            <p className='text-neutral-400'>Order Status</p>
-                            <p className={`text-black p-1 px-3 rounded ${order.status === 'Pending' ? 'bg-yellow-500' : order.status === 'Shipped' ? 'bg-blue-500' : order.status === 'Delivered' ? 'bg-green-500' : 'bg-red-500'}`}>{order.status}</p>
-                        </div>
-                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                            <p className='text-neutral-400'>Date</p>
-                            <p>{new Date(order.createdAt).toDateString()}</p>
-                        </div>
-                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                            <p className='text-neutral-400'>Ammount</p>
-                            <p>${order.payableAmount}</p>
-                        </div>
-                    </div>
-
+                    <p className='text-sm text-neutral-400'>Core Order Information</p>
                 </div>
-                <div className='flex flex-col gap-4 bg-neutral-800 p-4 rounded-lg shadow-lg  min-w-76 border border-neutral-700'>
-                    <div className='flex flex-col gap-2'>
-                        <div className='flex items-center gap-2'>
-                            <User size={16} className='text-neutral-400' />
-                            <h2 className='font-bold'>Customer Details</h2>
-                        </div>
-                        <p className='text-sm text-neutral-400'>Customer Information</p>
+                <div className='flex flex-col gap-2'>
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400'>Order ID</p>
+                        <p>{order._id.slice(-6)}</p>
                     </div>
-                    <div className='flex flex-col gap-2'>
-                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                            <div className='flex items-center gap-2'>
-                                <div className='rounded-full   bg-red-950/70 size-12 flex justify-center items-center'>
-                                    <p className='text-red-500 text-sm font-bold'>
-                                        {order.shippingAddress.fullName[0]}
-                                    </p>
-
-                                </div>
-                                <div>
-                                    <p>{order.shippingAddress.fullName}</p>
-                                    <p className='text-sm text-neutral-400'>{order.email}</p>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                            <p className='text-neutral-400'>Address</p>
-                            <p className='text-right w-48 ' >{order.shippingAddress.addressLine1}, {order.shippingAddress.city}</p>
-                        </div>
-                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                            <p className='text-neutral-400'>Phone</p>
-                            <p>{order.phoneNumber}</p>
-                        </div>
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400'>Order Status</p>
+                        <p className={`text-black p-1 px-3 rounded ${order.status === 'Pending' ? 'bg-yellow-500' : order.status === 'Shipped' ? 'bg-blue-500' : order.status === 'Delivered' ? 'bg-green-500' : 'bg-red-500'}`}>{order.status}</p>
+                    </div>
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400'>Date</p>
+                        <p>{new Date(order.createdAt).toDateString()}</p>
+                    </div>
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400'>Ammount</p>
+                        <p>${order.payableAmount}</p>
                     </div>
                 </div>
-                <div className='flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg shadow-lg  min-w-76 border border-neutral-700'>
-                    <div className='flex flex-col gap-2'>
-                        <div className='flex items-center gap-2'>
-                            <ShoppingBag size={16} className='text-neutral-400' />
-                            <h2 className='font-bold'>Product Details</h2>
-                        </div>
-                        <p className='text-sm text-neutral-400'>Purchased Product Information</p>
-                    </div>
-                    <div>
-                        {order.items.map((item, index) => (<>
-                            <div key={index} className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                                <p className='text-neutral-400'>Name</p>
-                                <p className='text-right  w-48'>{item.product.heading}</p>
-                            </div>
-                            <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
-                                <p className='text-neutral-400'>Price</p>
-                                <p>{item.product.price}</p>
-                            </div></>
-                        ))}
-                    </div>
-                </div>
-
 
             </div>
+            <div className='flex flex-col gap-4 bg-neutral-800 p-4 rounded-lg shadow-lg  min-w-76 border border-neutral-700'>
+                <div className='flex flex-col gap-2'>
+                    <div className='flex items-center gap-2'>
+                        <User size={16} className='text-neutral-400' />
+                        <h2 className='font-bold'>Customer Details</h2>
+                    </div>
+                    <p className='text-sm text-neutral-400'>Customer Information</p>
+                </div>
+                <div className='flex flex-col gap-2'>
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <div className='flex items-center gap-2'>
+                            <div className='rounded-full   bg-red-950/70 size-12 flex justify-center items-center'>
+                                <p className='text-red-500 text-sm font-bold'>
+                                    {order.shippingAddress.fullName[0]}
+                                </p>
+
+                            </div>
+                            <div>
+                                <p>{order.shippingAddress.fullName}</p>
+                                <p className='text-sm text-neutral-400'>{order.email}</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400'>Address</p>
+                        <p className='text-right w-48 ' >{order.shippingAddress.addressLine1}, {order.shippingAddress.city}</p>
+                    </div>
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400'>Phone</p>
+                        <p>{order.phoneNumber}</p>
+                    </div>
+                </div>
+            </div>
+            <div className='flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg shadow-lg  min-w-76 border border-neutral-700'>
+                <div className='flex flex-col gap-2'>
+                    <div className='flex items-center gap-2'>
+                        <ShoppingBag size={16} className='text-neutral-400' />
+                        <h2 className='font-bold'>Product Details</h2>
+                    </div>
+                    <p className='text-sm text-neutral-400'>Purchased Product Information</p>
+                </div>
+                <div>
+                    {order.items.map((item, index) => (<>
+                        <div key={index} className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                            <p className='text-neutral-400'>Name</p>
+                            <p className='text-right  w-48'>{item.product.heading}</p>
+                        </div>
+                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                            <p className='text-neutral-400'>Price</p>
+                            <p>{item.product.price}</p>
+                        </div></>
+                    ))}
+                </div>
+            </div>
+            <div className='flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg shadow-lg  min-w-76 border border-neutral-700'>
+                <div className='flex flex-col gap-2'>
+                    <div className='flex items-center gap-2'>
+
+                        <CircleDollarSign size={16} className='text-neutral-400' />
+                        <h2 className='font-bold'>Payment Details</h2>
+                    </div>
+                    <p className='text-sm text-neutral-400'>Payment Methods Used</p>
+                </div>
+                <div>
+
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400'>Payment Method</p>
+                        <p className='text-right  w-48'>{order.paymentMethod}</p>
+                    </div>
+                    {order.paymentMethod !== "cod" && 
+                    <div className='flex justify-between items-center gap-2  border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400 '>Payment Receipt</p>
+                        <Link href={order.paymentReceipt} target='_blank' className='  text-right cursor-pointer   text-neutral-400 hover:text-2xl hover:text-white transition-all duration-300'>
+                        <Eye size={24} className=' ' />
+                        </Link>
+                        
+                    </div>
+                    }
+                    
+                    <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                        <p className='text-neutral-400'>Coupon Applied </p>
+                        <p>{order.couponApplied ? 'Yes' : 'No'}</p>
+                    </div>
+                    {order.couponApplied &&
+                        <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
+                            <p className='text-neutral-400'>Discount  </p>
+                            <p>{`${order.couponDiscount} %`} </p>
+                        </div>
+                    }
+                </div>
+            </div>
+
 
         </div>
+
+
     )
 }

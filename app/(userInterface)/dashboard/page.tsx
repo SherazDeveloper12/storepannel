@@ -71,7 +71,7 @@ function DashboardHeader() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className='w-full h-full flex flex-col  gap-6   rounded-lg py-2'>
-      <div className='flex flex-row gap-6 w-full h-1/4  justify-around items-center'>
+      <div className='flex flex-row gap-6 w-full h-1/4  justify-around items-center flex-wrap'>
         {data.map((item, index) => (
           <div
             className='flex flex-1  items-center gap-6 bg-neutral-900 border  border-neutral-800  p-4   hover:shadow-lg transition-all duration-300 ease-in-out '
@@ -96,7 +96,7 @@ function DashboardHeader() {
         ))}
       </div>
 
-      <div className='flex flex-row  gap-4 w-full h-300  '>
+      <div className='flex flex-row  gap-4 w-full h-300 flex-wrap '>
 
         <div className='flex-1 mt-4 bg-neutral-900 shadow      '>
           <div className='flex justify-between items-center p-4 '>

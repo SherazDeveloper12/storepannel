@@ -77,7 +77,7 @@ export default function SideBar() {
           <li
             onClick={() => router.push(item.path)}
             key={item.path}
-            className={`relative px-2 py-2 flex justify-start text-neutral-400 hover:text-white items-center gap-2 rounded font-light hover:bg-neutral-800 transition-colors duration-300 cursor-pointer ${pathname === item.path ? 'bg-neutral-900 text-red-500  ' : ''}`}
+            className={`relative  px-2 py-2 flex justify-start text-neutral-400 hover:text-white items-center gap-2 rounded font-light hover:bg-neutral-800 transition-colors duration-300 cursor-pointer ${pathname === item.path ? 'bg-neutral-900 text-red-500  ' : ''}`}
           >
             <span className='mr-2' >{item.icon}</span>
             {sidebarOpen && item.label}
