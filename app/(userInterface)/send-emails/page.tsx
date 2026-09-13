@@ -34,7 +34,7 @@ useEffect(() => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className='flex flex-col gap-4'
+      className='flex flex-col gap-4 w-full min-w-0'
     >
       <PageStarter />
       <form

@@ -36,13 +36,13 @@ export default function page() {
        
     }
   return (
-    <div className="flex justify-center items-center h-full min-h-screen">
-        
-        <div className='flex flex-col justify-center bg-white gap-8 p-8 py-6 border border-neutral-300 shadow min-w-96 rounded-xl'>
-       
+    <div className="flex justify-center items-center h-full min-h-screen px-4 py-6">
+
+        <div className='flex flex-col justify-center bg-white gap-4 sm:gap-8 p-4 sm:p-8 sm:py-6 border border-neutral-300 shadow w-full max-w-96 rounded-xl'>
+
 
             <div className='flex flex-col gap-2 text-center pt-4 '>
-                <h1 className='text-red-600 font-semibold  text-4xl'>Store Panel</h1>
+                <h1 className='text-red-600 font-semibold  text-3xl sm:text-4xl'>Store Panel</h1>
                 <h2 className='text-sm text-neutral-600 max-w-70 m-auto'>Please sign up for your account. </h2>
             </div>
             <div className='flex flex-col gap-4 pb-4'>

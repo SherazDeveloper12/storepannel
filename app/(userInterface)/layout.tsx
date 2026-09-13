@@ -9,8 +9,8 @@ import { fetchProducts, fetchProductsLocally } from '../store/slices/productsSli
 import { fetchCategories, fetchCategoriesLocally } from '../store/slices/categorySlice';
 import { fetchBrands, fetchBrandsLocally } from '../store/slices/brandSlice';
 import { FetchAllOrders, fetchAllOrdersLocally } from '../store/slices/orderSlice';
-import { Bell, House, Sun } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Bell, House, Menu, Sun } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { fetchNotifications, fetchNotificationsLocally } from '../store/slices/settingSlice';
 import { fetchCoupons, fetchCouponsLocally } from '../store/slices/couponSlice';
 import { FetchAllcustomers, fetchAllcustomersLocally } from '../store/slices/customerSlice';
@@ -42,6 +42,7 @@ export default function layout({ children }: { children: ReactNode }) {
   const notification = useSelector((state: any) => state.setting.notifications);
   const unreadNotifications = notification.filter((notification: any) => notification.isRead === false);
   const sidebarOpen = useSelector((state: any) => state.setting.sidebarOpen);
+  const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   return (
     <div
       className='flex  w-full min-h-screen h-full bg-neutral-950 text-white relative  '>
@@ -52,20 +53,28 @@ export default function layout({ children }: { children: ReactNode }) {
         <SideBar />
       </motion.div>
 
-      <div className='flex-1 flex flex-col w-full h-full relative   '>
-        <div className='sticky left-0 top-0 px-4 h-16 overflow-hidden z-10 text-2xl font-bold text-white bg-neutral-950 border-b border-neutral-700 flex justify-start items-center gap-2'>
+      <div className='flex-1 flex flex-col w-full min-w-0 h-full relative   '>
+        <div className='sticky left-0 top-0 px-3 sm:px-4 h-16 shrink-0 overflow-hidden z-10 text-2xl font-bold text-white bg-neutral-950 border-b border-neutral-700 flex justify-start items-center gap-2'>
           <div
-            className='flex justify-between items-center gap-2  w-full'
+            className='flex justify-between items-center gap-2  w-full min-w-0'
           >
+            <button
+              type='button'
+              aria-label='Open menu'
+              onClick={() => setMobileNavOpen(true)}
+              className='md:hidden flex justify-center items-center size-8 rounded-xl text-gray-400 cursor-pointer hover:bg-neutral-800 hover:text-white/80 transition-colors duration-300'
+            >
+              <Menu size={20} />
+            </button>
             <h1
               onClick={() => router.push('/')}
-              className="ml-3 text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
+              className="md:ml-3 min-w-0 text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
 
-              <p className="text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
+              <p className="truncate text-md lg:text-2xl font-bold flex justify-start items-baseline gap-1 lg:gap-2 cursor-pointer">
                 {`  ${user?.storeName}`}
               </p>
             </h1>
-            <div className='flex justify-center items-center gap-3'>
+            <div className='flex justify-center items-center gap-1 sm:gap-3 shrink-0'>
 
               <div
                 onClick={() => router.push(`${user?.storeURL ? user?.storeURL : '/'}`)}
@@ -96,11 +105,34 @@ export default function layout({ children }: { children: ReactNode }) {
         </div>
 
         <motion.div
-          className='flex-1 w-full h-full p-8 pb-16 '>
+          className='flex-1 w-full min-w-0 p-3 pb-8 sm:p-4 md:p-6 lg:p-8 lg:pb-16 '>
           {children}
         </motion.div>
       </div>
 
+      <AnimatePresence>
+        {mobileNavOpen && (
+          <div className='md:hidden fixed inset-0 z-50'>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileNavOpen(false)}
+              className='absolute inset-0 bg-black/60'
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className='absolute left-0 top-0 h-full w-64 max-w-[85vw] bg-neutral-950 shadow-xl'
+            >
+              <SideBar mobile onNavigate={() => setMobileNavOpen(false)} />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

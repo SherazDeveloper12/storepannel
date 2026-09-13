@@ -57,7 +57,7 @@ export default function page() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
        >
-    <div className='w-full h-full flex flex-col gap-4'>
+    <div className='w-full min-w-0 flex flex-col gap-4'>
 
       {GenerateCoupon ?
         <div className='flex flex-col  gap-2'>
@@ -66,9 +66,9 @@ export default function page() {
           <form
             onSubmit={(e) => handleFormSubmit(e)}
 
-            className='flex gap-2 bg-neutral-800 p-4 rounded w-full'>
+            className='flex gap-2 bg-neutral-800 p-3 md:p-4 rounded w-full'>
 
-            <div className='flex flex-col gap-2 flex-1 w-full'>
+            <div className='flex flex-col gap-2 flex-1 w-full min-w-0'>
               <div className='flex flex-col gap-2 flex-1 w-full '>
                 <label htmlFor="itemname" className='font-semibold'>Enter Coupon Name:</label>
                 <input value={couponFormData.couponName} type="text" id="itemname" placeholder={`14 August Special`} onChange={(e) => setCouponFormData({ ...couponFormData, couponName: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
@@ -81,13 +81,13 @@ export default function page() {
                 <label htmlFor="itemDescription" className='font-semibold'>Enter Maximum Usage:</label>
                 <input value={couponFormData.maxUsage} type="number" id="itemDescription" placeholder={`1`} onChange={(e) => setCouponFormData({ ...couponFormData, maxUsage: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
               </div>
-              <div className='flex items-center gap-2'>
+              <div className='flex flex-wrap items-center gap-2'>
                 <button className='flex-1 bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
                   type='submit'
                 >{SelectedCouponId ? 'Update' : 'Create'}</button>
                 <button
                   onClick={() => setGenerateCoupon(false)}
-                  className='flex-1 bg-gray-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 ml-2'
+                  className='flex-1 bg-gray-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 sm:ml-2'
 
                 >Cancel</button>
               </div>
@@ -99,7 +99,7 @@ export default function page() {
 
         </div>
         :
-        <div className='flex justify-between items-center'>
+        <div className='flex flex-wrap justify-between items-center gap-3'>
           <PageStarter />
           <div>
             <motion.button

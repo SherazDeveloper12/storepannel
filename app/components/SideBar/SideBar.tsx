@@ -6,8 +6,10 @@ import { AnimatePresence, motion, } from 'motion/react';
 import { usePathname, useRouter, } from 'next/navigation';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-export default function SideBar() {
+export default function SideBar({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void } = {}) {
   const sidebarOpen = useSelector((state: any) => state.setting.sidebarOpen);
+  // the mobile drawer is always expanded, only the desktop rail collapses
+  const isOpen = mobile ? true : sidebarOpen;
   const user = useSelector((state: any) => state.auth.user);
   console.log('user', user)
   const items = [
@@ -28,21 +30,22 @@ export default function SideBar() {
   console.log('notification in side bar', notification)
   const handleLogout = () => {
     dispatch(logout());
+    onNavigate?.();
     router.push('/login');
   }
   return (
     <motion.div
-      animate={{ width: sidebarOpen ? '16rem' : '5rem' }}
+      animate={{ width: isOpen ? '16rem' : '5rem' }}
       transition={{ duration: 0.3 }}
-      className={`fixed left-0 top-0 h-screen ${sidebarOpen ? 'w-64' : 'w-20'}    flex flex-col justify-between gap-6 border-r border-neutral-700`}>
+      className={`${mobile ? 'relative h-full w-64' : `fixed left-0 top-0 h-screen ${isOpen ? 'w-64' : 'w-20'}`}    flex flex-col justify-between gap-6 border-r border-neutral-700`}>
 
-      <div className='flex justify-start items-center  gap-4 px-6 h-16 border-b border-neutral-700'>
-        <div className='flex justify-center items-center gap-2 bg-red-700 size-8 text-black rounded-md'>
+      <div className='flex justify-start items-center  gap-4 px-6 h-16 border-b border-neutral-700 shrink-0'>
+        <div className='flex justify-center items-center gap-2 bg-red-700 size-8 text-black rounded-md shrink-0'>
           <Store />
         </div>
         <AnimatePresence>
 
-          {sidebarOpen && <motion.div
+          {isOpen && <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
 
@@ -57,7 +60,7 @@ export default function SideBar() {
         </AnimatePresence>
       </div>
 
-      {sidebarOpen ?
+      {!mobile && (sidebarOpen ?
         <motion.div
           className={`absolute top-28 ${`left-60`}  flex justify-center items-center gap-2  size-6 rounded-full bg-black border-2 border-neutral-700`}
           layoutId="sidebar-toggle"
@@ -70,32 +73,32 @@ export default function SideBar() {
           layoutId="sidebar-toggle"
           transition={{ duration: 0.3 }}
         ><ArrowRight size={20} className='cursor-pointer text-gray-400 hover:text-white transition-colors duration-300' onClick={() => dispatch(toggleSidebar())} />
-        </motion.div>}
+        </motion.div>)}
 
-      <ul className='flex-1 flex flex-col gap-4 px-4 ' >
+      <ul className='flex-1 min-h-0 overflow-y-auto flex flex-col gap-4 px-4 ' >
         {items.map((item) => (
           <li
-            onClick={() => router.push(item.path)}
+            onClick={() => { router.push(item.path); onNavigate?.(); }}
             key={item.path}
-            className={`relative  px-2 py-2 flex justify-start text-neutral-400 hover:text-white items-center gap-2 rounded font-light hover:bg-neutral-800 transition-colors duration-300 cursor-pointer ${pathname === item.path ? 'bg-neutral-900 text-red-500  ' : ''}`}
+            className={`relative  px-2 py-2 flex justify-start text-neutral-400 hover:text-white items-center gap-2 rounded font-light hover:bg-neutral-800 transition-colors duration-300 cursor-pointer min-w-0 ${pathname === item.path ? 'bg-neutral-900 text-red-500  ' : ''}`}
           >
-            <span className='mr-2' >{item.icon}</span>
-            {sidebarOpen && item.label}
-            {item.label === 'Notifications'  && unreadNotifications.length > 0 ? <span className={`absolute ${sidebarOpen ? 'right-1' : 'right-0'}  text-xs bg-red-500 text-neutral-300 px-1  rounded-full`}>{unreadNotifications.length}</span> : null}
+            <span className='mr-2 shrink-0 flex' >{item.icon}</span>
+            {isOpen && <span className='truncate'>{item.label}</span>}
+            {item.label === 'Notifications'  && unreadNotifications.length > 0 ? <span className={`absolute ${isOpen ? 'right-1' : 'right-0'}  text-xs bg-red-500 text-neutral-300 px-1  rounded-full`}>{unreadNotifications.length}</span> : null}
           </li>
         ))}
       </ul>
 
-      <div className={`px-4 h-16 border-t border-neutral-700 w-full flex justify-between   items-center gap-2`}>
+      <div className={`px-4 h-16 shrink-0 border-t border-neutral-700 w-full flex justify-between   items-center gap-2`}>
 
-        {sidebarOpen &&
+        {isOpen &&
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
 
             transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.3 }}
-            className=' flex justify-start items-center gap-4 w-full '>
-            <div className='rounded-full   bg-red-950/70 size-8 flex justify-center items-center'>
+            className=' flex justify-start items-center gap-4 w-full min-w-0 '>
+            <div className='rounded-full   bg-red-950/70 size-8 shrink-0 flex justify-center items-center'>
               <p className='text-red-500 text-sm font-bold'>
                 S
               </p>
@@ -103,8 +106,8 @@ export default function SideBar() {
             </div>
             <motion.div
 
-              className='flex-1 flex flex-col justify-start items-start   w-full'>
-              <h2 className='text-sm text-white'>{user?.userName}</h2>
+              className='flex-1 flex flex-col justify-start items-start   w-full min-w-0'>
+              <h2 className='text-sm text-white truncate max-w-full'>{user?.userName}</h2>
               <p className='text-gray-400 text-xs'>Store Owner</p>
             </motion.div>
           </motion.div>}

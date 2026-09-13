@@ -61,8 +61,8 @@ export default function page() {
 
 
                 {ordercancelationpopup ?
-                    <div className='absolute -top-20 left-0 w-full h-[120%] bg-black/40 flex justify-center items-center z-50'>
-                        <div className='bg-neutral-800 p-4 rounded-lg shadow-lg w-96'>
+                    <div className='fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4'>
+                        <div className='bg-neutral-800 p-4 rounded-lg shadow-lg w-full max-w-96'>
                             <h2 className='text-xl font-semibold mb-4'>Cancel Order</h2>
                             <p className='mb-4'>Are you sure you want to cancel this ${orderToCancel.payableAmount} order?</p>
                             <div className='flex justify-end gap-4'>
@@ -78,19 +78,19 @@ export default function page() {
                     : null}
 
 
-                <div className='flex justify-between items-center'>
+                <div className='flex flex-wrap justify-between items-start gap-3 w-full min-w-0'>
                     {selectedOrder ? <>
-                        <div className='flex flex-col gap-2'>
+                        <div className='flex flex-col gap-2 min-w-0'>
                             <div onClick={() => dispatch(clearSelectedOrder())} className='flex gap-2 items-center cursor-pointer text-neutral-400'>
-                                <CircleArrowLeft color='#FB2C34' />
+                                <CircleArrowLeft color='#FB2C34' className='shrink-0' />
                                 <p className='text-red-500'>Back to Orders</p>
                             </div>
-                            <h2 className='text-xl font-bold'> Order ORD-{selectedOrder._id.slice(-6)} </h2>
+                            <h2 className='text-xl font-bold wrap-break-word'> Order ORD-{selectedOrder._id.slice(-6)} </h2>
                             <p className='text-sm text-neutral-400'>Placed on {new Date(selectedOrder.createdAt).toDateString()}</p>
                         </div>
-                        <div>
+                        <div className='min-w-0'>
                             {updateingStatus ? <>
-                                <div>
+                                <div className='flex flex-wrap gap-2'>
                                     <select
                                         value={statusToUpdate}
                                         onChange={(e) => setStatusToUpdate(e.target.value)}
@@ -104,8 +104,8 @@ export default function page() {
                                         <option value="Delivered" >Delivered</option>
                                         <option value="Cancelled" >Cancelled</option>
                                     </select>
-                                    <button onClick={() => handleUpdateStatus(selectedOrder)} className='ml-2 px-4 py-2 bg-green-600 text-white rounded font-bold cursor-pointer'>Update</button>
-                                    <button onClick={() => setUpdatingStatus(false)} className='ml-2 px-4 py-2 border border-neutral-500 text-neutral-300 rounded font-bold cursor-pointer'>Cancel</button>
+                                    <button onClick={() => handleUpdateStatus(selectedOrder)} className='px-4 py-2 bg-green-600 text-white rounded font-bold cursor-pointer'>Update</button>
+                                    <button onClick={() => setUpdatingStatus(false)} className='px-4 py-2 border border-neutral-500 text-neutral-300 rounded font-bold cursor-pointer'>Cancel</button>
                                 </div>
                             </> :
                                 <button onClick={() => setUpdatingStatus(true)} className='px-4 py-2 bg-red-600/90 text-white rounded font-bold cursor-pointer'>Update Status</button>
@@ -114,7 +114,7 @@ export default function page() {
                         </div>
                     </> : <>
                         <PageStarter />
-                        <div className='flex justify-between items-center'>
+                        <div className='flex flex-wrap justify-between items-center gap-2 w-full min-w-0'>
                             <h2 className='  text-white'>Total Orders: {orders.length} </h2>
 
                         </div></>}
@@ -150,16 +150,16 @@ export default function page() {
 
 
                                             <td className='px-1 md:px-4 py-2text-sm text-white'>
-                                                <div className='flex items-center gap-2'>
-                                                    <div className='rounded-full   bg-red-950/70 size-8 flex justify-center items-center'>
+                                                <div className='flex items-center gap-2 min-w-max'>
+                                                    <div className='rounded-full   bg-red-950/70 size-8 shrink-0 flex justify-center items-center'>
                                                         <p className='text-red-500 text-sm font-bold'>
                                                             {order.shippingAddress.fullName[0]}
                                                         </p>
 
                                                     </div>
-                                                    <div>
-                                                        <p className='text-sm'>{order.shippingAddress.fullName}</p>
-                                                        <p className='text-xs text-neutral-400'>{order.email}</p>
+                                                    <div className='min-w-0'>
+                                                        <p className='text-sm truncate max-w-40'>{order.shippingAddress.fullName}</p>
+                                                        <p className='text-xs text-neutral-400 truncate max-w-40'>{order.email}</p>
                                                     </div>
 
                                                 </div>
@@ -220,8 +220,8 @@ function SeclectedOrder({ order }) {
     return (
 
 
-        <div className='flex items-start py-4 w-full h-full gap-6 justify-start flex-wrap '>
-            <div className='flex flex-col gap-4 bg-neutral-800 p-4 rounded-lg shadow-lg min-w-76 border border-neutral-700'>
+        <div className='flex items-start py-4 w-full min-w-0 gap-4 lg:gap-6 justify-start flex-wrap '>
+            <div className='flex flex-col gap-4 bg-neutral-800 p-4 rounded-lg shadow-lg w-full min-w-0 md:w-auto md:min-w-76 border border-neutral-700'>
                 <div className='flex flex-col gap-2'>
                     <div className='flex items-center gap-2'>
                         <Package size={16} className='text-neutral-400' />
@@ -250,7 +250,7 @@ function SeclectedOrder({ order }) {
                 </div>
 
             </div>
-            <div className='flex flex-col gap-4 bg-neutral-800 p-4 rounded-lg shadow-lg  min-w-76 border border-neutral-700'>
+            <div className='flex flex-col gap-4 bg-neutral-800 p-4 rounded-lg shadow-lg  w-full min-w-0 md:w-auto md:min-w-76 border border-neutral-700'>
                 <div className='flex flex-col gap-2'>
                     <div className='flex items-center gap-2'>
                         <User size={16} className='text-neutral-400' />
@@ -261,22 +261,22 @@ function SeclectedOrder({ order }) {
                 <div className='flex flex-col gap-2'>
                     <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                         <div className='flex items-center gap-2'>
-                            <div className='rounded-full   bg-red-950/70 size-12 flex justify-center items-center'>
+                            <div className='rounded-full   bg-red-950/70 size-12 shrink-0 flex justify-center items-center'>
                                 <p className='text-red-500 text-sm font-bold'>
                                     {order.shippingAddress.fullName[0]}
                                 </p>
 
                             </div>
-                            <div>
-                                <p>{order.shippingAddress.fullName}</p>
-                                <p className='text-sm text-neutral-400'>{order.email}</p>
+                            <div className='min-w-0'>
+                                <p className='truncate'>{order.shippingAddress.fullName}</p>
+                                <p className='text-sm text-neutral-400 truncate'>{order.email}</p>
                             </div>
 
                         </div>
                     </div>
                     <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                         <p className='text-neutral-400'>Address</p>
-                        <p className='text-right w-48 ' >{order.shippingAddress.addressLine1}, {order.shippingAddress.city}</p>
+                        <p className='text-right min-w-0 flex-1 md:flex-none md:w-48 ' >{order.shippingAddress.addressLine1}, {order.shippingAddress.city}</p>
                     </div>
                     <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                         <p className='text-neutral-400'>Phone</p>
@@ -284,10 +284,10 @@ function SeclectedOrder({ order }) {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg shadow-lg  min-w-76 border border-neutral-700'>
+            <div className='flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg shadow-lg  w-full min-w-0 md:w-auto md:min-w-76 border border-neutral-700'>
                 <div className='flex flex-col gap-2'>
                     <div className='flex items-center gap-2'>
-                        <ShoppingBag size={16} className='text-neutral-400' />
+                        <ShoppingBag size={16} className='text-neutral-400 shrink-0' />
                         <h2 className='font-bold'>Product Details</h2>
                     </div>
                     <p className='text-sm text-neutral-400'>Purchased Product Information</p>
@@ -296,7 +296,7 @@ function SeclectedOrder({ order }) {
                     {order.items.map((item, index) => (<>
                         <div key={index} className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                             <p className='text-neutral-400'>Name</p>
-                            <p className='text-right  w-48'>{item.product.heading}</p>
+                            <p className='text-right min-w-0 flex-1 md:flex-none md:w-48'>{item.product.heading}</p>
                         </div>
                         <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                             <p className='text-neutral-400'>Price</p>
@@ -305,11 +305,11 @@ function SeclectedOrder({ order }) {
                     ))}
                 </div>
             </div>
-            <div className='flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg shadow-lg  min-w-76 border border-neutral-700'>
+            <div className='flex flex-col gap-2 bg-neutral-800 p-4 rounded-lg shadow-lg  w-full min-w-0 md:w-auto md:min-w-76 border border-neutral-700'>
                 <div className='flex flex-col gap-2'>
                     <div className='flex items-center gap-2'>
 
-                        <CircleDollarSign size={16} className='text-neutral-400' />
+                        <CircleDollarSign size={16} className='text-neutral-400 shrink-0' />
                         <h2 className='font-bold'>Payment Details</h2>
                     </div>
                     <p className='text-sm text-neutral-400'>Payment Methods Used</p>
@@ -318,7 +318,7 @@ function SeclectedOrder({ order }) {
 
                     <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                         <p className='text-neutral-400'>Payment Method</p>
-                        <p className='text-right  w-48'>{order.paymentMethod}</p>
+                        <p className='text-right min-w-0 flex-1 md:flex-none md:w-48'>{order.paymentMethod}</p>
                     </div>
                     {order.paymentMethod !== "cod" && 
                     <div className='flex justify-between items-center gap-2  border-b border-neutral-700 py-2'>

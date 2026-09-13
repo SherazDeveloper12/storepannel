@@ -71,6 +71,8 @@ const centerTextPlugin = {
   ],
 };
 const options = {
+  responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false,
@@ -108,16 +110,18 @@ const listdata = [
 ]
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-4 w-full max-w-80 lg:max-w-none min-w-0'>
         <div className='flex flex-col gap-1'>
             <h2 className='font-semibold'>Order Status</h2>
             <p className='text-sm text-neutral-400'>Distribution of current orders</p>
         </div>
+        <div className='w-full h-52 lg:h-60 min-w-0 relative'>
         <Doughnut  options={options} plugins={[centerTextPlugin]} data={data} />
-        <ul className='flex flex-col gap-2 '>
+        </div>
+        <ul className='flex flex-col gap-2 w-full '>
             {listdata.map((item, index) => (
                 <li className='flex justify-start items-center gap-2 ' key={index}>
-                    <span className={`w-4 h-4 ${item.color} rounded-full`}></span>
+                    <span className={`w-4 h-4 shrink-0 ${item.color} rounded-full`}></span>
                     <span className='flex-1 flex justify-between items-center gap-2 '>
                         <p>{item.title}</p>
                         <p>{item.value}</p>

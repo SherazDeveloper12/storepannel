@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 
 import axios from 'axios';
+import { toast } from "sonner";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -26,13 +27,14 @@ export const updateProduct = createAsyncThunk(
     "products/updateProduct",
     async (updatedProduct) => {
         try {
-
+            console.log("updatedProduct in updateProduct api call", updatedProduct)
             const response = await axios.put(`${BASE_URL}/products/update/${updatedProduct._id}`, updatedProduct, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 withCredentials: true // Include credentials for authentication
             });
+            console.log("response.data in updateProduct api call", response.data)
             return response.data;
         } catch (error) {
             return error.data.message;
@@ -179,15 +181,54 @@ console.log("fetching products locally")
             state.error = action.error.message;
         });
         
-        builder.addCase(createProduct.fulfilled, (state, action) => {
+        builder.addCase(createProduct.pending, (state) => {
+            toast.dismiss()
+            toast.loading("Creating product...");
+            state.status = "loading";
+        });
+        
+       builder.addCase(createProduct.fulfilled, (state, action) => {
+            toast.dismiss()
+            toast.success("Product created successfully");
             localStorage.setItem('products', JSON.stringify([action.payload, ...state.Products]));
             state.Products.unshift(action.payload);
         });
+        
+       builder.addCase(createProduct.rejected, (state, action) => {
+            toast.dismiss()
+            toast.error("Failed to create product");
+            state.error = action.error.message;
+        });
         builder.addCase(deleteProduct.fulfilled, (state, action) => {
+            toast.dismiss()
+            toast.success("Product deleted successfully");
+            localStorage.setItem('products', JSON.stringify(state.Products.filter(product => product._id !== action.payload)));
             state.Products = state.Products.filter(product => product._id !== action.payload);
 
         });
         builder.addCase(deleteProduct.rejected, (state, action) => {
+            toast.dismiss()
+            toast.error("Failed to delete product");
+            state.error = action.error.message;
+        });
+        builder.addCase(updateProduct.pending, (state) => {
+            toast.dismiss()
+            toast.loading("Updating product...");
+
+
+        })
+        builder.addCase(updateProduct.fulfilled, (state, action) => {
+            toast.dismiss()
+            toast.success("Product updated successfully");
+            const index = state.Products.findIndex(product => product._id === action.payload._id);
+            if (index !== -1) {
+                state.Products[index] = action.payload;
+                localStorage.setItem('products', JSON.stringify(state.Products));
+            }
+        });
+        builder.addCase(updateProduct.rejected, (state, action) => {
+            toast.dismiss()
+            toast.error("Failed to update product");
             state.error = action.error.message;
         });
 

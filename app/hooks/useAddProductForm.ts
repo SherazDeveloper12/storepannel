@@ -95,6 +95,7 @@ export default function useProductForm() {
     const handleUpdateProductClick = (product) => {
         
         const updatedProduct = { ...product, _id: existingProduct._id };
+        console.log('Updated Product:', updatedProduct);
         // Dispatch update action here
         dispatch(updateProduct(updatedProduct));
         setbrand('');
@@ -111,7 +112,7 @@ export default function useProductForm() {
         setdescription('');
         setimages([]);
         setAddProduct(false);
-        editingProductId(null);
+        setEditingProductId(null);
         setEditMode(false);
 
     }

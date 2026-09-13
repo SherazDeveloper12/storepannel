@@ -106,17 +106,17 @@ const handleDeleteClick = (index: number) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className='flex flex-col gap-4 w-full  '>
+      className='flex flex-col gap-4 w-full min-w-0  '>
       <PageStarter />
-      <div className='flex flex-col items-start w-full '>
-        <div className='flex flex-col gap-2 w-120 '>
+      <div className='flex flex-col items-start w-full min-w-0 '>
+        <div className='flex flex-col gap-2 w-full max-w-120 '>
           <h2 className='text-lg font-semibold text-white'>Your Store Information </h2>
-          <div className='flex gap-2 items-center '>
-            <p className='text-sm text-neutral-400 min-w-60'>Your Store Name : </p>
+          <div className='flex flex-wrap gap-x-2 gap-y-1 items-center '>
+            <p className='text-sm text-neutral-400 w-full sm:w-auto sm:min-w-60'>Your Store Name : </p>
 
             {editingStoreInfoItem === 'storeName' ?
               <>
-                <input type="text" value={data.storeName} onChange={(e) => { setDate({ ...data, storeName: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none  text-sm text-white' />
+                <input type="text" value={data.storeName} onChange={(e) => { setDate({ ...data, storeName: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none min-w-0  text-sm text-white' />
                 <span>
 
                   <Save
@@ -126,7 +126,7 @@ const handleDeleteClick = (index: number) => {
               </>
               :
               <>
-                <p className='text-sm text-white'>{user?.storeName ? user?.storeName : 'Not set'}</p>
+                <p className='text-sm text-white min-w-0 wrap-anywhere'>{user?.storeName ? user?.storeName : 'Not set'}</p>
                 <span>
                   <Pen
                     onClick={() => SeteditingStoreInfoItem('storeName')}
@@ -137,16 +137,16 @@ const handleDeleteClick = (index: number) => {
 
           </div>
 
-          <div className='flex gap-2'>
-            <p className='text-sm text-neutral-400 min-w-60'>Your Store ID : </p>
-            <p className='text-sm text-white'>{user?.storeID}</p>
+          <div className='flex flex-wrap gap-x-2 gap-y-1'>
+            <p className='text-sm text-neutral-400 w-full sm:w-auto sm:min-w-60'>Your Store ID : </p>
+            <p className='text-sm text-white min-w-0 wrap-anywhere'>{user?.storeID}</p>
           </div>
 
-          <div className='flex gap-2 items-center'>
-            <p className='text-sm text-neutral-400 min-w-60'>Your Store URL : </p>
+          <div className='flex flex-wrap gap-x-2 gap-y-1 items-center'>
+            <p className='text-sm text-neutral-400 w-full sm:w-auto sm:min-w-60'>Your Store URL : </p>
             {editingStoreInfoItem === 'storeURL' ?
               <>
-                <input type="text" value={data.storeURL} onChange={(e) => { setDate({ ...data, storeURL: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none  text-sm text-white' />
+                <input type="text" value={data.storeURL} onChange={(e) => { setDate({ ...data, storeURL: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none min-w-0  text-sm text-white' />
                 <span>
 
                   <Save
@@ -156,7 +156,7 @@ const handleDeleteClick = (index: number) => {
               </>
               :
               <>
-                <p className='text-sm text-white'>{user?.storeURL ? user?.storeURL : 'Not set'}</p>
+                <p className='text-sm text-white min-w-0 wrap-anywhere'>{user?.storeURL ? user?.storeURL : 'Not set'}</p>
                 <span>
                   <Pen
                     onClick={() => SeteditingStoreInfoItem('storeURL')}
@@ -166,11 +166,11 @@ const handleDeleteClick = (index: number) => {
             }
 
           </div>
-          <div className='flex gap-2 items-center'>
-            <p className='text-sm text-neutral-400 min-w-60'>Your Store Delivery Charges : </p>
+          <div className='flex flex-wrap gap-x-2 gap-y-1 items-center'>
+            <p className='text-sm text-neutral-400 w-full sm:w-auto sm:min-w-60'>Your Store Delivery Charges : </p>
             {editingStoreInfoItem === 'storeDeliveryCharges' ?
               <>
-                <input type="number" value={data.storeDeliveryCharges} onChange={(e) => { setDate({ ...data, storeDeliveryCharges: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none  text-sm text-white' />
+                <input type="number" value={data.storeDeliveryCharges} onChange={(e) => { setDate({ ...data, storeDeliveryCharges: e.target.value }) }} className='border-b border-neutral-600 focus:outline-none min-w-0  text-sm text-white' />
                 <span>
 
                   <Save
@@ -180,7 +180,7 @@ const handleDeleteClick = (index: number) => {
               </>
               :
               <>
-                <p className='text-sm text-white'>{user?.storeDeliveryCharges ? user?.storeDeliveryCharges : 'Not set'}</p>
+                <p className='text-sm text-white min-w-0 wrap-anywhere'>{user?.storeDeliveryCharges ? user?.storeDeliveryCharges : 'Not set'}</p>
                 <span>
                   <Pen
                     onClick={() => SeteditingStoreInfoItem('storeDeliveryCharges')}
@@ -192,8 +192,8 @@ const handleDeleteClick = (index: number) => {
           </div>
         </div>
         <div className='flex flex-col gap-2  w-full'>
-          <div className='flex items-center justify-between'>
-            <p className='text-sm text-neutral-400 min-w-60'>Your Store Payment Methods : </p>
+          <div className='flex flex-wrap items-center justify-between gap-2'>
+            <p className='text-sm text-neutral-400 w-full sm:w-auto sm:min-w-60'>Your Store Payment Methods : </p>
             {addStorePaymentMethod || updateStorePaymentMethod !== null ? null :
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -218,9 +218,9 @@ const handleDeleteClick = (index: number) => {
                 <form
                   onSubmit={(e) => handleFormSubmit(e)}
 
-                  className='flex gap-2 bg-neutral-800 p-4 rounded w-full'>
+                  className='flex gap-2 bg-neutral-800 p-3 md:p-4 rounded w-full'>
 
-                  <div className='flex flex-col gap-2 flex-1 w-full'>
+                  <div className='flex flex-col gap-2 flex-1 w-full min-w-0'>
                     <div className='flex flex-col gap-2 flex-1 w-full '>
                       <label htmlFor="itemname" className='font-semibold'>Select Payment Method:</label>
                       <select required value={PaymentMethodFormData.type} id="itemname" onChange={(e) => setPaymentMethodFormData({ ...PaymentMethodFormData, type: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2'>
@@ -251,13 +251,13 @@ const handleDeleteClick = (index: number) => {
                         <option value="disabled">Disabled</option>
                       </select>
                     </div>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex flex-wrap items-center gap-2'>
                       <button className='flex-1 bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
                         type='submit'
                       >{updateStorePaymentMethod !== null ? 'Update' : 'Add'}</button>
                       <button
                         onClick={(e) => handleCancelClick(e)}
-                        className='flex-1 bg-gray-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 ml-2'
+                        className='flex-1 bg-gray-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 sm:ml-2'
 
                       >Cancel</button>
                     </div>
@@ -268,7 +268,8 @@ const handleDeleteClick = (index: number) => {
                 </form>
 
               </div> :
-              <table className='w-full text-left border-collapse rounded overflow-hidden bg-red-500'>
+              <div className='w-full overflow-x-auto'>
+              <table className='w-full min-w-max md:min-w-0 text-left border-collapse rounded overflow-hidden bg-red-500'>
                 <thead className='bg-neutral-800 w-full'>
                   <tr className=' border border-neutral-600 p-2'>
                     <td className='p-2'>Payment Method</td>
@@ -300,6 +301,7 @@ const handleDeleteClick = (index: number) => {
                     ) : null}
                 </tbody>
               </table>
+              </div>
           }
 
 
@@ -411,24 +413,24 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
     setUpdatingMode(false);
   }
   return (
-    <div className='flex flex-col gap-3'>
+    <div className='flex flex-col gap-3 w-full min-w-0'>
 
       {editingmode ? (
         <div className='flex flex-col  gap-2'>
 
           <h2 className='text-lg font-semibold text-white'>Adding {categoriesdata ? 'Category' : 'Brand'}</h2>
-          <form className='flex gap-2 bg-neutral-800 p-4 rounded w-full'>
-            <div>
+          <form className='flex flex-col md:flex-row gap-4 md:gap-2 bg-neutral-800 p-3 md:p-4 rounded w-full'>
+            <div className='w-full md:w-auto min-w-0'>
               <ImageUploader value={categoriesdata ? categoryformdata.image : brandformdata.image} setValue={(e) => categoriesdata ? setCategoryFormdata({ ...categoryformdata, image: e }) : setBrandFormdata({ ...brandformdata, image: e })} />
             </div>
-            <div className='flex flex-col gap-2 flex-1 w-full'>
+            <div className='flex flex-col gap-2 flex-1 w-full min-w-0'>
               <div className='flex flex-col gap-2 flex-1 w-full '>
                 <label htmlFor="itemname" className='font-semibold'>Enter {categoriesdata ? 'Category' : 'Brand'} Name:</label>
                 <input value={categoriesdata ? categoryformdata.name : brandformdata.name} type="text" id="itemname" placeholder={categoriesdata ? 'Category Name' : 'Brand Name'} onChange={(e) => categoriesdata ? setCategoryFormdata({ ...categoryformdata, name: e.target.value }) : setBrandFormdata({ ...brandformdata, name: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
                 <label htmlFor="itemDescription" className='font-semibold'>Enter {categoriesdata ? 'Category' : 'Brand'} Description:</label>
                 <textarea id="itemDescription" placeholder='i.e Summer Special is our best selling category ...' name="itemDescription" className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" rows={9} onChange={(e) => categoriesdata ? setCategoryFormdata({ ...categoryformdata, description: e.target.value }) : setBrandFormdata({ ...brandformdata, description: e.target.value })} value={categoriesdata ? categoryformdata.description : brandformdata.description} />
               </div>
-              <div>
+              <div className='flex flex-wrap gap-2'>
                 <button className='bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
                   onClick={() => {
                     UpdateingMode ?
@@ -439,7 +441,7 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
                   }
                   }
                 >{UpdateingMode ? 'Update' : 'Add'} {categoriesdata ? 'Category' : 'Brand'}</button>
-                <button className='bg-gray-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 ml-2'
+                <button className='bg-gray-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300 sm:ml-2'
                   onClick={() => {
                     setEditingMode(false);
                     setUpdatingMode(false);
@@ -465,7 +467,7 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
           </form>
 
         </div>
-      ) : (<div className='flex justify-between items-center'>
+      ) : (<div className='flex flex-wrap justify-between items-center gap-2'>
 
         <h2 className='text-lg font-semibold text-white'>Manage {categoriesdata ? 'Categories' : 'Brands'}</h2>
         <motion.button
@@ -483,7 +485,8 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
       </div>)}
 
 
-      <table className='w-full text-left border-collapse rounded overflow-hidden'>
+      <div className='w-full overflow-x-auto'>
+      <table className='w-full min-w-max md:min-w-0 text-left border-collapse rounded overflow-hidden'>
         <thead className='bg-neutral-800 w-full'>
           <tr className='bg-neutral-800 border border-neutral-600'>
             <th className=' p-2'>{categoriesdata ? 'Categories' : 'Brands'} </th>
@@ -528,6 +531,7 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
         </tbody>
 
       </table>
+      </div>
     </div>
   )
 }

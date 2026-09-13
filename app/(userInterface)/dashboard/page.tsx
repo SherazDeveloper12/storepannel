@@ -8,7 +8,7 @@ import PieChart from '@/app/components/PieChart/PieChart'
 import DoughnutChart from '@/app/components/DoughnutChart/DoughnutChart';
 export default function page() {
   return (
-    <div className='min-w-full h-screen flex flex-col gap-2 '>
+    <div className='w-full min-w-0 flex flex-col gap-2 '>
       <PageStarter />
       <DashboardHeader />
       <div></div>
@@ -70,24 +70,24 @@ function DashboardHeader() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className='w-full h-full flex flex-col  gap-6   rounded-lg py-2'>
-      <div className='flex flex-row gap-6 w-full h-1/4  justify-around items-center flex-wrap'>
+      className='w-full min-w-0 flex flex-col  gap-4 md:gap-6   rounded-lg py-2'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4 xl:gap-6 w-full items-stretch'>
         {data.map((item, index) => (
           <div
-            className='flex flex-1  items-center gap-6 bg-neutral-900 border  border-neutral-800  p-4   hover:shadow-lg transition-all duration-300 ease-in-out '
+            className='flex items-center gap-3 md:gap-4 xl:gap-6 bg-neutral-900 border  border-neutral-800  p-3 md:p-4 min-w-0   hover:shadow-lg transition-all duration-300 ease-in-out '
             key={index}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            <div className=' flex-1 flex flex-col p-4 '>
+            <div className=' flex-1 flex flex-col p-1 md:p-2 lg:p-4 min-w-0 '>
               <p className={`text-sm text-neutral-400 ${hoveredIndex === index ? 'text-red-500' : ''}`}>{item.title}</p>
-              <h3 className='text-4xl font-semibold tracking-tighter'>{item.value}</h3>
+              <h3 className='text-2xl sm:text-3xl xl:text-4xl font-semibold tracking-tighter'>{item.value}</h3>
               <div className='flex flex-row gap-2 items-center'>
                 <p className={`text-sm text-green-400 ${hoveredIndex === index ? 'text-red-500' : ''}`}> {item.growth}</p>
                 <TrendingUp color="#05DF72" />
               </div>
             </div>
-            <div className={` p-2 ${item.title === 'Total Revenue' ? 'bg-green-400' : item.title === 'Total Orders' ? 'bg-sky-400' : item.title === 'Pending Orders' ? 'bg-yellow-400' : item.title === 'Total Products' ? 'bg-purple-400' : 'bg-gray-400'} rounded-2xl`}>
+            <div className={` p-1 md:p-2 shrink-0 ${item.title === 'Total Revenue' ? 'bg-green-400' : item.title === 'Total Orders' ? 'bg-sky-400' : item.title === 'Pending Orders' ? 'bg-yellow-400' : item.title === 'Total Products' ? 'bg-purple-400' : 'bg-gray-400'} rounded-2xl`}>
               {item.icon}
             </div>
 
@@ -96,10 +96,10 @@ function DashboardHeader() {
         ))}
       </div>
 
-      <div className='flex flex-row  gap-4 w-full h-300 flex-wrap '>
+      <div className='flex flex-col lg:flex-row  gap-4 w-full flex-wrap '>
 
-        <div className='flex-1 mt-4 bg-neutral-900 shadow      '>
-          <div className='flex justify-between items-center p-4 '>
+        <div className='flex-1 min-w-0 mt-0 lg:mt-4 bg-neutral-900 shadow overflow-x-auto      '>
+          <div className='flex flex-wrap justify-between items-center gap-2 p-3 md:p-4 '>
             <div>
               <h2 className='font-semibold text-sm'>Recent Orders</h2>
               <p className='text-xs text-neutral-400'>Latest orders from your store</p>
@@ -134,17 +134,17 @@ function DashboardHeader() {
                   key={index} className='  border-t border-neutral-700 bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300'>
 
 
-                  <td className='px-1 md:px-4 py-5 text-sm text-white'>
-                    <div className='flex items-center gap-2'>
-                      <div className={`rounded-full  ${bggradientcolors[index]}  size-8 flex justify-center items-center`}>
+                  <td className='px-1 md:px-4 py-2 md:py-5 text-sm text-white'>
+                    <div className='flex items-center gap-2 min-w-max'>
+                      <div className={`rounded-full  ${bggradientcolors[index]}  size-8 shrink-0 flex justify-center items-center`}>
                         <p className='text-white text-sm font-bold'>
                           {order.shippingAddress.fullName[0]}
                         </p>
 
                       </div>
-                      <div>
-                        <p className='text-sm'>{order.shippingAddress.fullName}</p>
-                        <p className='text-xs text-neutral-400'>{order.email}</p>
+                      <div className='min-w-0'>
+                        <p className='text-sm truncate max-w-40'>{order.shippingAddress.fullName}</p>
+                        <p className='text-xs text-neutral-400 truncate max-w-40'>{order.email}</p>
                       </div>
 
                     </div>
@@ -171,7 +171,7 @@ function DashboardHeader() {
           </table>
         </div>
 
-        <div className=' rounded flex justify-center items-center mt-4 bg-neutral-900 w-1/3 h-150 '>
+        <div className=' rounded flex flex-col lg:flex-row justify-center items-center mt-0 lg:mt-4 bg-neutral-900 w-full lg:w-1/3 lg:h-150 p-4 lg:p-6 overflow-hidden '>
           <DoughnutChart />
         </div>
       </div>

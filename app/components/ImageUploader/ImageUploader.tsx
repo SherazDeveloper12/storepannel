@@ -37,21 +37,21 @@ export default function ImageUploader({value, setValue}) {
 
 
     return (
-        <div>
+        <div className='w-full min-w-0'>
 
             <label htmlFor="imageuploader"
             onMouseEnter={() => setimgboxhovered(true)}
             onMouseLeave={() => setimgboxhovered(false)}
-                className={`relative text-gray-400 flex flex-col  border-dashed border-2 border-gray-300 rounded cursor-pointer bg-neutral-900 hover:border-black hover:text-black transition-all duration-300 size-66 md:size-100  overflow-hidden ${ImgUrl ? 'p-0' : 'justify-center items-center'}`}>
+                className={`relative text-gray-400 flex flex-col  border-dashed border-2 border-gray-300 rounded cursor-pointer bg-neutral-900 hover:border-black hover:text-black transition-all duration-300 w-full max-w-66 md:max-w-100 aspect-square  overflow-hidden ${ImgUrl ? 'p-0' : 'justify-center items-center'}`}>
                 {ImgUrl ? (<div className='relative w-full h-full'>
-                    <img src={value} alt="Uploaded" className="size-50  md:size-100  object-cover rounded  opacity-60" />
-                    <div className='absolute inset-0 flex flex-col justify-center items-center text-gray-700  hover:text-white transition-all duration-300'>
-                        <ImagePlusIcon color="white" className='size-24' />
-                        <p className='text-xl font-bold'>Click here to change image</p>
+                    <img src={value} alt="Uploaded" className="w-full h-full  object-cover rounded  opacity-60" />
+                    <div className='absolute inset-0 flex flex-col justify-center items-center gap-1 text-center p-2 text-gray-700  hover:text-white transition-all duration-300'>
+                        <ImagePlusIcon color="white" className='size-10 md:size-24 shrink-0' />
+                        <p className='text-sm md:text-xl font-bold'>Click here to change image</p>
                     </div>
                 </div>) : <>
-                    <ImagePlusIcon color="white" className='size-12 md:size-24' />
-                    <p className={imgboxhovered ? 'text-white' : 'text-gray-400'}>Upload Image here</p>
+                    <ImagePlusIcon color="white" className='size-12 md:size-24 shrink-0' />
+                    <p className={`text-sm md:text-base text-center px-2 ${imgboxhovered ? 'text-white' : 'text-gray-400'}`}>Upload Image here</p>
                 </>
                 }
             </label>

@@ -125,7 +125,7 @@ export default function page() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className='flex flex-col gap-4'
+      className='flex flex-col gap-4 w-full min-w-0'
     >
       <PageStarter />
       <div className='flex flex-col gap-2'>
@@ -133,47 +133,47 @@ export default function page() {
           <p className='text-gray-400'>No notifications</p>
         ) : (
           notifications.map((notification, index) => (
-            <div key={index} className={`flex justify-start items-center gap-4 ${notification.isRead ? 'bg-neutral-900' : 'bg-red-900/20'} p-4  border border-gray-700`}>
+            <div key={index} className={`flex justify-start items-center gap-3 md:gap-4 ${notification.isRead ? 'bg-neutral-900' : 'bg-red-900/20'} p-3 md:p-4  border border-gray-700`}>
 
               {notification.type === 'Order' ?
-                <div className='flex justify-center items-center p-2 bg-red-500 rounded-md '>
+                <div className='flex justify-center items-center p-2 shrink-0 bg-red-500 rounded-md '>
                   <ShoppingCart size={20} />
                 </div>
                 :
                 notification.type === 'General' ?
-                  <div className='flex justify-center items-center p-2 bg-purple-500 rounded-md '>
+                  <div className='flex justify-center items-center p-2 shrink-0 bg-purple-500 rounded-md '>
                     <Store size={20} />
                   </div>
                   :
                   notification.type === 'Growth' ?
-                    <div className='flex justify-center items-center p-2 bg-green-500 rounded-md '>
+                    <div className='flex justify-center items-center p-2 shrink-0 bg-green-500 rounded-md '>
                       <ChartNoAxesCombined size={20} />
                     </div>
                     :
                     notification.type === 'System' ?
-                      <div className='flex justify-center items-center p-2 bg-blue-500 rounded-md '>
+                      <div className='flex justify-center items-center p-2 shrink-0 bg-blue-500 rounded-md '>
                         <Settings size={20} />
                       </div>
                       :
                       notification.type === 'Product' ?
-                        <div className='flex justify-center items-center p-2 bg-violet-500 rounded-md '>
+                        <div className='flex justify-center items-center p-2 shrink-0 bg-violet-500 rounded-md '>
                           <Package size={20} />
                         </div>
                         :
                         notification.type === 'Coupon' ?
-                          <div className='flex justify-center items-center p-2 bg-yellow-500 rounded-md '>
+                          <div className='flex justify-center items-center p-2 shrink-0 bg-yellow-500 rounded-md '>
                             <Tag size={20} />
                           </div>
                           :
                           notification.type === 'Promotional' ?
-                            <div className='flex justify-center items-center p-2 bg-cyan-500 rounded-md '>
+                            <div className='flex justify-center items-center p-2 shrink-0 bg-cyan-500 rounded-md '>
                               <Megaphone size={20} />
 
                             </div>
                             :
                             null}
 
-              <div className='flex flex-col  w-full'> <p className='text-white text-sm'>{notification.message}</p>
+              <div className='flex flex-col  w-full min-w-0'> <p className='text-white text-sm wrap-break-word'>{notification.message}</p>
                 <p className='text-gray-400 text-xs self-end'>
                   {(() => {
                     const hoursAgo = Math.floor((Date.now() - new Date(notification.createdAt).getTime()) / (1000 * 60 * 60));

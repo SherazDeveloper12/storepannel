@@ -19,6 +19,7 @@ export default function page() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
+            className='w-full min-w-0'
         >
             <div>
                 <PageStarter />
@@ -49,7 +50,7 @@ export default function page() {
 
                                 <td className='px-1 md:px-4 py-2 text-sm text-white'>
                                     <div className='flex items-center gap-2'>
-                                        <div className='rounded-full   bg-red-950/70 size-8 flex justify-center items-center'>
+                                        <div className='rounded-full   bg-red-950/70 size-8 shrink-0 flex justify-center items-center'>
                                             <p className='text-red-500 text-sm font-bold'>
                                                 {customer.name[0].toUpperCase()}
                                             </p>

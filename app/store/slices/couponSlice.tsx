@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 
 import axios from 'axios';
+import { toast } from "sonner";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -103,8 +104,14 @@ export const CouponSlice = createSlice({
             state.error = action.error;
             
         });
-        
+        builder.addCase(createCoupon.pending, (state) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.loading("Creating coupon...");
+            state.status = "loading";
+        });
         builder.addCase(createCoupon.fulfilled, (state, action) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.success("Coupon created successfully");
             console.log("action.payload in createCoupon.fulfilled", action.payload)
             state.status = "succeeded";
             state.message = action.payload.message;
@@ -112,18 +119,53 @@ export const CouponSlice = createSlice({
             state.Coupons.unshift(action.payload);
         });
         builder.addCase(createCoupon.rejected, (state, action) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.error("Failed to create coupon");
             console.log("action.error in createCoupon.rejected", action.error)
             state.status = "failed";
             state.error = action.error.message;
             state.message = action.error.message;
         });
+        builder.addCase(deleteCoupon.pending, (state) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.loading("Deleting coupon...");
+            state.status = "loading";
+        });
         builder.addCase(deleteCoupon.fulfilled, (state, action) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.success("Coupon deleted successfully");
+            state.status = "succeeded";
             state.Coupons = state.Coupons.filter(Coupon => Coupon._id !== action.payload);
 
         });
         builder.addCase(deleteCoupon.rejected, (state, action) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.error("Failed to delete coupon");
+            state.status = "failed";
             state.error = action.error.message;
         });
+        builder.addCase(updateCoupon.pending, (state) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.loading("Updating coupon...");
+            state.status = "loading";
+        });
+        builder.addCase(updateCoupon.fulfilled, (state, action) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.success("Coupon updated successfully");
+            state.status = "succeeded";
+            const index = state.Coupons.findIndex(coupon => coupon._id === action.payload._id);
+            if (index !== -1) {
+                state.Coupons[index] = action.payload;
+                localStorage.setItem('Coupons', JSON.stringify(state.Coupons));
+            }
+        });
+        builder.addCase(updateCoupon.rejected, (state, action) => {
+            toast.dismiss(); // Dismiss any existing toasts
+            toast.error("Failed to update coupon");
+            state.status = "failed";
+            state.error = action.error.message;
+        });
+            
 
     }
 });
