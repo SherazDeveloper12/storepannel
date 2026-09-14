@@ -18,7 +18,7 @@ export default function page() {
   const {
     AddProduct,
     setAddProduct,
-    
+
     category,
     setcategory,
     brand,
@@ -81,7 +81,10 @@ export default function page() {
       {AddProduct &&
         <div className='p-0 sm:p-2 flex flex-col gap-2 w-full min-w-0'>
           <h2 className='text-xl font-semibold text-white'>Add Products</h2>
-          <form className='bg-neutral-800 border border-neutral-600 rounded-lg p-3 md:p-4 flex flex-col lg:flex-row gap-6 lg:gap-4 w-full'>
+         
+          <form
+            onSubmit={(e) => { e.preventDefault(); editMode ? handleUpdateProductClick(product) : handleAddProductClick(product) }}
+            className='bg-neutral-800 border border-neutral-600 rounded-lg p-3 md:p-4 flex flex-col lg:flex-row gap-6 lg:gap-4 w-full'>
             <div className='flex-1 min-w-0 w-full'>
               <ImageUploader value={images[images.length - 1]} setValue={(value) => setimages(prevImages => [...prevImages, value])} />
               <div>
@@ -97,13 +100,13 @@ export default function page() {
             </div>
             <div className='flex-1 min-w-0 w-full'>
               <label htmlFor="ProductTitle" className='font-semibold'>Enter Product Title:</label>
-              <input type="text" id="ProductTitle" placeholder='i.e Iphone 8 Plus' name="ProductTitle" required className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => settitle(e.target.value)} value={title} />
+              <input required type="text" id="ProductTitle" placeholder='i.e Iphone 8 Plus' name="ProductTitle" required className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => settitle(e.target.value)} value={title} />
               <label htmlFor="ProductHeading" className='font-semibold'>Enter Product Heading:</label>
               <input type="text" id="ProductHeading" placeholder='i.e Iphone 8 Plus 64GB Factory Unlocked' name="ProductHeading" className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setheading(e.target.value)} value={heading} />
               <div className='flex flex-col sm:flex-row gap-2 sm:gap-2 '>
                 <div className='flex-1 min-w-0'>
                   <label htmlFor="ProductPrice" className='font-semibold'>Enter Product Price:</label>
-                  <input type="number" id="ProductPrice" placeholder='i.e 699' name="ProductPrice" value={price} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setprice(e.target.value)} />
+                  <input required type="number" id="ProductPrice" placeholder='i.e 699' name="ProductPrice" value={price} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setprice(e.target.value)} />
                 </div>
                 <div className='flex-1 min-w-0'>
                   <label htmlFor="ProductQuantity" className='font-semibold'>Quantity:</label>
@@ -138,7 +141,9 @@ export default function page() {
               <Selection options={categories} name="category" setValue={(value) => setcategory(value)} value={category} />
               <Selection options={brands} name="Brand" setValue={(value) => setbrand(value)} value={brand} />
               <RadioInput options={["New", "Used", "Refurbished"]} name="Condition" setValue={(value) => setcondition(value)} value={condition} />
-              <button className='bg-red-500 text-white rounded px-4 py-2 mt-4 hover:bg-red-600' onClick={editMode ? () => { handleUpdateProductClick(product) } : () => handleAddProductClick(product)}>{editMode ? "Update Product" : "Add Product"}</button>
+              <button 
+              type='submit'
+              className='bg-red-500 text-white rounded px-4 py-2 mt-4 hover:bg-red-600' >{editMode ? "Update Product" : "Add Product"}</button>
               <button className='bg-gray-500 text-white rounded px-4 py-2 mt-4 sm:ml-2 hover:bg-gray-600' onClick={() => { setAddProduct(false) }}>Cancel</button>
             </div>
           </form>
@@ -211,7 +216,7 @@ export default function page() {
             <p>No products available.</p>
           )}
         </div>
-        
+
 
 
       </div>

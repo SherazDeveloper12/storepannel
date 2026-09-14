@@ -11,13 +11,13 @@ export default function SideBar({ mobile = false, onNavigate }: { mobile?: boole
   // the mobile drawer is always expanded, only the desktop rail collapses
   const isOpen = mobile ? true : sidebarOpen;
   const user = useSelector((state: any) => state.auth.user);
-  console.log('user', user)
+
   const items = [
     { label: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
     { label: 'Products', path: '/products', icon: <Package size={20} /> },
-     { label: 'Notifications', path: '/notifications', icon: <Bell size={20} /> },
+    { label: 'Notifications', path: '/notifications', icon: <Bell size={20} /> },
     { label: 'Orders', path: '/orders', icon: <ShoppingCart size={20} /> },
-    {label: 'Coupons', path: '/coupons', icon: <TicketPercent size={20} />},
+    { label: 'Coupons', path: '/coupons', icon: <TicketPercent size={20} /> },
     { label: 'Send Emails', path: '/send-emails', icon: <Mail size={20} /> },
     { label: 'Customers', path: '/customers', icon: <Users size={20} /> },
     { label: 'Settings', path: '/settings', icon: <Settings size={20} /> },
@@ -26,8 +26,8 @@ export default function SideBar({ mobile = false, onNavigate }: { mobile?: boole
   const pathname = usePathname();
   const dispatch = useDispatch();
   const notification = useSelector((state: any) => state.setting.notifications);
-  const unreadNotifications = notification.filter((notification: any)=> notification.isRead === false);
-  console.log('notification in side bar', notification)
+  const unreadNotifications = notification.filter((notification: any) => notification.isRead === false);
+
   const handleLogout = () => {
     dispatch(logout());
     onNavigate?.();
@@ -84,7 +84,7 @@ export default function SideBar({ mobile = false, onNavigate }: { mobile?: boole
           >
             <span className='mr-2 shrink-0 flex' >{item.icon}</span>
             {isOpen && <span className='truncate'>{item.label}</span>}
-            {item.label === 'Notifications'  && unreadNotifications.length > 0 ? <span className={`absolute ${isOpen ? 'right-1' : 'right-0'}  text-xs bg-red-500 text-neutral-300 px-1  rounded-full`}>{unreadNotifications.length}</span> : null}
+            {item.label === 'Notifications' && unreadNotifications.length > 0 ? <span className={`absolute ${isOpen ? 'right-1' : 'right-0'}  text-xs bg-red-500 text-neutral-300 px-1  rounded-full`}>{unreadNotifications.length}</span> : null}
           </li>
         ))}
       </ul>

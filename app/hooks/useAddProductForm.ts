@@ -25,12 +25,16 @@ export default function useProductForm() {
     const [rating, setrating] = useState(1);
     const [discount, setdiscount] = useState(0);
     const [editMode, setEditMode] = useState(false);
+    const [payableAmount, setPayableAmount] = useState(0);
     const dispatch = useDispatch();
     
     const products = useSelector((state) => state.products.Products)
      const status = useSelector((state) => state.products.status)
     const existingProduct = products.find(prod => prod._id === editingProductId);
-    
+    useEffect(() => {
+        const discountedPrice = price - (price * (discount / 100));
+        setPayableAmount(discountedPrice);
+    },[discount, price])
 
         useEffect(() => {
             if (existingProduct && editingProductId) {
@@ -64,7 +68,8 @@ export default function useProductForm() {
         brand: brand,
         condition: condition,
         rating: rating,
-        discount: discount
+        discount: discount,
+        payableAmount: payableAmount
     };
     const handledelete = (id) => {
         dispatch(deleteProduct(id))
@@ -76,7 +81,7 @@ export default function useProductForm() {
         setEditMode(true);
        }
    const handleAddProductClick = (product) => {
-       
+       console.log('Adding Product:', product);
         dispatch(createProduct(product));
         setbrand('');
         setcategory('');
@@ -90,6 +95,7 @@ export default function useProductForm() {
         setprice(0);
         setquantity(1);
         setdescription('');
+        setPayableAmount(0);
         setimages([]);
     }
     const handleUpdateProductClick = (product) => {

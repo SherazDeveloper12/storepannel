@@ -256,6 +256,7 @@ export const authSlice = createSlice({
       toast.success("Logged in successfully!");
       state.loading = false;
       state.error = null;
+      window.location.href = "/";
     })
     builder.addCase(login.rejected, (state, action) => {
       toast.dismiss();
