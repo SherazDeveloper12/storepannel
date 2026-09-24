@@ -2,7 +2,7 @@
 import OrderInvoice from '@/app/components/OrderInvoice/OrderInvoice';
 import PageStarter from '@/app/components/PageStarter/PageStarter'
 import { clearSelectedOrderId, setSelectedOrderId, updateOrderStatus } from '@/app/store/slices/orderSlice';
-import { CircleArrowLeft, CircleDollarSign, Eye,  Package, PackagePlus, ShoppingBag, User } from 'lucide-react';
+import { CircleArrowLeft, CircleDollarSign, Eye, Package, PackagePlus, ShoppingBag, User } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/dist/client/link';
 import React, { useEffect, useState } from 'react'
@@ -13,7 +13,7 @@ export default function page() {
         dispatch(clearSelectedOrderId());
     }, []);
     const { orders, selectedOrderId } = useSelector((state: any) => state.orders);
-    const selectedOrder = orders.find((order)=> order._id === selectedOrderId);
+    const selectedOrder = orders.find((order) => order._id === selectedOrderId);
     const dispatch = useDispatch();
     const reversedOrders = orders.toReversed();
     // pagination
@@ -21,7 +21,7 @@ export default function page() {
     const ordersPerPage = 10;
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  
+
 
     const [ordercancelationpopup, setOrderCancelationPopup] = useState(false);
     const [orderToCancel, setOrderToCancel] = useState("");
@@ -41,7 +41,7 @@ export default function page() {
         dispatch(setSelectedOrderId(order));
     }
     const handleUpdateStatus = (order) => {
-        
+
         dispatch(updateOrderStatus({ orderId: order._id, newStatus: statusToUpdate }));
 
         setUpdatingStatus(false);
@@ -142,7 +142,7 @@ export default function page() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {reversedOrders.map((order, index) => (
+                                    {reversedOrders.length > 0 ? <> {reversedOrders.map((order, index) => (
                                         <tr
                                             onClick={() => dispatch(setSelectedOrderId(order._id))}
                                             key={index} className='border cursor-pointer border-neutral-700 bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300'>
@@ -182,7 +182,10 @@ export default function page() {
                                                 </div>
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))}</> : <tr className='border border-neutral-700 bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300'>
+                                        <td colSpan={7} className='px-4 py-2 text-center text-sm text-white'>No Orders Found</td>
+                                    </tr>}
+
 
                                     {/* More orders can be added here */}
                                 </tbody>
@@ -319,16 +322,16 @@ function SeclectedOrder({ order }) {
                         <p className='text-neutral-400'>Payment Method</p>
                         <p className='text-right min-w-0 flex-1 md:flex-none md:w-48'>{order.paymentMethod}</p>
                     </div>
-                    {order.paymentMethod !== "cod" && 
-                    <div className='flex justify-between items-center gap-2  border-b border-neutral-700 py-2'>
-                        <p className='text-neutral-400 '>Payment Receipt</p>
-                        <Link href={order.paymentReceipt} target='_blank' className='  text-right cursor-pointer   text-neutral-400 hover:text-2xl hover:text-white transition-all duration-300'>
-                        <Eye size={24} className=' ' />
-                        </Link>
-                        
-                    </div>
+                    {order.paymentMethod !== "cod" &&
+                        <div className='flex justify-between items-center gap-2  border-b border-neutral-700 py-2'>
+                            <p className='text-neutral-400 '>Payment Receipt</p>
+                            <Link href={order.paymentReceipt} target='_blank' className='  text-right cursor-pointer   text-neutral-400 hover:text-2xl hover:text-white transition-all duration-300'>
+                                <Eye size={24} className=' ' />
+                            </Link>
+
+                        </div>
                     }
-                    
+
                     <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                         <p className='text-neutral-400'>Coupon Applied </p>
                         <p>{order.couponApplied ? 'Yes' : 'No'}</p>

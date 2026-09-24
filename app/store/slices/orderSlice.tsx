@@ -9,6 +9,7 @@ export const FetchAllOrders = createAsyncThunk(
         try {
             const response = await axios.get(`${BASE_URL}/orders/`,{withCredentials: true});
             const data = await response.data;
+            console.log("Fetched all orders successfully:", data);
             return data;
         } catch (error) {
             if (error.response) {

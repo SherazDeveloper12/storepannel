@@ -133,10 +133,8 @@ export default function page() {
             </tr>
           </thead>
           <tbody>
-            {/* 
-              status: { type: String, enum: ['active', 'expired', 'used']
-            */}
-            {reversedCoupons.map((coupon, index) => (
+           {reversedCoupons.length > 0 ? 
+           <> {reversedCoupons.map((coupon, index) => (
               <tr
                 onClick={() => { }}
                 key={index} className='border cursor-pointer border-neutral-700 bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300'>
@@ -172,7 +170,9 @@ export default function page() {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))}</>
+           : <tr><td colSpan={7} className='px-4 py-2 text-center text-sm text-white'>No coupons found</td></tr>}
+           
 
             
           </tbody>
