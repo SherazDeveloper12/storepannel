@@ -196,7 +196,7 @@ export default function page() {
 
                     <td className='hidden md:table-cell  p-2'>{product.category}</td>
                     <td className={`hidden md:table-cell ${product.brand ? 'text-white' : 'text-neutral-400'}  p-2`}>{product.brand ? product.brand : 'N/A'}</td>
-                    <td className='hidden md:table-cell p-2 font-semibold'>${product.price}</td>
+                    <td className='hidden md:table-cell p-2 font-semibold'>PKR {product.payableAmount}</td>
                     <td className='px-1 md:px-4 flex gap-1  items-center   py-2 md:py-6  text-sm text-white  '>
                       <div className='flex flex-col md:flex-row   items-center'>
                         <Pen onClick={() => handleedit(product._id)} size={16} className='text-neutral-400 hover:text-white cursor-pointer transform hover:scale-110 duration-100' />

@@ -42,7 +42,8 @@ export default function page() {
                         </tr>
                     </thead>
                     <tbody>
-                        {reversedCustomers.map((customer, index) => (
+                        {reversedCustomers.length > 0 ? <>
+                         {reversedCustomers.map((customer, index) => (
                             <tr
                                 onClick={() => dispatch(setSelectedCustomer(customer))}
                                 key={index} className='border cursor-pointer border-neutral-700 bg-neutral-900  hover:bg-neutral-800 transition-colors duration-300'>
@@ -85,6 +86,12 @@ export default function page() {
                                 </td>
                             </tr>
                         ))}
+                        </> : <tr className='border cursor-pointer border-neutral-700 bg-neutral-900  hover:bg-neutral-800 transition-colors duration-300'>
+                            <td colSpan={7} className='px-1 md:px-4 py-2 text-sm text-white text-center'>
+                                No customers found.
+                            </td>
+                        </tr>}
+                       
 
                         {/* More orders can be added here */}
                     </tbody>

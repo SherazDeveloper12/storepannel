@@ -32,7 +32,7 @@ export default function useProductForm() {
      const status = useSelector((state) => state.products.status)
     const existingProduct = products.find(prod => prod._id === editingProductId);
     useEffect(() => {
-        const discountedPrice = price - (price * (discount / 100));
+        const discountedPrice = Math.round(price - (price * (discount / 100)));
         setPayableAmount(discountedPrice);
     },[discount, price])
 
