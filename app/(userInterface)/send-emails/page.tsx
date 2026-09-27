@@ -1,21 +1,22 @@
 'use client'
 import PageStarter from '@/app/components/PageStarter/PageStarter'
 import Selection from '@/app/components/Selection/Selection'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { contactCustomer } from '@/app/store/slices/customerSlice'
 import { motion } from 'motion/react'
 import { div } from 'motion/react-m'
 import React, { use, useEffect, } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+
 
 export default function page() {
-  const selectedCustomer = useSelector((state) => state.customer.selectedcustomer)
+  const selectedCustomer = useAppSelector((state) => state.customer.selectedcustomer)
   
  console.log("selected customer in send email page", selectedCustomer)
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [subject, setSubject] = React.useState('');
   const [body, setBody] = React.useState('');
   const [selectedEmail, setSelectedEmail] = React.useState('');
-  const customers = useSelector((state) => state.customer.customers)
+  const customers = useAppSelector((state) => state.customer.customers)
   const sendemailhandler = () => {
     
     dispatch(contactCustomer({ customerEmail: selectedEmail, subject, message: body }));

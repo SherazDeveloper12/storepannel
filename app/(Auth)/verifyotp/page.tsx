@@ -1,16 +1,16 @@
 'use client'
 import React, { useEffect, useRef } from 'react'
 import { Toaster, toast } from 'sonner';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/dist/client/components/navigation';
 import { otpSend, otpVerify } from '../../store/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
 
 
 export default function page() {
     const router = useRouter();
-    const { user, loading, message, error, isAuthenticated } = useSelector((state: any) => state.auth);
+    const { user, loading, message, error, isAuthenticated } = useAppSelector((state: any) => state.auth);
     const email = user?.email || localStorage.getItem("email");
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const otphasbeenSent = useRef(false);
     
     const [formData, setFormData] = React.useState({

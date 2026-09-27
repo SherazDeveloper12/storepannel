@@ -1,16 +1,16 @@
 'use client'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
 import { logout } from '@/app/store/slices/authSlice';
 import { toggleSidebar } from '@/app/store/slices/settingSlice';
 import { ArrowLeft, ArrowRight, Bell, LayoutDashboard, LogOut, Mail, Package, Settings, ShoppingCart, Store, TicketPercent, Users } from 'lucide-react';
 import { AnimatePresence, motion, } from 'motion/react';
 import { usePathname, useRouter, } from 'next/navigation';
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 export default function SideBar({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void } = {}) {
-  const sidebarOpen = useSelector((state: any) => state.setting.sidebarOpen);
+  const sidebarOpen = useAppSelector((state: any) => state.setting.sidebarOpen);
   // the mobile drawer is always expanded, only the desktop rail collapses
   const isOpen = mobile ? true : sidebarOpen;
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state: any) => state.auth.user);
 
   const items = [
     { label: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
@@ -24,8 +24,8 @@ export default function SideBar({ mobile = false, onNavigate }: { mobile?: boole
   ];
   const router = useRouter();
   const pathname = usePathname();
-  const dispatch = useDispatch();
-  const notification = useSelector((state: any) => state.setting.notifications);
+  const dispatch = useAppDispatch();
+  const notification = useAppSelector((state: any) => state.setting.notifications);
   const unreadNotifications = notification.filter((notification: any) => notification.isRead === false);
 
   const handleLogout = () => {

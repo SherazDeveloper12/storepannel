@@ -7,13 +7,14 @@ import Selection from '@/app/components/Selection/Selection';
 import RadioInput from '@/app/components/Radio/RadioInput';
 import useProductForm from '@/app/hooks/useAddProductForm';
 import { Pen, Trash2, X } from 'lucide-react';
-import { useSelector } from 'react-redux';
+
 import { motion } from 'motion/react';
+import { useAppSelector } from '@/app/store/hooks';
 export default function page() {
 
 
-  const { categories } = useSelector((state: any) => state.categories);
-  const { brands } = useSelector((state: any) => state.brands);
+  const { categories } = useAppSelector((state: any) => state.categories);
+  const { brands } = useAppSelector((state: any) => state.brands);
 
   const {
     AddProduct,

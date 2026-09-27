@@ -3,13 +3,13 @@ import ImageUploader from '@/app/components/ImageUploader/ImageUploader';
 import PageStarter from '@/app/components/PageStarter/PageStarter'
 import React, { useEffect } from 'react'
 import { addCategory, deleteCategory, updateCategory, updateCategoryLocally } from '@/app/store/slices/categorySlice'
-import { useDispatch, useSelector } from 'react-redux';
 import { addBrand, deleteBrand, updateBrand, updateBrandLocally } from '@/app/store/slices/brandSlice'
 import { motion } from 'motion/react';
 import { Pen, Save, Trash2 } from 'lucide-react';
 import { updateProfile } from '@/app/store/slices/authSlice';
+import { useAppDispatch,  useAppSelector } from '@/app/store/hooks';
 export default function page() {
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state: any) => state.auth.user);
 
   const [data, setDate] = React.useState({
     storeName: '',
@@ -30,8 +30,8 @@ export default function page() {
     }
   }, [user])
 
-  const { categories } = useSelector((state: any) => state.categories);
-  const { brands } = useSelector((state: any) => state.brands);
+  const { categories } = useAppSelector((state: any) => state.categories);
+  const { brands } = useAppSelector((state: any) => state.brands);
   const [addStorePaymentMethod, setAddStorePaymentMethod] = React.useState(false);
   const [updateStorePaymentMethod, setUpdateStorePaymentMethod] = React.useState(null);
   console.log('updateStorePaymentMethod', updateStorePaymentMethod);
@@ -46,7 +46,7 @@ export default function page() {
       });
     }
   }, [updateStorePaymentMethod])
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (updateStorePaymentMethod !== null) {
@@ -347,7 +347,7 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
 
 
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if (editingItem) {
 

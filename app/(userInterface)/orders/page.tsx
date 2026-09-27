@@ -1,20 +1,21 @@
 'use client'
-import OrderInvoice from '@/app/components/OrderInvoice/OrderInvoice';
+
 import PageStarter from '@/app/components/PageStarter/PageStarter'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
 import { clearSelectedOrderId, setSelectedOrderId, updateOrderStatus } from '@/app/store/slices/orderSlice';
 import { CircleArrowLeft, CircleDollarSign, Eye, Package, PackagePlus, ShoppingBag, User } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/dist/client/link';
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function page() {
     useEffect(() => {
         dispatch(clearSelectedOrderId());
     }, []);
-    const { orders, selectedOrderId } = useSelector((state: any) => state.orders);
+    const { orders, selectedOrderId } = useAppSelector((state: any) => state.orders);
     const selectedOrder = orders.find((order) => order._id === selectedOrderId);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const reversedOrders = orders.toReversed();
     // pagination
     const [currentPage, setCurrentPage] = useState(1);

@@ -1,12 +1,12 @@
 import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@/app/store/hooks';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function DoughnutChart() {
-const orders = useSelector((state: any) => state.orders.orders)
+const orders = useAppSelector((state: any) => state.orders.orders)
 console.log(orders, 'orders length:', orders?.length);
 // ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
 const pendingOrders =  orders?.filter((order) => order.status === 'Pending');

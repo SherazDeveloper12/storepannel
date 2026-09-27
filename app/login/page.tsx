@@ -1,14 +1,14 @@
 'use client'
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../store/slices/authSlice';
 import { useRouter } from 'next/navigation';
-import { toast, Toaster } from 'sonner';
+
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 export default function page() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const router = useRouter();
-    const { isAuthenticated,  loading } = useSelector((state: any) => state.auth);
+    const { isAuthenticated,  loading } = useAppSelector((state: any) => state.auth);
     const [formData, setFormData] = React.useState({ email: '', password: '' });
     useEffect(() => {
      

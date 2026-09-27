@@ -4,7 +4,7 @@ import { useRouter } from 'next/dist/client/components/navigation';
 import React, { ReactNode, useEffect } from 'react'
 import SideBar from '../components/SideBar/SideBar';
 import { fetchDataLocally, getme } from '../store/slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { fetchProducts, fetchProductsLocally } from '../store/slices/productsSlice';
 import { fetchCategories, fetchCategoriesLocally } from '../store/slices/categorySlice';
 import { fetchBrands, fetchBrandsLocally } from '../store/slices/brandSlice';
@@ -15,8 +15,9 @@ import { fetchNotifications, fetchNotificationsLocally } from '../store/slices/s
 import { fetchCoupons, fetchCouponsLocally } from '../store/slices/couponSlice';
 import { FetchAllcustomers, fetchAllcustomersLocally } from '../store/slices/customerSlice';
 import Link from 'next/link';
+import { useAppDispatch } from '../store/hooks';
 export default function layout({ children }: { children: ReactNode }) {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
 
@@ -38,10 +39,10 @@ export default function layout({ children }: { children: ReactNode }) {
     dispatch(fetchNotificationsLocally())
   }, [])
   const router = useRouter();
-  const user = useSelector((state: any) => state.auth.user);
-  const notification = useSelector((state: any) => state.setting.notifications);
+  const user = useAppSelector((state: any) => state.auth.user);
+  const notification = useAppSelector((state: any) => state.setting.notifications);
   const unreadNotifications = notification.filter((notification: any) => notification.isRead === false);
-  const sidebarOpen = useSelector((state: any) => state.setting.sidebarOpen);
+  const sidebarOpen = useAppSelector((state: any) => state.setting.sidebarOpen);
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   return (
     <div

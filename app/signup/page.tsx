@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../store/slices/authSlice';
 import { useRouter } from 'next/dist/client/components/navigation';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 interface FormData {
     userName: string;
     storeName: string;
@@ -11,7 +11,7 @@ interface FormData {
     password: string;
 }
 export default function page() {
-    const {user, loading, } = useSelector((state: any) => state.auth);
+    const {user, loading, } = useAppSelector((state: any) => state.auth);
   const router = useRouter();
     useEffect(() => {
         
@@ -22,7 +22,7 @@ export default function page() {
         }
        
     }, [user]);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [formData, setFormData] = React.useState<FormData>({
         userName: '',
         storeName: '',

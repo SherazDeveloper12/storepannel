@@ -1,15 +1,15 @@
 'use client'
 import PageStarter from '@/app/components/PageStarter/PageStarter'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { createCoupon, deleteCoupon, updateCoupon, addSelectedCouponId } from '@/app/store/slices/couponSlice'
 import { RootState } from '@reduxjs/toolkit/query/react'
 import { Delete, Eye, Pen, ShieldX, Trash2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { toast, Toaster } from 'sonner'
+
 
 export default function page() {
-  const { Coupons, status, error, message, SelectedCouponId } = useSelector((state: RootState) => state.coupon);
+  const { Coupons, status, error, message, SelectedCouponId } = useAppSelector((state: RootState) => state.coupon);
   const selectedCoupon = Coupons.find(coupon => coupon._id === SelectedCouponId);
   const reversedCoupons = Coupons.toReversed()
  useEffect(() => {
@@ -25,7 +25,7 @@ export default function page() {
   }
  },[SelectedCouponId])
   const [GenerateCoupon, setGenerateCoupon] = useState(false)
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [couponFormData, setCouponFormData] = useState({
     couponName: '',
     couponCode: '',

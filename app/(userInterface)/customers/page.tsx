@@ -1,17 +1,18 @@
 "use client"
 import PageStarter from '@/app/components/PageStarter/PageStarter'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { setSelectedcustomer } from '@/app/store/slices/customerSlice'
 import { RootState } from '@reduxjs/toolkit/query/react'
-import { Eye, Mail } from 'lucide-react'
+import { Mail } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+
 
 export default function page() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const router = useRouter();
-    const customers = useSelector((state: RootState) => state.customer.customers)
+    const customers = useAppSelector((state: RootState) => state.customer.customers)
     const reversedCustomers = customers.toReversed()
     console.log("customers in customer page", reversedCustomers)
     return (

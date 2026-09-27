@@ -1,15 +1,16 @@
 'use client'
 import PageStarter from '@/app/components/PageStarter/PageStarter'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { markAsRead, MarkNotificationsAsRead } from '@/app/store/slices/settingSlice'
 import { ChartNoAxesCombined, Megaphone, Package, Settings, ShoppingCart, Store, Tag } from 'lucide-react'
 import { motion } from 'motion/react'
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+
 
 export default function page() {
-  const notifications = useSelector((state) => state.setting.notifications)
+  const notifications = useAppSelector((state) => state.setting.notifications)
   const unreadNotifications = notifications.filter((notification) => notification.isRead === false)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   console.log("notifications in notification page", notifications)
   const tempnotfications = [
     {

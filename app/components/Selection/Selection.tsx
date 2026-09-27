@@ -1,6 +1,4 @@
-import { addBrand, addBrandlocally, addCategory, addCategorylocally, updateSettings } from '@/app/store/slices/settingSlice';
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 export default function Selection({ options, name, value, setValue }) {
     const [selectedValue, setSelectedValue] = React.useState(`${value}`);  

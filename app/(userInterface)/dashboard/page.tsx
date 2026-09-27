@@ -3,9 +3,9 @@ import PageStarter from '@/app/components/PageStarter/PageStarter'
 import { ArrowUpIcon, Clock, DollarSign, Eye, Package, ShoppingBag, TrendingUp } from 'lucide-react';
 import { motion } from 'motion/react';
 import React from 'react'
-import { useSelector } from 'react-redux';
-import PieChart from '@/app/components/PieChart/PieChart'
+
 import DoughnutChart from '@/app/components/DoughnutChart/DoughnutChart';
+import { useAppSelector } from '@/app/store/hooks';
 export default function page() {
   return (
     <div className='w-full min-w-0 flex flex-col gap-2 '>
@@ -20,8 +20,8 @@ export default function page() {
 
 function DashboardHeader() {
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
-  const orders = useSelector((state) => state.orders.orders)
-  const products = useSelector((state) => state.products.Products)
+  const orders = useAppSelector((state) => state.orders.orders)
+  const products = useAppSelector((state) => state.products.Products)
   const productCount = products ? products.length : 0;
   const reversedOrders = orders.toReversed();
   const recent6Orders = reversedOrders.slice(0, 6);

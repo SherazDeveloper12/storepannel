@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { createProduct, deleteProduct, updateProduct } from "../store/slices/productsSlice";
 import { useRouter, useParams } from 'next/navigation';
 
@@ -26,10 +26,10 @@ export default function useProductForm() {
     const [discount, setdiscount] = useState(0);
     const [editMode, setEditMode] = useState(false);
     const [payableAmount, setPayableAmount] = useState(0);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     
-    const products = useSelector((state) => state.products.Products)
-     const status = useSelector((state) => state.products.status)
+    const products = useAppSelector((state) => state.products.Products)
+     const status = useAppSelector((state) => state.products.status)
     const existingProduct = products.find(prod => prod._id === editingProductId);
     useEffect(() => {
         const discountedPrice = Math.round(price - (price * (discount / 100)));
