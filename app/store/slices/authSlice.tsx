@@ -1,6 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 import { toast } from "sonner";
+import type { AuthState } from "@/app/types/store";
+import { getApiErrorMessage } from "@/app/store/apiError";
+
+type ProfileUpdates = Partial<{
+  userName: string;
+  storeName: string;
+  storeURL: string;
+}>;
+
+const initialState: AuthState = {
+  user: null,
+  token: null,
+  message: null,
+  isAuthenticated: false,
+  loading: false,
+  error: null,
+};
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const registerUser = createAsyncThunk(
@@ -11,12 +28,9 @@ export const registerUser = createAsyncThunk(
         withCredentials: true, // Include cookies in the request
       });
       return response.data;
-    } catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-      throw error;
-    }
+    } catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   }
 );
 export const otpSend = createAsyncThunk(
@@ -27,12 +41,9 @@ export const otpSend = createAsyncThunk(
         withCredentials: true, // Include cookies in the request
       });
       return response.data;
-    } catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-      throw error;
-    }
+    } catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   }
 );
 export const otpVerify = createAsyncThunk(
@@ -46,12 +57,9 @@ export const otpVerify = createAsyncThunk(
         }
       );
       return response.data;
-    } catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-      throw error;
-    }
+    } catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   }
 );
 export const getme = createAsyncThunk(
@@ -63,12 +71,9 @@ export const getme = createAsyncThunk(
       });
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-      throw error;
-    }
+   catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   }
 )
 export const login = createAsyncThunk(
@@ -80,12 +85,9 @@ export const login = createAsyncThunk(
       });
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-      throw error;
-    }
+   catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   }
 )
 export const logout = createAsyncThunk(
@@ -97,44 +99,30 @@ export const logout = createAsyncThunk(
       });
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-      throw error;
-    }
+    catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   }
 )
 export const updateProfile = createAsyncThunk(
   "auth/updateProfile",
-  async (data: { updates: any }) => {
+  async (data: ProfileUpdates) => {
     try {
       const response = await axios.put(`${BASE_URL}/auth/update`, data, {
         withCredentials: true, // Include cookies in the request
       });
       console.log("updateProfile response:", response.data); // Log the response data
       return response.data;
-    } catch (error) {
-      if (error.response) {
-        console.error("updateProfile error response:", error.response.data); // Log the error response data
-        throw error.response.data;
-      }
-      throw error;
-    }
+    } 
+   catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   }
 );
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    user: null,
-    token: null,
-    message: null,
-    isAuthenticated: false,
-    loading: false,
-    error: null,
-
-  },
+  initialState,
   reducers: {
     fetchDataLocally: (state) => {
       const email = localStorage.getItem("email");

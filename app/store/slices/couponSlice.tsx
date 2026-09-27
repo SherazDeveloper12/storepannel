@@ -2,7 +2,32 @@ import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 
 import axios from 'axios';
 import { toast } from "sonner";
+import type {
+  Coupon,
+  CouponState,
+  RequestStatus,
+} from "@/app/types/store";
+import { getApiErrorMessage } from "@/app/store/apiError";
 
+type CouponInput = Omit<Coupon, "_id">;
+type CouponThunkConfig = {
+  rejectValue: string;
+};
+interface CouponResponse {
+  message: string;
+  coupon: Coupon;
+}
+
+interface UpdateCouponResponse {
+  updatedcoupon: Coupon;
+}
+const initialState: CouponState = {
+  Coupons: [],
+  SelectedCouponId: null,
+  status: "idle",
+  error: null,
+  message: null,
+};
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -39,32 +64,38 @@ export const updateCoupon = createAsyncThunk(
             return error.data.message;
         }
     });
-export const deleteCoupon = createAsyncThunk(
-    "Coupons/deleteCoupon",
-    async (CouponId) => {
-        try {
-            const response = await axios.delete(`${BASE_URL}/coupons/delete/${CouponId}`,{ withCredentials: true } );
-            return CouponId;
-        } catch (error) {
-            return error.data.message;
-        }
+export const deleteCoupon = createAsyncThunk<
+  string,
+  string,
+  CouponThunkConfig
+>("Coupons/deleteCoupon", async (couponId, { rejectWithValue }) => {
+  try {
+    await axios.delete(`${BASE_URL}/coupons/delete/${couponId}`, {
+      withCredentials: true,
     });
-export const createCoupon = createAsyncThunk(
-    "Coupons/createCoupon",
-    async (newCoupon) => {
-        try {
-            console.log("newCoupon in createCoupon api call", newCoupon)
-            const response = await axios.post(`${BASE_URL}/coupons/create`, newCoupon, 
-            { withCredentials: true }
-            );
-           console.log("response.data in createCoupon api call", response.data)
-            return response.data;
-        } catch (error) {
-            console.log("error in createCoupon api call", error)
-            throw error.response.data.message; // Throw the error to be caught in the rejected case
-        }
-    }
-);
+
+    return couponId;
+  } catch (error: unknown) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
+export const createCoupon = createAsyncThunk<
+  CouponResponse,
+  CouponInput,
+  CouponThunkConfig
+>("Coupons/createCoupon", async (newCoupon, { rejectWithValue }) => {
+  try {
+    const response = await axios.post<CouponResponse>(
+      `${BASE_URL}/coupons/create`,
+      newCoupon,
+      { withCredentials: true }
+    );
+
+    return response.data;
+  } catch (error: unknown) {
+    return rejectWithValue(getApiErrorMessage(error));
+  }
+});
 export const CouponSlice = createSlice({
     name: "Coupons",
     initialState: {
@@ -101,7 +132,7 @@ export const CouponSlice = createSlice({
         });
         builder.addCase(fetchCoupons.rejected, (state, action) => {
             state.status = "failed";
-            state.error = action.error;
+           state.error = action.error.message ?? "Failed to fetch coupons";
             
         });
         builder.addCase(createCoupon.pending, (state) => {
@@ -171,5 +202,5 @@ export const CouponSlice = createSlice({
     }
 });
 
-export const { setFilters, clearFilters, addSelectedCouponId, fetchCouponsLocally,  } = CouponSlice.actions;
+export const {  addSelectedCouponId, fetchCouponsLocally,  } = CouponSlice.actions;
 export default CouponSlice.reducer;

@@ -1,7 +1,22 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 
 import axios from 'axios';
+import type {
+  CatalogItem,
+  Notification,
+  SettingState,
+} from "@/app/types/store";
+import { getApiErrorMessage } from "@/app/store/apiError";
 
+const initialState: SettingState = {
+  categories: [],
+  brands: [],
+  notifications: [],
+  loading: false,
+  message: "",
+  sidebarOpen: true,
+  error: null,
+};
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const fetchNotifications = createAsyncThunk(
     'notifications/fetchNotifications',
@@ -19,20 +34,20 @@ export const fetchNotifications = createAsyncThunk(
         }
     }
 );
-export const MarkNotificationsAsRead = createAsyncThunk(
-    "notifications/markAsRead",
-    async (Notifcations) => {
-        try {
-            const response = await axios.put(`${BASE_URL}/notifications/mark-notifications-as-read`, { notifications: Notifcations }, {
-                withCredentials: true,});
-            return response.data;
-        } catch (error) {
-            if (error.response) {
-                throw error.response.data;
-            }
-            throw error;
-        }
-    }
+export const MarkNotificationsAsRead = createAsyncThunk<
+  unknown,
+  Notification[]
+>(
+  "notifications/markAsRead",
+  async (notifications) => {
+    const response = await axios.put(
+      `${BASE_URL}/notifications/mark-notifications-as-read`,
+      { notifications },
+      { withCredentials: true }
+    );
+
+    return response.data;
+  }
 );
 export const fetchSettings = createAsyncThunk(
     'setting/fetchSettings',
@@ -75,15 +90,7 @@ export const addBrand = createAsyncThunk('setting/addBrand',
 );
 export const SettingSlice = createSlice({
     name: "setting",
-    initialState: {
-        categories: [],
-        notifications: [],
-        brands: [],
-        loading: false,
-        message: '',
-        sidebarOpen: true,
-        error: null,
-    },
+    initialState,
     reducers: {
         fetchNotificationsLocally: (state) => {
             const notifications = localStorage.getItem('notifications');

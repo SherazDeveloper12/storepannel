@@ -1,6 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
+import type { CatalogItem, CatalogState } from "@/app/types/store";
+import { getApiErrorMessage } from "@/app/store/apiError";
+interface BrandState {
+  brands: CatalogItem[];
+  loading: boolean;
+  error: string | null;
+  message: string | null;
+}
 
+const initialState: BrandState = {
+  brands: [],
+  loading: false,
+  error: null,
+  message: null,
+};
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const fetchBrands = createAsyncThunk(
   "brand/fetchbrands",
@@ -12,12 +26,9 @@ export const fetchBrands = createAsyncThunk(
       
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-        throw error;
-    }
+  catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   })
 export const addBrand = createAsyncThunk(
   "brand/addbrand",
@@ -29,12 +40,9 @@ export const addBrand = createAsyncThunk(
       });
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-        throw error;
-    }})
+  catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}})
 export const deleteBrand = createAsyncThunk(
   "brand/deletebrand",
   async (brandId: string) => {
@@ -44,12 +52,9 @@ export const deleteBrand = createAsyncThunk(
         });
         return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-        throw error;
-    }
+  catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
     })
 export const updateBrand = createAsyncThunk(
   "brand/updatebrand",
@@ -63,21 +68,13 @@ export const updateBrand = createAsyncThunk(
       });
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-        throw error;
-    }
+  catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   })
 export const brandSlice = createSlice({
   name: "brand",
-  initialState: {
-    brands: [],
-    loading: false,
-    error: null,
-    message: null,
-    },
+  initialState,
     reducers: {
       fetchBrandsLocally: (state, action) => {
         const brands = localStorage.getItem('brands');

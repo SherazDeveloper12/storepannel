@@ -1,5 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
+import type {
+  Order,
+  OrderState,
+} from "@/app/types/store";
+import { getApiErrorMessage } from "@/app/store/apiError";
+
+interface UpdateOrderStatusInput {
+  orderId: string;
+  newStatus: string;
+}
+
+interface OrdersResponse {
+  orders: Order[];
+}
+const initialState: OrderState = {
+  orders: [],
+  selectedOrderId: null,
+  status: "idle",
+  error: null,
+};
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -20,48 +40,35 @@ export const FetchAllOrders = createAsyncThunk(
     }
 );
 
-export const updateOrderStatus = createAsyncThunk(
-    "order/updateOrderStatus",
-    async ({ orderId, newStatus }) => {
-        try {
-            const response = await axios.put(`${BASE_URL}/orders/update-status/${orderId}`, { status: newStatus }, {
-               withCredentials: true,
-            });
-            const data = await response.data;
-            console.log("Order status updated successfully:", data);
-            return data;
-        } catch (error) {
-            console.error("Error updating order status:", error);
-            if (error.response) {
-                throw error.response.data;
-            }
-            throw error;
-        }
-    }
+export const updateOrderStatus = createAsyncThunk<
+  Order,
+  UpdateOrderStatusInput
+>(
+  "order/updateOrderStatus",
+  async ({ orderId, newStatus }) => {
+    const response = await axios.put<Order>(
+      `${BASE_URL}/orders/update-status/${orderId}`,
+      { status: newStatus },
+      { withCredentials: true }
+    );
+
+    return response.data;
+  }
 );
-export const fetchOrdersbyuserid = createAsyncThunk(
-    "order/fetchOrdersbyuserid",
-    async (id) => {
-        try {
-            const response = await axios.get(`${BASE_URL}/orders/user/${id}`);
-            const data = await response.data.orders;
-            return data;
-        } catch (error) {
-            if (error.response) {
-                throw error.response.data;
-            }
-            throw error;
-        }
-    });
+export const fetchOrdersbyuserid = createAsyncThunk<
+  Order[],
+  string
+>("order/fetchOrdersbyuserid", async (id) => {
+  const response = await axios.get<OrdersResponse>(
+    `${BASE_URL}/orders/user/${id}`
+  );
+
+  return response.data.orders;
+});
 
 export const orderSlice = createSlice({
     name: "order",
-    initialState: {
-        orders: [],
-        selectedOrderId: null,
-        status: "idle",
-        error: null,
-    },
+    initialState,
     reducers: {
         setSelectedOrderId: (state, action) => {
             state.selectedOrderId = action.payload;

@@ -1,7 +1,21 @@
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
-
+import type { CatalogItem, CatalogState } from "@/app/types/store";
+import { getApiErrorMessage } from "@/app/store/apiError";
+interface CategoryState {
+  categories: CatalogItem[];
+  loading: boolean;
+  error: string | null;
+  message: string | null;
+}
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const initialState: CategoryState = {
+  categories: [],
+  loading: false,
+  error: null,
+  message: null,
+};
 export const fetchCategories = createAsyncThunk(
   "category/fetchCategories",
   async () => {
@@ -12,12 +26,9 @@ export const fetchCategories = createAsyncThunk(
      
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-        throw error;
-    }
+  catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   })
 export const addCategory = createAsyncThunk(
   "category/addCategory",
@@ -29,12 +40,9 @@ export const addCategory = createAsyncThunk(
       });
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-        throw error;
-    }})
+  catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}})
 export const deleteCategory = createAsyncThunk(
   "category/deleteCategory",
   async (categoryId: string) => {
@@ -44,12 +52,9 @@ export const deleteCategory = createAsyncThunk(
         });
         return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-        throw error;
-    }
+  catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
     })
 export const updateCategory = createAsyncThunk(
   "category/updateCategory",
@@ -63,12 +68,9 @@ export const updateCategory = createAsyncThunk(
       });
       return response.data;
     }
-    catch (error) {
-      if (error.response) {
-        throw error.response.data;
-      }
-        throw error;
-    }
+  catch (error: unknown) {
+  throw new Error(getApiErrorMessage(error));
+}
   })
 export const CategorySlice = createSlice({
   name: "category",

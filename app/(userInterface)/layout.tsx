@@ -15,7 +15,7 @@ import { fetchNotifications, fetchNotificationsLocally } from '../store/slices/s
 import { fetchCoupons, fetchCouponsLocally } from '../store/slices/couponSlice';
 import { FetchAllcustomers, fetchAllcustomersLocally } from '../store/slices/customerSlice';
 import Link from 'next/link';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 export default function layout({ children }: { children: ReactNode }) {
   const dispatch = useAppDispatch()
 
