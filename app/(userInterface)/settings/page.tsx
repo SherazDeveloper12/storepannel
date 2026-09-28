@@ -8,15 +8,16 @@ import { motion } from 'motion/react';
 import { Pen, Save, Trash2 } from 'lucide-react';
 import { updateProfile } from '@/app/store/slices/authSlice';
 import { useAppDispatch,  useAppSelector } from '@/app/store/hooks';
+import type { CatalogItem, PaymentMethod } from '@/app/types/store';
 export default function page() {
-  const user = useAppSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
 
   const [data, setDate] = React.useState({
     storeName: '',
     storeURL: '',
     storeDescription: '',
     storeDeliveryCharges: '',
-    storePaymentMethods: [],
+    storePaymentMethods: [] as PaymentMethod[],
   });
   useEffect(() => {
     if (user) {
@@ -30,34 +31,34 @@ export default function page() {
     }
   }, [user])
 
-  const { categories } = useAppSelector((state: any) => state.categories);
-  const { brands } = useAppSelector((state: any) => state.brands);
+  const { categories } = useAppSelector((state) => state.categories);
+  const { brands } = useAppSelector((state) => state.brands);
   const [addStorePaymentMethod, setAddStorePaymentMethod] = React.useState(false);
-  const [updateStorePaymentMethod, setUpdateStorePaymentMethod] = React.useState(null);
+  const [updateStorePaymentMethod, setUpdateStorePaymentMethod] = React.useState<number | null>(null);
   console.log('updateStorePaymentMethod', updateStorePaymentMethod);
   useEffect(() => {
     if (updateStorePaymentMethod !== null) {
       setPaymentMethodFormData({
-        type: user.storePaymentMethods[updateStorePaymentMethod].type || '',
-        accountName: user.storePaymentMethods[updateStorePaymentMethod].accountName || '',
-        accountNumber: user.storePaymentMethods[updateStorePaymentMethod].accountNumber || '',
-        enabled: user.storePaymentMethods[updateStorePaymentMethod].enabled || false,
-        bankName: user.storePaymentMethods[updateStorePaymentMethod].bankName || '',
+        type: user?.storePaymentMethods?.[updateStorePaymentMethod].type || '',
+        accountName: user?.storePaymentMethods?.[updateStorePaymentMethod].accountName || '',
+        accountNumber: user?.storePaymentMethods?.[updateStorePaymentMethod].accountNumber || '',
+        enabled: user?.storePaymentMethods?.[updateStorePaymentMethod].enabled || false,
+        bankName: user?.storePaymentMethods?.[updateStorePaymentMethod].bankName || '',
       });
     }
   }, [updateStorePaymentMethod])
   const dispatch = useAppDispatch();
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (updateStorePaymentMethod !== null) {
       // Update existing payment method
-      const updatedPaymentMethods = [...user.storePaymentMethods];
+      const updatedPaymentMethods = [...(user?.storePaymentMethods || [])];
       updatedPaymentMethods[updateStorePaymentMethod] = PaymentMethodFormData;
       dispatch(updateProfile({ storePaymentMethods: updatedPaymentMethods }));
     }
     else {
       // Add new payment method
-      dispatch(updateProfile({ storePaymentMethods: [...user.storePaymentMethods, PaymentMethodFormData] }));
+      dispatch(updateProfile({ storePaymentMethods: [...(user?.storePaymentMethods || []), PaymentMethodFormData] }));
     }
 
     setAddStorePaymentMethod(false);
@@ -83,12 +84,12 @@ export default function page() {
   };
 
   const handleDeleteClick = (index: number) => {
-    const updatedPaymentMethods = [...user.storePaymentMethods];
+    const updatedPaymentMethods = [...(user?.storePaymentMethods || [])];
     updatedPaymentMethods.splice(index, 1);
     dispatch(updateProfile({ storePaymentMethods: updatedPaymentMethods }));
   }
   const [editingStoreInfoItem, SeteditingStoreInfoItem] = React.useState('');
-  const handleCancelClick = (e) => {
+  const handleCancelClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setAddStorePaymentMethod(false);
     setUpdateStorePaymentMethod(null);
@@ -231,16 +232,16 @@ export default function page() {
                       <label htmlFor="itemname" className='font-semibold'>Select Payment Method:</label>
                       <select required value={PaymentMethodFormData.type} id="itemname" onChange={(e) => setPaymentMethodFormData({ ...PaymentMethodFormData, type: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2'>
                         <option value="" disabled selected>Select a payment method</option>
-                        {user?.storePaymentMethods.find((method: any) => method.type === "cod") ? null : (
+                        {user?.storePaymentMethods?.find((method) => method.type === "cod") ? null : (
                           <option value="cod">Cash on Delivery</option>
                         )}
-                        {user?.storePaymentMethods.find((method: any) => method.type === "easypaisa") ? null : (
+                        {user?.storePaymentMethods?.find((method) => method.type === "easypaisa") ? null : (
                           <option value="easypaisa">Easypaisa</option>
                         )}
-                        {user?.storePaymentMethods.find((method: any) => method.type === "jazzcash") ? null : (
+                        {user?.storePaymentMethods?.find((method) => method.type === "jazzcash") ? null : (
                           <option value="jazzcash">JazzCash</option>
                         )}
-                        {user?.storePaymentMethods.find((method: any) => method.type === "bank_transfer") ? null : (
+                        {user?.storePaymentMethods?.find((method) => method.type === "bank_transfer") ? null : (
                           <option value="bank_transfer">Bank Transfer</option>
                         )}
                       </select>
@@ -292,7 +293,7 @@ export default function page() {
                   </thead>
                   <tbody className='bg-neutral-900'>
                     {user?.storePaymentMethods ?
-                      user.storePaymentMethods.map((method: string, idx) =>
+                      user.storePaymentMethods.map((method: PaymentMethod, idx: number) =>
                         <tr key={idx} className='border border-neutral-600 hover:bg-neutral-700 transition-colors duration-300'>
                           <td className='p-2'>{method.type || 'NAN'}</td>
                           <td className='p-2'>{method.accountName || ''}</td>
@@ -324,7 +325,7 @@ export default function page() {
   )
 }
 
-function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdata?: string[], brandsdata?: string[] }) {
+function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdata?: CatalogItem[], brandsdata?: CatalogItem[] }) {
 
   const [editingmode, setEditingMode] = React.useState(false);
 
@@ -356,8 +357,8 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
 
         setCategoryFormdata({
           name: itemToEdit.name,
-          description: itemToEdit.description,
-          image: itemToEdit.image,
+          description: itemToEdit.description || '',
+          image: itemToEdit.image || '',
         });
       }
       else {
@@ -365,8 +366,8 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
         if (brandToEdit) {
           setBrandFormdata({
             name: brandToEdit.name,
-            description: brandToEdit.description,
-            image: brandToEdit.image,
+            description: brandToEdit.description || '',
+            image: brandToEdit.image || '',
           });
         }
       }
@@ -445,7 +446,7 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
                 <button className='bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
                   onClick={() => {
                     UpdateingMode ?
-                      categoriesdata ? handleUpdateCategory(editingItem) : handleUpdateBrand(editingItem)
+                      categoriesdata && editingItem ? handleUpdateCategory(editingItem) : editingItem ? handleUpdateBrand(editingItem) : null
                       :
                       categoriesdata ? handleAddCategory() : handleAddBrand();
                     setEditingMode(false);
@@ -456,7 +457,7 @@ function CategoriesBrandsManager({ categoriesdata, brandsdata }: { categoriesdat
                   onClick={() => {
                     setEditingMode(false);
                     setUpdatingMode(false);
-                    setcategoryFormdata({
+                    setCategoryFormdata({
                       name: '',
                       description: '',
                       image: '',

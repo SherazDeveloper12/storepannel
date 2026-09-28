@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { registerUser } from '../store/slices/authSlice';
 import { useRouter } from 'next/dist/client/components/navigation';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-interface FormData {
+interface SignupFormData {
     userName: string;
     storeName: string;
     email: string;
@@ -23,7 +23,7 @@ export default function page() {
        
     }, [user]);
     const dispatch = useAppDispatch();
-    const [formData, setFormData] = React.useState<FormData>({
+    const [formData, setFormData] = React.useState<SignupFormData>({
         userName: '',
         storeName: '',
         email: '',
@@ -31,7 +31,9 @@ export default function page() {
     });
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(registerUser(formData));
+        const payload = new globalThis.FormData();
+        Object.entries(formData).forEach(([key, value]) => payload.append(key, value));
+        dispatch(registerUser(payload));
         // Handle form submission logic here
        
     }

@@ -3,6 +3,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 import type { CatalogItem, CatalogState } from "@/app/types/store";
 import { getApiErrorMessage } from "@/app/store/apiError";
+interface CategoryInput {
+  name: string;
+  description: string;
+  image: string;
+}
 interface CategoryState {
   categories: CatalogItem[];
   loading: boolean;
@@ -32,7 +37,7 @@ export const fetchCategories = createAsyncThunk(
   })
 export const addCategory = createAsyncThunk(
   "category/addCategory",
-  async (categoryData: FormData) => {
+  async (categoryData: CategoryInput) => {
     try {
     
       const response = await axios.post(`${BASE_URL}/categories/addCategory`, categoryData, {
@@ -59,7 +64,7 @@ export const deleteCategory = createAsyncThunk(
 export const updateCategory = createAsyncThunk(
   "category/updateCategory",
   
-  async (data: { categoryId: string, categoryData: FormData }) => {
+  async (data: { categoryId: string, categoryData: CategoryInput }) => {
     
     try {
     
@@ -74,14 +79,9 @@ export const updateCategory = createAsyncThunk(
   })
 export const CategorySlice = createSlice({
   name: "category",
-  initialState: {
-    categories: [],
-    loading: false,
-    error: null,
-    message: null,
-    },
+  initialState,
     reducers: {
-      fetchCategoriesLocally: (state, action) => {
+      fetchCategoriesLocally: (state) => {
         const categories = localStorage.getItem('categories');
         if (categories) {
           state.categories = JSON.parse(categories);

@@ -46,6 +46,8 @@ export interface ProductState {
 export interface CatalogItem {
   _id: string;
   name: string;
+  description?: string;
+  image?: string;
 }
 
 export interface CatalogState {
@@ -62,6 +64,9 @@ export interface Coupon {
   discountPercentage: number;
   expirationDate: string;
   maxUsage: number;
+  usedtimes?: number;
+  status?: "active" | "expired" | "used" | string;
+  createdAt?: string;
 }
 
 export interface CouponState {
@@ -90,6 +95,15 @@ export interface Order {
   phoneNumber?: string;
   shippingAddress?: OrderAddress;
   billingAddress?: OrderAddress;
+  items?: Array<{
+    product?: Product;
+    quantity: number;
+    price?: number;
+  }>;
+  paymentMethod?: string;
+  paymentReceipt?: string;
+  couponApplied?: boolean;
+  couponDiscount?: number;
 }
 
 export interface OrderState {
@@ -103,6 +117,17 @@ export interface Notification {
   _id: string;
   isRead: boolean;
   message?: string;
+  createdAt?: string;
+  type?: "General" | "Order" | "Coupon" | "Product" | "Growth" | "System" | "Promotional" | string;
+}
+
+export interface Customer {
+  _id: string;
+  name: string;
+  city?: string;
+  totalOrders?: number;
+  email: string;
+  phoneNumber?: string;
   createdAt?: string;
 }
 
@@ -123,6 +148,17 @@ export interface AuthUser {
   userName: string;
   storeName: string;
   storeURL?: string;
+  storeDescription?: string;
+  storeDeliveryCharges?: string;
+  storePaymentMethods?: PaymentMethod[];
+}
+
+export interface PaymentMethod {
+  type: string;
+  accountName?: string;
+  accountNumber?: string;
+  bankName?: string;
+  enabled: boolean;
 }
 
 export interface AuthState {

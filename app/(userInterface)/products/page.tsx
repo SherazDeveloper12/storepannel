@@ -87,7 +87,7 @@ export default function page() {
             onSubmit={(e) => { e.preventDefault(); editMode ? handleUpdateProductClick(product) : handleAddProductClick(product) }}
             className='bg-neutral-800 border border-neutral-600 rounded-lg p-3 md:p-4 flex flex-col lg:flex-row gap-6 lg:gap-4 w-full'>
             <div className='flex-1 min-w-0 w-full'>
-              <ImageUploader value={images[images.length - 1]} setValue={(value) => setimages(prevImages => [...prevImages, value])} />
+              <ImageUploader value={images[images.length - 1]} setValue={(value: string) => setimages(prevImages => [...prevImages, value])} />
               <div>
                 <p className='font-semibold mt-2'>Uploaded Images:</p>
                 <div className='flex gap-2 mt-1 flex-wrap '>
@@ -101,27 +101,27 @@ export default function page() {
             </div>
             <div className='flex-1 min-w-0 w-full'>
               <label htmlFor="ProductTitle" className='font-semibold'>Enter Product Title:</label>
-              <input required type="text" id="ProductTitle" placeholder='i.e Iphone 8 Plus' name="ProductTitle" required className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => settitle(e.target.value)} value={title} />
+              <input type="text" id="ProductTitle" placeholder='i.e Iphone 8 Plus' name="ProductTitle" required className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => settitle(e.target.value)} value={title} />
               <label htmlFor="ProductHeading" className='font-semibold'>Enter Product Heading:</label>
               <input type="text" id="ProductHeading" placeholder='i.e Iphone 8 Plus 64GB Factory Unlocked' name="ProductHeading" className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setheading(e.target.value)} value={heading} />
               <div className='flex flex-col sm:flex-row gap-2 sm:gap-2 '>
                 <div className='flex-1 min-w-0'>
                   <label htmlFor="ProductPrice" className='font-semibold'>Enter Product Price:</label>
-                  <input required type="number" id="ProductPrice" placeholder='i.e 699' name="ProductPrice" value={price} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setprice(e.target.value)} />
+                  <input required type="number" id="ProductPrice" placeholder='i.e 699' name="ProductPrice" value={price} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setprice(Number(e.target.value))} />
                 </div>
                 <div className='flex-1 min-w-0'>
                   <label htmlFor="ProductQuantity" className='font-semibold'>Quantity:</label>
-                  <input type="number" id="ProductQuantity" placeholder='i.e 12' name="ProductQuantity" min={1} value={quantity} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setquantity(e.target.value)} />
+                  <input type="number" id="ProductQuantity" placeholder='i.e 12' name="ProductQuantity" min={1} value={quantity} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setquantity(Number(e.target.value))} />
                 </div>
               </div>
               <div className='flex flex-col sm:flex-row gap-2 sm:gap-2 '>
                 <div className='flex-1 min-w-0'>
                   <label htmlFor="ProductDiscount" className='font-semibold'>Discount: (%)</label>
-                  <input type="number" id="ProductDiscount" placeholder='i.e 10' name="ProductDiscount" value={discount} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setdiscount(e.target.value)} />
+                  <input type="number" id="ProductDiscount" placeholder='i.e 10' name="ProductDiscount" value={discount} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setdiscount(Number(e.target.value))} />
                 </div>
                 <div className='flex-1 min-w-0'>
                   <label htmlFor="ProductRating" className='font-semibold'>Enter Product Rating:</label>
-                  <input type="number" id="ProductRating" placeholder='i.e 4.5' name="ProductRating" min={0} max={5} step={1} value={rating} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setrating(e.target.value)} />
+                  <input type="number" id="ProductRating" placeholder='i.e 4.5' name="ProductRating" min={0} max={5} step={1} value={rating} className="bg-neutral-900 border border-gray-300 rounded p-1 w-full" onChange={(e) => setrating(Number(e.target.value))} />
                 </div>
               </div>
               <label htmlFor="ProductDescription" className='font-semibold'>Enter Product Description:</label>
@@ -141,7 +141,7 @@ export default function page() {
               </div>
               <Selection options={categories} name="category" setValue={(value) => setcategory(value)} value={category} />
               <Selection options={brands} name="Brand" setValue={(value) => setbrand(value)} value={brand} />
-              <RadioInput options={["New", "Used", "Refurbished"]} name="Condition" setValue={(value) => setcondition(value)} value={condition} />
+              <RadioInput options={["New", "Used", "Refurbished"]} name="Condition" setValue={(value) => setcondition(value as typeof condition)} value={condition} />
               <button 
               type='submit'
               className='bg-red-500 text-white rounded px-4 py-2 mt-4 hover:bg-red-600' >{editMode ? "Update Product" : "Add Product"}</button>

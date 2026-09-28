@@ -7,14 +7,15 @@ import { CircleArrowLeft, CircleDollarSign, Eye, Package, PackagePlus, ShoppingB
 import { motion } from 'motion/react';
 import Link from 'next/dist/client/link';
 import React, { useEffect, useState } from 'react'
+import type { Order } from '@/app/types/store';
 
 
 export default function page() {
     useEffect(() => {
         dispatch(clearSelectedOrderId());
     }, []);
-    const { orders, selectedOrderId } = useAppSelector((state: any) => state.orders);
-    const selectedOrder = orders.find((order) => order._id === selectedOrderId);
+    const { orders, selectedOrderId } = useAppSelector((state) => state.orders);
+    const selectedOrder = orders.find((order: Order) => order._id === selectedOrderId);
     const dispatch = useAppDispatch();
     const reversedOrders = orders.toReversed();
     // pagination
@@ -25,23 +26,24 @@ export default function page() {
 
 
     const [ordercancelationpopup, setOrderCancelationPopup] = useState(false);
-    const [orderToCancel, setOrderToCancel] = useState("");
+    const [orderToCancel, setOrderToCancel] = useState<Order | null>(null);
     const [updateingStatus, setUpdatingStatus] = useState(false);
     const [statusToUpdate, setStatusToUpdate] = useState("");
     const handlePrevPage = () => { }
     const handleNextPage = () => { }
-    const handleordercancel = (order) => {
+    const handleordercancel = (order: Order) => {
         setOrderToCancel(order);
         setOrderCancelationPopup(true);
     }
     const ordercancelconfirmation = () => {
+        if (!orderToCancel) return;
         dispatch(updateOrderStatus({ orderId: orderToCancel._id, newStatus: "Cancelled" }))
         setOrderCancelationPopup(false);
     }
-    const handleViewClick = (order) => {
+    const handleViewClick = (order: Order) => {
         dispatch(setSelectedOrderId(order));
     }
-    const handleUpdateStatus = (order) => {
+    const handleUpdateStatus = (order: Order) => {
 
         dispatch(updateOrderStatus({ orderId: order._id, newStatus: statusToUpdate }));
 
@@ -64,7 +66,7 @@ export default function page() {
                     <div className='fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4'>
                         <div className='bg-neutral-800 p-4 rounded-lg shadow-lg w-full max-w-96'>
                             <h2 className='text-xl font-semibold mb-4'>Cancel Order</h2>
-                            <p className='mb-4'>Are you sure you want to cancel this ${orderToCancel.payableAmount} order?</p>
+                            <p className='mb-4'>Are you sure you want to cancel this {orderToCancel?.payableAmount} order?</p>
                             <div className='flex justify-end gap-4'>
                                 <button
                                     onClick={() => setOrderCancelationPopup(false)}
@@ -143,7 +145,7 @@ export default function page() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {reversedOrders.length > 0 ? <> {reversedOrders.map((order, index) => (
+                                    {reversedOrders.length > 0 ? <> {reversedOrders.map((order: Order, index: number) => (
                                         <tr
                                             onClick={() => dispatch(setSelectedOrderId(order._id))}
                                             key={index} className='border cursor-pointer border-neutral-700 bg-neutral-900 hover:bg-neutral-800 transition-colors duration-300'>
@@ -153,20 +155,20 @@ export default function page() {
                                                 <div className='flex items-center gap-2 min-w-max'>
                                                     <div className='rounded-full   bg-red-950/70 size-8 shrink-0 flex justify-center items-center'>
                                                         <p className='text-red-500 text-sm font-bold'>
-                                                            {order.shippingAddress.fullName[0]}
+                                                            {(order.shippingAddress?.fullName || '?')[0]}
                                                         </p>
 
                                                     </div>
                                                     <div className='min-w-0'>
-                                                        <p className='text-sm truncate max-w-40'>{order.shippingAddress.fullName}</p>
+                                                        <p className='text-sm truncate max-w-40'>{order.shippingAddress?.fullName || 'Unknown customer'}</p>
                                                         <p className='text-xs text-neutral-400 truncate max-w-40'>{order.email}</p>
                                                     </div>
 
                                                 </div>
                                             </td>
-                                            <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{order.shippingAddress.city}</td>
+                                            <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{order.shippingAddress?.city || 'N/A'}</td>
 
-                                            <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{order.items.length}</td>
+                                            <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{order.items?.length || 0}</td>
 
                                             <td className={`px-1 md:px-4 py-2  text-sm text-white `}>
                                                 <div
@@ -218,7 +220,7 @@ export default function page() {
 }
 
 
-function SeclectedOrder({ order }) {
+function SeclectedOrder({ order }: { order: Order }) {
     console.log("Selected Order:", order);
     return (
 
@@ -266,12 +268,12 @@ function SeclectedOrder({ order }) {
                         <div className='flex items-center gap-2'>
                             <div className='rounded-full   bg-red-950/70 size-12 shrink-0 flex justify-center items-center'>
                                 <p className='text-red-500 text-sm font-bold'>
-                                    {order.shippingAddress.fullName[0]}
+                                    {(order.shippingAddress?.fullName || '?')[0]}
                                 </p>
 
                             </div>
                             <div className='min-w-0'>
-                                <p className='truncate'>{order.shippingAddress.fullName}</p>
+                                <p className='truncate'>{order.shippingAddress?.fullName || 'Unknown customer'}</p>
                                 <p className='text-sm text-neutral-400 truncate'>{order.email}</p>
                             </div>
 
@@ -279,7 +281,7 @@ function SeclectedOrder({ order }) {
                     </div>
                     <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                         <p className='text-neutral-400'>Address</p>
-                        <p className='text-right min-w-0 flex-1 md:flex-none md:w-48 ' >{order.shippingAddress.addressLine1}, {order.shippingAddress.city}</p>
+                        <p className='text-right min-w-0 flex-1 md:flex-none md:w-48 ' >{order.shippingAddress?.addressLine1 || 'N/A'}, {order.shippingAddress?.city || 'N/A'}</p>
                     </div>
                     <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                         <p className='text-neutral-400'>Phone</p>
@@ -296,14 +298,14 @@ function SeclectedOrder({ order }) {
                     <p className='text-sm text-neutral-400'>Purchased Product Information</p>
                 </div>
                 <div>
-                    {order.items.map((item, index) => (<>
+                    {order.items?.map((item, index) => (<>
                         <div key={index} className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                             <p className='text-neutral-400'>Name</p>
-                            <p className='text-right min-w-0 flex-1 md:flex-none md:w-48'>{item.product.heading}</p>
+                            <p className='text-right min-w-0 flex-1 md:flex-none md:w-48'>{item.product?.heading || 'Unknown product'}</p>
                         </div>
                         <div className='flex justify-between items-center gap-2 border-b border-neutral-700 py-2'>
                             <p className='text-neutral-400'>Price</p>
-                            <p>{item.product.price}</p>
+                            <p>{item.product?.price ?? item.price ?? 0}</p>
                         </div></>
                     ))}
                 </div>
@@ -326,7 +328,7 @@ function SeclectedOrder({ order }) {
                     {order.paymentMethod !== "cod" &&
                         <div className='flex justify-between items-center gap-2  border-b border-neutral-700 py-2'>
                             <p className='text-neutral-400 '>Payment Receipt</p>
-                            <Link href={order.paymentReceipt} target='_blank' className='  text-right cursor-pointer   text-neutral-400 hover:text-2xl hover:text-white transition-all duration-300'>
+                            <Link href={order.paymentReceipt || '#'} target='_blank' className='  text-right cursor-pointer   text-neutral-400 hover:text-2xl hover:text-white transition-all duration-300'>
                                 <Eye size={24} className=' ' />
                             </Link>
 

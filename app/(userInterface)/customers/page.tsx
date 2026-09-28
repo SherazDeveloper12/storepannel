@@ -2,7 +2,6 @@
 import PageStarter from '@/app/components/PageStarter/PageStarter'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { setSelectedcustomer } from '@/app/store/slices/customerSlice'
-import { RootState } from '@reduxjs/toolkit/query/react'
 import { Mail } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
@@ -12,7 +11,7 @@ import React from 'react'
 export default function page() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const customers = useAppSelector((state: RootState) => state.customer.customers)
+    const customers = useAppSelector((state) => state.customer.customers)
     const reversedCustomers = customers.toReversed()
     console.log("customers in customer page", reversedCustomers)
     return (
@@ -46,7 +45,7 @@ export default function page() {
                         {reversedCustomers.length > 0 ? <>
                          {reversedCustomers.map((customer, index) => (
                             <tr
-                                onClick={() => dispatch(setSelectedCustomer(customer))}
+                                onClick={() => dispatch(setSelectedcustomer(customer))}
                                 key={index} className='border cursor-pointer border-neutral-700 bg-neutral-900  hover:bg-neutral-800 transition-colors duration-300'>
 
 

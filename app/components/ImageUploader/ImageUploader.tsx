@@ -1,12 +1,16 @@
 "use client"
 import { ImagePlusIcon } from 'lucide-react'
-import React, { use, useEffect, useState } from 'react'
-import { data } from 'react-router';
+import React, { useEffect, useState } from 'react'
+
+interface ImageUploaderProps {
+    value?: string;
+    setValue: (value: string) => void;
+}
 
 
 
 
-export default function ImageUploader({value, setValue}) {
+export default function ImageUploader({value, setValue}: ImageUploaderProps) {
         
         const [imgboxhovered, setimgboxhovered] = useState(false);
        
@@ -14,10 +18,12 @@ export default function ImageUploader({value, setValue}) {
     useEffect(() => {
         setImgUrl(value);
     }, [value]);
-    const handlechange = async (e) => {
+    const handlechange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
+            const file = e.target.files?.[0];
+            if (!file) return;
             const data = new FormData();
-            data.append("file", e.target.files[0]);
+            data.append("file", file);
             data.append("upload_preset", "image_uploader_preset");
             data.append("cloud_name", "dcli1vwir");
 
@@ -30,8 +36,8 @@ export default function ImageUploader({value, setValue}) {
             setImgUrl(url);
             setValue(url);
         }
-        catch (error) {
-            console.log(error.message);
+        catch (error: unknown) {
+            console.log(error instanceof Error ? error.message : error);
         }
     }
 

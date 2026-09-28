@@ -26,11 +26,8 @@ export const fetchNotifications = createAsyncThunk(
                 withCredentials: true,
             });
             return response.data;
-        } catch (error) {
-            if (error.response) {
-                throw error.response.data;
-            }
-            throw error;
+        } catch (error: unknown) {
+            throw new Error(getApiErrorMessage(error));
         }
     }
 );
@@ -58,9 +55,8 @@ export const fetchSettings = createAsyncThunk(
             });
             return response.data;
 
-        } catch (error) {
-
-            return error.data.message;
+        } catch (error: unknown) {
+            return Promise.reject(getApiErrorMessage(error));
         }
     }
 );
@@ -71,8 +67,8 @@ export const addCategory = createAsyncThunk('setting/addCategory',
                 withCredentials: true,
             });
             return response.data;
-        } catch (error) {
-            return error.data.message;
+        } catch (error: unknown) {
+            return Promise.reject(getApiErrorMessage(error));
         }
     }
 );
@@ -83,8 +79,8 @@ export const addBrand = createAsyncThunk('setting/addBrand',
                 withCredentials: true,
             });
             return response.data;
-        } catch (error) {
-            return error.data.message;
+        } catch (error: unknown) {
+            return Promise.reject(getApiErrorMessage(error));
         }
     }
 );
@@ -156,7 +152,7 @@ export const SettingSlice = createSlice({
         );
         builder.addCase(fetchSettings.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message;
+            state.error = action.error.message ?? "Failed to fetch settings";
         });
         builder.addCase(addCategory.pending, (state) => {
             state.loading = true;
@@ -170,7 +166,7 @@ export const SettingSlice = createSlice({
         });
         builder.addCase(addCategory.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message;
+            state.error = action.error.message ?? "Failed to add category";
         });
         builder.addCase(addBrand.fulfilled, (state, action) => {
             localStorage.setItem('brands', JSON.stringify(action.payload.settings.brands));
@@ -180,7 +176,7 @@ export const SettingSlice = createSlice({
         });
         builder.addCase(addBrand.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message;
+            state.error = action.error.message ?? "Failed to add brand";
         }
         )
         builder.addCase(fetchNotifications.pending, (state) => {
@@ -195,7 +191,7 @@ export const SettingSlice = createSlice({
         });
         builder.addCase(fetchNotifications.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message;
+            state.error = action.error.message ?? "Failed to fetch notifications";
         });
     }
 })

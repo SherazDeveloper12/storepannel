@@ -1,6 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
+import type { Customer } from '@/app/types/store';
+import { getApiErrorMessage } from '@/app/store/apiError';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+interface CustomerState {
+    customers: Customer[];
+    selectedcustomer: Customer | null;
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
+    message: string | null;
+}
+
+const initialState: CustomerState = {
+    customers: [],
+    selectedcustomer: null,
+    status: 'idle',
+    error: null,
+    message: null,
+};
 
 
 export const FetchAllcustomers = createAsyncThunk(
@@ -12,27 +30,21 @@ export const FetchAllcustomers = createAsyncThunk(
             const data = await response.data;
              console.log("fetching all customers from backend" , data)
             return data;
-        } catch (error) {
-            if (error.response) {
-                throw error.response.data;
-            }
-            throw error;
+        } catch (error: unknown) {
+            throw new Error(getApiErrorMessage(error));
         }
     }
 );
 
-export const contactCustomer = createAsyncThunk(
+export const contactCustomer = createAsyncThunk<unknown, { customerEmail: string; subject: string; message: string }>(
     "customer/contactCustomer",
     async (customerData) => {
         try {
             const response = await axios.post(`${BASE_URL}/customers/contactCustomer`, customerData, { withCredentials: true });
             const data = await response.data;
             return data;
-        } catch (error) {
-            if (error.response) {
-                throw error.response.data;
-            }
-            throw error;
+        } catch (error: unknown) {
+            throw new Error(getApiErrorMessage(error));
         }
     }
 );
@@ -40,13 +52,7 @@ export const contactCustomer = createAsyncThunk(
 
 export const customerSlice = createSlice({
     name: "customer",
-    initialState: {
-        customers: [],
-        selectedcustomer: null,
-        status: "idle",
-        error: null,
-        message: null
-    },
+    initialState,
     reducers: {
         setSelectedcustomer: (state, action) => {
             state.selectedcustomer = action.payload;
@@ -55,7 +61,7 @@ export const customerSlice = createSlice({
             state.selectedcustomer = null;
         },
 
-        fetchAllcustomersLocally: (state, action) => {
+        fetchAllcustomersLocally: (state) => {
             const storedcustomers = localStorage.getItem("allcustomers");
             if (storedcustomers) {
                 state.customers = JSON.parse(storedcustomers);
@@ -83,7 +89,7 @@ export const customerSlice = createSlice({
             })
             .addCase(FetchAllcustomers.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.error.message;
+                state.error = action.error.message ?? "Failed to fetch customers";
             });
             builder
             .addCase(contactCustomer.pending, (state) => {
@@ -91,11 +97,11 @@ export const customerSlice = createSlice({
             })
             .addCase(contactCustomer.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                state.message = action.payload.message;
+                state.message = (action.payload as { message?: string }).message ?? null;
             })
             .addCase(contactCustomer.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.error.message;
+                state.error = action.error.message ?? "Failed to contact customer";
             });
 
     }

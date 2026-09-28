@@ -8,6 +8,9 @@ type ProfileUpdates = Partial<{
   userName: string;
   storeName: string;
   storeURL: string;
+  storeDescription: string;
+  storeDeliveryCharges: string;
+  storePaymentMethods: import("@/app/types/store").PaymentMethod[];
 }>;
 
 const initialState: AuthState = {

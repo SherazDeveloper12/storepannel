@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react'
 
-export default function RadioInput({ options, name, setValue, value }) {
+interface RadioInputProps {
+    options: string[];
+    name: string;
+    setValue: (value: string) => void;
+    value: string;
+}
+
+export default function RadioInput({ options, name, setValue, value }: RadioInputProps) {
     const [selectedValue, setSelectedValue] = React.useState(value);
     useEffect(() => {
         setSelectedValue(value);

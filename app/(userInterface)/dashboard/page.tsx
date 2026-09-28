@@ -138,19 +138,19 @@ function DashboardHeader() {
                     <div className='flex items-center gap-2 min-w-max'>
                       <div className={`rounded-full  ${bggradientcolors[index]}  size-8 shrink-0 flex justify-center items-center`}>
                         <p className='text-white text-sm font-bold'>
-                          {order.shippingAddress.fullName[0]}
+                          {(order.shippingAddress?.fullName || '?')[0]}
                         </p>
 
                       </div>
                       <div className='min-w-0'>
-                        <p className='text-sm truncate max-w-40'>{order.shippingAddress.fullName}</p>
+                        <p className='text-sm truncate max-w-40'>{order.shippingAddress?.fullName || 'Unknown customer'}</p>
                         <p className='text-xs text-neutral-400 truncate max-w-40'>{order.email}</p>
                       </div>
 
                     </div>
                   </td>
-                  <td className='hidden md:table-cell px-4 py-2  text-sm text-neutral-400'>{order.items.length}</td>
-                  <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{order.shippingAddress.city}</td>
+                  <td className='hidden md:table-cell px-4 py-2  text-sm text-neutral-400'>{order.items?.length || 0}</td>
+                  <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{order.shippingAddress?.city || 'N/A'}</td>
 
 
 

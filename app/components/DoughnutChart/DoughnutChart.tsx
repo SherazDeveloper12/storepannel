@@ -2,6 +2,7 @@ import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { useAppSelector } from '@/app/store/hooks';
+import type { Order } from '@/app/types/store';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -9,11 +10,11 @@ export default function DoughnutChart() {
 const orders = useAppSelector((state: any) => state.orders.orders)
 console.log(orders, 'orders length:', orders?.length);
 // ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
-const pendingOrders =  orders?.filter((order) => order.status === 'Pending');
-const processingOrders = orders?.filter((order) => order.status === 'Processing');
-const shippedOrders = orders?.filter((order) => order.status === 'Shipped');
-const deliveredOrders = orders?.filter((order) => order.status === 'Delivered');
-const cancelledOrders = orders?.filter((order) => order.status === 'Cancelled');
+const pendingOrders =  orders?.filter((order: Order) => order.status === 'Pending');
+const processingOrders = orders?.filter((order: Order) => order.status === 'Processing');
+const shippedOrders = orders?.filter((order: Order) => order.status === 'Shipped');
+const deliveredOrders = orders?.filter((order: Order) => order.status === 'Delivered');
+const cancelledOrders = orders?.filter((order: Order) => order.status === 'Cancelled');
 const centerTextPlugin = {
   id: 'centerText',
   beforeDraw(chart: any) {

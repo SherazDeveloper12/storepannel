@@ -3,17 +3,18 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { createProduct, deleteProduct, updateProduct } from "../store/slices/productsSlice";
 import { useRouter, useParams } from 'next/navigation';
+import type { Product } from '@/app/types/store';
 
 
 
 
 export default function useProductForm() {
     const [AddProduct, setAddProduct] = useState(false);
-    const  [editingProductId, setEditingProductId] = useState(null);
+    const  [editingProductId, setEditingProductId] = useState<string | null>(null);
     const router = useRouter();
     const [category, setcategory] = useState('');
     const [brand, setbrand] = useState('');
-    const [condition, setcondition] = useState('New');
+    const [condition, setcondition] = useState<Product['condition']>('New');
     const [freeShipping, setfreeShipping] = useState(true);
     const [newArrivals, setnewArrivals] = useState(false);
     const [title, settitle] = useState('');
@@ -21,7 +22,7 @@ export default function useProductForm() {
     const [price, setprice] = useState(0);
     const [quantity, setquantity] = useState(1);
     const [description, setdescription] = useState('');
-    const [images, setimages] = useState([]);
+    const [images, setimages] = useState<string[]>([]);
     const [rating, setrating] = useState(1);
     const [discount, setdiscount] = useState(0);
     const [editMode, setEditMode] = useState(false);
@@ -71,16 +72,16 @@ export default function useProductForm() {
         discount: discount,
         payableAmount: payableAmount
     };
-    const handledelete = (id) => {
+    const handledelete = (id: string) => {
         dispatch(deleteProduct(id))
        }
-       const handleedit = (id) => {
+    const handleedit = (id: string) => {
 
         setEditingProductId(id);
         setAddProduct(true);
         setEditMode(true);
        }
-   const handleAddProductClick = (product) => {
+    const handleAddProductClick = (product: Omit<Product, '_id'>) => {
        console.log('Adding Product:', product);
         dispatch(createProduct(product));
         setbrand('');
@@ -98,8 +99,9 @@ export default function useProductForm() {
         setPayableAmount(0);
         setimages([]);
     }
-    const handleUpdateProductClick = (product) => {
+    const handleUpdateProductClick = (product: Omit<Product, '_id'>) => {
         
+        if (!existingProduct) return;
         const updatedProduct = { ...product, _id: existingProduct._id };
         console.log('Updated Product:', updatedProduct);
         // Dispatch update action here

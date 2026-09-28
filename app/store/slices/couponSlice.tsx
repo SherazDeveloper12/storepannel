@@ -31,7 +31,7 @@ const initialState: CouponState = {
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 
-export const fetchCoupons = createAsyncThunk(
+export const fetchCoupons = createAsyncThunk<Coupon[], void, CouponThunkConfig>(
     "Coupons/fetchCoupons",
     async () => {
         try {
@@ -40,15 +40,14 @@ export const fetchCoupons = createAsyncThunk(
                 throw new Error('storeID not found in localStorage');
             }
             const response = await axios.get(`${BASE_URL}/Coupons?storeID=${storeID}`);
-            return response.data;
+            return response.data as Coupon[];
 
-        } catch (error) {
-
-            return error.data.message;
+        } catch (error: unknown) {
+          return Promise.reject(getApiErrorMessage(error));
         }
     }
 );
-export const updateCoupon = createAsyncThunk(
+    export const updateCoupon = createAsyncThunk<UpdateCouponResponse, Coupon, CouponThunkConfig>(
     "Coupons/updateCoupon",
     async (updatedCoupon) => {
         try {
@@ -60,8 +59,8 @@ export const updateCoupon = createAsyncThunk(
                 withCredentials: true // Include credentials for authentication
             });
             return response.data;
-        } catch (error) {
-            return error.data.message;
+        } catch (error: unknown) {
+          return Promise.reject(getApiErrorMessage(error));
         }
     });
 export const deleteCoupon = createAsyncThunk<
@@ -98,13 +97,7 @@ export const createCoupon = createAsyncThunk<
 });
 export const CouponSlice = createSlice({
     name: "Coupons",
-    initialState: {
-        Coupons: [],
-        SelectedCouponId: null,
-        status: "idle",
-        error: null,
-        message: null,
-    },
+    initialState,
     reducers: {
         fetchCouponsLocally: (state) => {
             state.status = "loading";
@@ -154,8 +147,8 @@ export const CouponSlice = createSlice({
             toast.error("Failed to create coupon");
             console.log("action.error in createCoupon.rejected", action.error)
             state.status = "failed";
-            state.error = action.error.message;
-            state.message = action.error.message;
+            state.error = action.error.message ?? "Failed to create coupon";
+            state.message = action.error.message ?? "Failed to create coupon";
         });
         builder.addCase(deleteCoupon.pending, (state) => {
             toast.dismiss(); // Dismiss any existing toasts
@@ -173,7 +166,7 @@ export const CouponSlice = createSlice({
             toast.dismiss(); // Dismiss any existing toasts
             toast.error("Failed to delete coupon");
             state.status = "failed";
-            state.error = action.error.message;
+            state.error = action.error.message ?? "Failed to delete coupon";
         });
         builder.addCase(updateCoupon.pending, (state) => {
             toast.dismiss(); // Dismiss any existing toasts
@@ -195,7 +188,7 @@ export const CouponSlice = createSlice({
             toast.dismiss(); // Dismiss any existing toasts
             toast.error("Failed to update coupon");
             state.status = "failed";
-            state.error = action.error.message;
+            state.error = action.error.message ?? "Failed to update coupon";
         });
             
 

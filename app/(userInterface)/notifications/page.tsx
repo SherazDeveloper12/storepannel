@@ -177,10 +177,11 @@ export default function page() {
               <div className='flex flex-col  w-full min-w-0'> <p className='text-white text-sm wrap-break-word'>{notification.message}</p>
                 <p className='text-gray-400 text-xs self-end'>
                   {(() => {
-                    const hoursAgo = Math.floor((Date.now() - new Date(notification.createdAt).getTime()) / (1000 * 60 * 60));
+                    const createdAt = notification.createdAt || new Date().toISOString();
+                    const hoursAgo = Math.floor((Date.now() - new Date(createdAt).getTime()) / (1000 * 60 * 60));
 
                     if (hoursAgo < 1) {
-                      const minutesAgo = Math.floor((Date.now() - new Date(notification.createdAt).getTime()) / (1000 * 60));
+                      const minutesAgo = Math.floor((Date.now() - new Date(createdAt).getTime()) / (1000 * 60));
                       return `${minutesAgo} minutes ago`;
                     } else if (hoursAgo < 24) {
                       return `${hoursAgo} hours ago`;

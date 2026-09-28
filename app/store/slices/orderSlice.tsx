@@ -31,11 +31,8 @@ export const FetchAllOrders = createAsyncThunk(
             const data = await response.data;
             console.log("Fetched all orders successfully:", data);
             return data;
-        } catch (error) {
-            if (error.response) {
-                throw error.response.data;
-            }
-            throw error;
+        } catch (error: unknown) {
+            throw new Error(getApiErrorMessage(error));
         }
     }
 );
@@ -91,13 +88,13 @@ export const orderSlice = createSlice({
             localStorage.setItem("orders", JSON.stringify(state.orders));
 
         },
-        fetchOrders: (state, action) => {
+        fetchOrders: (state) => {
             const storedOrders = localStorage.getItem("orders");
             if (storedOrders) {
                 state.orders = JSON.parse(storedOrders);
             }
         },
-        fetchAllOrdersLocally: (state, action) => {
+        fetchAllOrdersLocally: (state) => {
             const storedOrders = localStorage.getItem("allorders");
             if (storedOrders) {
                 state.orders = JSON.parse(storedOrders);
@@ -125,7 +122,7 @@ export const orderSlice = createSlice({
             })
             .addCase(FetchAllOrders.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.error.message;
+                state.error = action.error.message ?? "Failed to fetch orders";
             });
         builder
             .addCase(updateOrderStatus.pending, (state) => {
@@ -140,7 +137,7 @@ export const orderSlice = createSlice({
             })
             .addCase(updateOrderStatus.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.error.message;
+                state.error = action.error.message ?? "Failed to update order";
             });
         builder
             .addCase(fetchOrdersbyuserid.pending, (state) => {
@@ -151,7 +148,7 @@ export const orderSlice = createSlice({
             })
             .addCase(fetchOrdersbyuserid.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.error.message;
+                state.error = action.error.message ?? "Failed to fetch orders";
             });
     }
 });

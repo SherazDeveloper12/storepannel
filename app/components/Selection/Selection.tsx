@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation';
-export default function Selection({ options, name, value, setValue }) {
+interface SelectionProps {
+    options: Array<{ name: string }>;
+    name: string;
+    value: string;
+    setValue: (value: string) => void;
+}
+
+export default function Selection({ options, name, value, setValue }: SelectionProps) {
     const [selectedValue, setSelectedValue] = React.useState(`${value}`);  
     const router = useRouter();
     useEffect(() => {

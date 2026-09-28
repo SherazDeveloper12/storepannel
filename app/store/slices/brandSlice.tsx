@@ -2,6 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 import type { CatalogItem, CatalogState } from "@/app/types/store";
 import { getApiErrorMessage } from "@/app/store/apiError";
+interface BrandInput {
+  name: string;
+  description: string;
+  image: string;
+}
 interface BrandState {
   brands: CatalogItem[];
   loading: boolean;
@@ -32,7 +37,7 @@ export const fetchBrands = createAsyncThunk(
   })
 export const addBrand = createAsyncThunk(
   "brand/addbrand",
-  async (brandData: FormData) => {
+  async (brandData: BrandInput) => {
     try {
     
       const response = await axios.post(`${BASE_URL}/brands/addbrand`, brandData, {
@@ -59,7 +64,7 @@ export const deleteBrand = createAsyncThunk(
 export const updateBrand = createAsyncThunk(
   "brand/updatebrand",
   
-  async (data: { brandId: string, brandData: FormData }) => {
+  async (data: { brandId: string, brandData: BrandInput }) => {
     
     try {
      
@@ -76,7 +81,7 @@ export const brandSlice = createSlice({
   name: "brand",
   initialState,
     reducers: {
-      fetchBrandsLocally: (state, action) => {
+      fetchBrandsLocally: (state) => {
         const brands = localStorage.getItem('brands');
         if (brands) {
           state.brands = JSON.parse(brands);

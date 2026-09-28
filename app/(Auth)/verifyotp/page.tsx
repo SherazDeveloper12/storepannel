@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
 export default function page() {
     const router = useRouter();
     const { user, loading, message, error, isAuthenticated } = useAppSelector((state: any) => state.auth);
-    const email = user?.email || localStorage.getItem("email");
+    const email = user?.email || (typeof window !== 'undefined' ? localStorage.getItem("email") : null);
     const dispatch = useAppDispatch();
     const otphasbeenSent = useRef(false);
     
@@ -46,7 +46,7 @@ export default function page() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // Handle form submission logic here
-        dispatch(otpVerify(formData));
+        dispatch(otpVerify({ email: formData.email, otp: Number(formData.otp) }));
 
     }
     return (

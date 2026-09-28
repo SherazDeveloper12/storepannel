@@ -2,14 +2,13 @@
 import PageStarter from '@/app/components/PageStarter/PageStarter'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { createCoupon, deleteCoupon, updateCoupon, addSelectedCouponId } from '@/app/store/slices/couponSlice'
-import { RootState } from '@reduxjs/toolkit/query/react'
 import { Delete, Eye, Pen, ShieldX, Trash2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 
 export default function page() {
-  const { Coupons, status, error, message, SelectedCouponId } = useAppSelector((state: RootState) => state.coupon);
+  const { Coupons, status, error, message, SelectedCouponId } = useAppSelector((state) => state.coupon);
   const selectedCoupon = Coupons.find(coupon => coupon._id === SelectedCouponId);
   const reversedCoupons = Coupons.toReversed()
  useEffect(() => {
@@ -18,7 +17,7 @@ export default function page() {
       couponName: selectedCoupon?.couponName || '',
       couponCode: selectedCoupon?.couponCode || '',
       discountPercentage: selectedCoupon?.discountPercentage || 1,
-      expirationDate: selectedCoupon?.expirationDate ,
+      expirationDate: selectedCoupon?.expirationDate || '',
       maxUsage: selectedCoupon?.maxUsage || 1,
     })
     setGenerateCoupon(true);
@@ -33,8 +32,8 @@ export default function page() {
     expirationDate: '',
     maxUsage: 1,
   });
-  const handleFormSubmit = (e) => {
-    e.preventDefault(true);
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     SelectedCouponId ? dispatch(updateCoupon({ ...couponFormData, _id: SelectedCouponId })) 
     : dispatch(createCoupon(couponFormData));
     
@@ -47,7 +46,7 @@ export default function page() {
     });
     setGenerateCoupon(false);
   }
-  const handleExpireCoupon = (coupon) => {
+  const handleExpireCoupon = (coupon: typeof Coupons[number]) => {
     // Implement the logic to expire the coupon
     const expiredCoupon = { ...coupon, status: 'expired' };
     dispatch(updateCoupon(expiredCoupon));
@@ -76,11 +75,11 @@ export default function page() {
                 <label htmlFor="itemDescription" className='font-semibold'>Enter Coupon Code:</label>
                 <input value={couponFormData.couponCode} type="text" id="itemDescription" placeholder={`COUPON14`} onChange={(e) => setCouponFormData({ ...couponFormData, couponCode: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
                 <label htmlFor="itemDescription" className='font-semibold'>Enter Discount Percentage:</label>
-                <input value={couponFormData.discountPercentage} type="number" id="itemDescription" placeholder={`20`} onChange={(e) => setCouponFormData({ ...couponFormData, discountPercentage: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
+                <input value={couponFormData.discountPercentage} type="number" id="itemDescription" placeholder={`20`} onChange={(e) => setCouponFormData({ ...couponFormData, discountPercentage: Number(e.target.value) })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
                 <label htmlFor="itemDescription" className='font-semibold'>Enter Expiration Date:</label>
                 <input value={couponFormData.expirationDate} type="date" id="itemDescription" onChange={(e) => setCouponFormData({ ...couponFormData, expirationDate: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
                 <label htmlFor="itemDescription" className='font-semibold'>Enter Maximum Usage:</label>
-                <input value={couponFormData.maxUsage} type="number" id="itemDescription" placeholder={`1`} onChange={(e) => setCouponFormData({ ...couponFormData, maxUsage: e.target.value })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
+                <input value={couponFormData.maxUsage} type="number" id="itemDescription" placeholder={`1`} onChange={(e) => setCouponFormData({ ...couponFormData, maxUsage: Number(e.target.value) })} className='border border-neutral-300 bg-neutral-900 rounded p-2' />
               </div>
               <div className='flex flex-wrap items-center gap-2'>
                 <button className='flex-1 bg-red-500 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300'
@@ -153,7 +152,7 @@ export default function page() {
 
                   ><p className={`p-1 px-3 rounded text-sm tracking-tighter text-black ${coupon.status === 'active' ? 'bg-green-500' : coupon.status === 'expired' ? 'bg-red-500' : coupon.status === 'used' ? 'bg-yellow-500' : 'bg-grey-500'}`}>{coupon.status}</p></div>
                 </td>
-                <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{new Date(coupon.createdAt).toLocaleDateString()}</td>
+                <td className='hidden md:table-cell px-4 py-2  text-sm text-white'>{coupon.createdAt ? new Date(coupon.createdAt).toLocaleDateString() : 'N/A'}</td>
                 <td className='hidden md:table-cell px-4 py-2 font-bold text-sm text-white'>{coupon.discountPercentage}%</td>
                 <td className='px-1 md:px-4 flex gap-1  items-center py-2  text-sm text-white  '>
                   <div className='flex flex-col md:flex-row   items-center'>
