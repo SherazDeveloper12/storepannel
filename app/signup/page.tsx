@@ -31,9 +31,8 @@ export default function page() {
     });
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const payload = new globalThis.FormData();
-        Object.entries(formData).forEach(([key, value]) => payload.append(key, value));
-        dispatch(registerUser(payload));
+       
+        dispatch(registerUser(formData as any));
         // Handle form submission logic here
        
     }

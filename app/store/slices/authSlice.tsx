@@ -27,6 +27,7 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userData: FormData) => {
     try {
+      console.log("registerUser userData:", userData); // Log the userData before sending the request
       const response = await axios.post(`${BASE_URL}/auth/register`, userData, {
         withCredentials: true, // Include cookies in the request
       });
@@ -83,6 +84,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (data: { email: string, password: string }) => {
     try {
+      console.log("login data:", data); // Log the login data before sending the request
       const response = await axios.post(`${BASE_URL}/auth/login`, data, {
         withCredentials: true, // Include cookies in the request
       });
